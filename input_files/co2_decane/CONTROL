@@ -1,0 +1,59 @@
+CO2+C10H22 (Mie+CG)
+
+
+#restart
+# initial condition
+
+temperature      344.15
+
+# ensemble options
+
+ensemble nvt hoover     1.0
+
+# simulation length and equilibration
+
+steps               16000000
+equilibration       6000000
+scale                  10
+timestep            0.0030
+multiple step         1
+
+# specify cutoffs
+
+cutoff           28.00
+delr             7.000
+
+# statistics controls
+
+stack               100
+stats               1000
+
+
+# printer controller
+
+#print                1000
+print                5000
+
+# forces options
+no electrostatics
+cap forces 1000
+#shake tolerance  1.0E-5
+
+# rdf & zden options
+rdf collection every  100
+print rdf
+
+#density profile along z direction
+zden 
+          
+
+# trajectory dumping controls
+
+#traj 11120000 500 0
+
+# job time and close time
+
+job time              258000.00
+close time             1200.00
+
+finish

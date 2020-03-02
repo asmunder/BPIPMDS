@@ -1,0 +1,12 @@
+co2 Mie
+UNITS kJ
+molecules   1
+co2ane
+nummols 2592
+atoms 1
+C         44.0100000  0.00000000   1
+finish
+vdw  1
+C       C         nm    2.9396000  23.000    6.66270     4.00069
+close
+

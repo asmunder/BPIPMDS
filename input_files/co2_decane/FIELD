@@ -1,0 +1,21 @@
+CO2+C10H22 (Mie+CG)
+units kJ 
+molecular types   2
+CO2
+nummols 2256
+atoms 1
+CCG       44.0095000  0.00000000   1
+finish
+decane
+nummols 1248
+atoms 3
+DCG       142.281700  0.00000000   3
+constraints 2
+1     2   4.62900
+2     3   4.62900
+finish
+vdw  3
+CCG     CCG       nm    2.9381945  23.0000   6.66000     4.0357900
+DCG     DCG       nm    3.4480466  19.6100   6.00000     5.0498387
+CCG     DCG       nm    2.8946397  21.2263   6.31361     4.5394934
+close

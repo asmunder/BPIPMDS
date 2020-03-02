@@ -1,0 +1,41 @@
+ MD simulation of CO2 using Mie potential
+restart                       
+#integrate leapfrog verlet
+temperature             240.00
+
+ensemble nvt hoover   0.2   1.0
+
+
+
+steps                   30000000
+equilibration           19000000
+scale                   1
+
+timestep                0.00180
+multiple step           1.0000
+
+cutoff                  22.4472 
+delr                    4.0000      
+
+stats                   500
+stack                   1000
+
+print                   10000
+
+no elec
+cap forces              1000
+
+
+
+rdf                     100
+print rdf 
+zden                    
+
+traj                    1 50000 0
+
+job time              258000.00
+close time             1200.00
+
+# ... finish
+finish
+
