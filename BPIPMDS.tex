@@ -438,7 +438,8 @@ densities in the {${\alpha}$} and {${\beta}$} phases, respectively.
 
 For the case of pure fluid, {${\delta}$} can be calculated by fitting the following expression to the density profile\citep{evans1992}:
 \begin{equation}
-\rho\left(z\right)=\frac{\rho^{\alpha}+\rho^{\beta}}{2}-\frac{\rho^{\alpha}+\rho^{\beta}}{2}tanh\left[\left(\pm\right)\frac{\theta\left(z-z_{0}\right)}{\delta}\right]
+%\rho\left(z\right)=\frac{\rho^{\alpha}+\rho^{\beta}}{2}-\frac{\rho^{\alpha}+\rho^{\beta}}{2}tanh\left[\left(\pm\right)\frac{\theta\left(z-z_{0}\right)}{\delta}\right]
+\rho\left(z\right)=\frac{1}{2}\left(\rho^{\alpha}+\rho^{\beta}\right)-\frac{1}{2}\left(\rho^{\alpha}-\rho^{\beta}\right)tanh\left[\frac{\theta\left(z-z_{0}\right)}{\delta}\right]
 \end{equation}
 where \textit{z}$_{0}$ is a reference coordinate, which is usually taken as the
 divide position or the position of the Gibbs dividing surface (see next
@@ -1102,20 +1103,20 @@ typifies the impact of cutoff in bulk and interfacial properties.
 
 \begin{figure}
   \centering
-  \begin{subfigure}{0.4\textwidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image45.jpeg}
-	\end{subfigure}
-  \begin{subfigure}{0.4\textwidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image46.jpeg}
-	\end{subfigure}
-  \begin{subfigure}{0.4\textwidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image47.jpeg}
-	\end{subfigure}
-  \begin{subfigure}{0.4\textwidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image48.jpeg}
-	\end{subfigure}
-
-\caption{Impact of cutoff (\textit{r}$_{c}$) on the bulk and interfacial properties for the case of CO$_{2}$ (single Mie sphere) at 240 K. }
+%  \begin{subfigure}{0.4\textwidth} % width of left subfigure
+%    \includegraphics[width=1\textwidth]{gfx/image45.jpeg}
+%	\end{subfigure}
+%  \begin{subfigure}{0.4\textwidth} % width of left subfigure
+%    \includegraphics[width=1\textwidth]{gfx/image46.jpeg}
+%	\end{subfigure}
+%  \begin{subfigure}{0.4\textwidth} % width of left subfigure
+%    \includegraphics[width=1\textwidth]{gfx/image47.jpeg}
+%	\end{subfigure}
+%  \begin{subfigure}{0.4\textwidth} % width of left subfigure
+%    \includegraphics[width=1\textwidth]{gfx/image48.jpeg}
+%	\end{subfigure}
+\includegraphics[width=1\textwidth]{gfx/fig_11_op3.jpeg}
+\caption{Impact of cutoff (\textit{r}$_{c}$) on the bulk and interfacial properties for the case of CO$_{2}$ (single Mie sphere) at 240 K. Diamonds: surface tension $\gamma$, triangles: vapor pressure $P$, circles: liquid density $\rho^L$, squares: vapor density $\rho^V$.}
 \label{fig:11}
 \end{figure}
 
@@ -1688,6 +1689,10 @@ pitfalls caused by the initial density value are schematized in Figure 23.
     \includegraphics[width=1\textwidth]{gfx/image72.png}
     \caption{${\uprho}$ too low}
 	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth} % width of left subfigure
+    \includegraphics[width=1\textwidth]{gfx/Fig_23c.jpeg}
+    \caption{${\uprho}$ correct}
+	\end{subfigure}
 \caption{Schematic illustration of common pitfalls in initial density}
 \label{fig:23}
 \end{figure}
@@ -1706,11 +1711,11 @@ interfacial tension ({${\gamma}$}  ${\simeq}$ (${\rho}$$^{\mathrm{L}}$
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{0.4\textwidth} % width of left subfigure
+	\begin{subfigure}{0.8\textwidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image73.jpeg}
     \caption{phase equilibria}
 	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth} % width of left subfigure
+	\begin{subfigure}{0.8\textwidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image74.jpeg}
     \caption{interfacial tension}
 	\end{subfigure}
@@ -1751,11 +1756,11 @@ carry out MS at temperatures from 0.5 {\textless} \textit{T/T}$_{c}$
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{0.4\textwidth} % width of left subfigure
+	\begin{subfigure}{0.8\textwidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image75.png}
     \caption{temperature close to the triple point}
 	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth} % width of left subfigure
+	\begin{subfigure}{0.8\textwidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image76.png}
     \caption{temperature too close to critical state}
 	\end{subfigure}
