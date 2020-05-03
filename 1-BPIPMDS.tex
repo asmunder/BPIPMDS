@@ -503,19 +503,14 @@ densities in the {${\alpha}$} and {${\beta}$} phases, respectively.
 
 For the case of pure fluid, {${\delta}$} can be calculated by fitting the following expression to the density profile\citep{evans1992}:
 \begin{equation}
-\rho\left(z\right)=\frac{\rho^{\alpha}+\rho^{\beta}}{2}-\frac{\rho^{\alpha}+\rho^{\beta}}{2}tanh\left[\left(\pm\right)\frac{\theta\left(z-z_{0}\right)}{\delta}\right]
+\rho\left(z\right)=\frac{1}{2}\left(\rho^{\alpha}+\rho^{\beta}\right)-\frac{1}{2}\left(\rho^{\alpha}-\rho^{\beta}\right)tanh\left[\frac{\theta\left(z-z_{0}\right)}{\delta}\right]
   \label{eq:3}
 \end{equation}
-where \textit{z}$_{0}$ is a reference coordinate, which is usually taken as the
+where $\rho^\alpha$ and $\rho^\beta$ are the densities of the bulk phases with 
+$\rho^\alpha > \rho^\beta$; \textit{z}$_{0}$ is a reference coordinate, which is usually taken as the
 divide position or the position of the Gibbs dividing surface (see next
 section) and {${\uptheta}$} = 2 tanh$^{-1}$ 0.8 = 2.19722; this latter value
 chosen so that {${\delta}$} can be defined as the 10/90 interfacial thickness.
-The selection of the sign ${\pm}$ depends on the selected point to start the
-density profile. Considering the case where ${\rho}$$^{\mathrm{{\upalpha}}}$
-{\textgreater} ${\rho}$$^{\mathrm{{\upbeta}}}$,  + for
-${\rho}$$^{\mathrm{{\upalpha}}}$ to ${\rho}$$^{\mathrm{{\upbeta}}}$ and
-\textendash{} for ${\rho}$$^{\mathrm{{\upbeta}}}$ to
-${\rho}$$^{\mathrm{{\upalpha}}}$.
 
 The \textit{tanh} (or equivalent fitting function such as \textit{erf}) suggest
 that one could express the adsorption (or depletion) of a species as the
@@ -712,15 +707,6 @@ diffusion, as shown in Fig. \ref{fig:6b}.
   \label{fig:6b}
 \end{figure}
 
-In either case mentioned above, the final outcome is an elongated simulation
-box with slabs containing the two coexisting phases. A point to consider is the
-use of an appropriate number of particles to describe not only the liquid and
-vapor (or second liquid) bulk phases but also the interfacial region. The
-resulting density profiles should show significant flat density regions for
-each bulk phase and sufficient molecules in the sparse (vapor) phases to
-provide for adequate statistics. Fig. \ref{fig:7b} shows schematically some typical
-pitfalls.
-
 \begin{figure}
 	\centering
 	\begin{subfigure}{0.3\textwidth} % width of left subfigure
@@ -729,17 +715,24 @@ pitfalls.
 	\begin{subfigure}{0.3\textwidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image21.png}
 	\end{subfigure}
-  \caption{Typical pitfalls which are apparent from a density profile. 
-    Top: The liquid slab does not show
-a plateau corresponding to a bulk liquid. Instead it shows two interfaces
-merging, or the appearance of a drop outside the liquid slab. 
-This is resolved by adding more molecules to the system to shift the
-overall density towards the liquid, or if the drop is large, the simulation can be run for longer times so
-the drop coalesces with the bulk slab. Bottom: a density profile which
-shows a correct outcome.
-}
+  \caption{
+    Top: three typical pitfalls which are apparent from a density profile:
+    (a) insufficient statistics in the vapor region. The box should be longer to have room for the vapor phase. 
+    (b) the liquid slab does not show a plateau corresponding to a bulk liquid. Instead it shows two interfaces merging. This is resolved by increasing the average density of the system.
+    (c) the appearance of a drop outside the liquid slab. The simulation must be repeated, or run for a longer time.\\
+    Bottom: a density profile which shows a correct outcome.
+  }
 \label{fig:7b}
 \end{figure}
+
+In either case mentioned above, the final outcome is an elongated simulation
+box with slabs containing the two coexisting phases. A point to consider is the
+use of an appropriate number of particles to describe not only the liquid and
+vapor (or second liquid) bulk phases but also the interfacial region. The
+resulting density profiles should show significant flat density regions for
+each bulk phase and sufficient molecules in the sparse (vapor) phases to
+provide for adequate statistics. Fig. \ref{fig:7b} shows schematically some typical
+pitfalls.
 
 For the case of pure fluids in vapor \textendash{} liquid equilibria, it is not
 necessary to specify the values of \textit{N}$^{L}$ and \textit{N}$^{V}$, it is
@@ -887,6 +880,13 @@ for pure components. Other alternative ensembles are available
 \citep{zhang1995} whereby the tangential pressure and/or the tension
 is kept fixed, but are seldomly used.  
 
+
+\begin{figure}
+\includegraphics[width=0.35\textwidth]{gfx/image25.png}
+\caption{Schematic illustration of the variation of energy (total, kinetic and potential) as a function of thermostat constant. The recommend values are those ${\tau}$$_{ T}$ ${\geq}$ \textit{min${\tau}$}$_{T}$}
+\label{fig:5b}
+\end{figure}
+
 \subsection{Thermostat and Barostat}
 \label{sec:thermostat}
 For any ensemble employed (barring the microcanonical) it is necessary to use
@@ -925,11 +925,6 @@ interfacial systems, hence general suggestions applicable to bulk MS uphold. For
 discussion concerning thermostats and barostats, the reader is referred to the
 textbook by Tuckerman \citep{tuckerman2010}.
 
-\begin{figure}
-\includegraphics[width=0.35\textwidth]{gfx/image25.png}
-\caption{Schematic illustration of the variation of energy (total, kinetic and potential) as a function of thermostat constant. The recommend values are those ${\tau}$$_{ T}$ ${\geq}$ \textit{min${\tau}$}$_{T}$}
-\label{fig:5b}
-\end{figure}
 
 \subsection{Force Fields}
 \label{sec:forcefields}
@@ -990,7 +985,7 @@ and /or charged fluids. In these cases, the use of UA models seems an
 acceptable compromise. 
 
 \begin{table}
-  \caption{Contribution to the potential energy in the TraPPE UA for n-C$_{10}$H$_{22}$$^{\mathrm{*}}$}
+  \caption{Contribution to the potential energy in the TraPPE UA for n-C$_{10}$H$_{22}$. $k_B$ is Boltzmann’s constant. $\theta$ is the bond angle between three consecutive united-atoms, and subscript $_0$ denotes its equilibrium value. $\phi$ is the dihedral angle between four consecutive united- atoms. $r_{ij}$ is the distance between united-atoms i and j. $\epsilon_{ij}$ is the energy parameter of the interaction, whereas $\sigma_{ij}$ is the Lennard-Jones size parameter.}
   \includegraphics[width=\linewidth]{gfx/graphics-table-2.png}
 %\begin{tabularx}{\textwidth}{
 %p{\dimexpr 0.18\linewidth-2\tabcolsep}
@@ -1086,7 +1081,9 @@ algorithms this may be scaled down). In order to reduce the calculation time
 associated with the evaluation of these long-range interactions, a truncation
 of the energy (or force) is used. In other words, the energy (or force) is set
 to zero for distances larger than a given radius, traditionally called the
-cutoff radius. 
+cutoff radius ($r_c$). One option is to cut the potential at $r_c$. Another 
+option is switching the tail off smoothly, which makes the potential energy zero after
+a given $r_c$. 
 
 %\begin{figure}
 %	\centering
@@ -1165,13 +1162,13 @@ typifies the impact of cutoff in bulk and interfacial properties.
 \label{fig:11}
 \end{figure}
 
-From this figure, it is seen how at  \textit{r}$_{c}$ larger all properties of
+From this figure, it is seen how at \textit{r}$_{c}$ larger all properties of
 relevance reach a stationary value. Clearly, the large cutoff can never be more
 than half of the smallest cell dimension (e.g., \textit{L}$_{x}$/2).
 Therefore, as a suggestion, a value of cutoff equal or larger than
 6 ${\sigma}$$_{\mathrm{max}}$ (typically $\approx 2$ nm) will be an adequate choice to avoid the
 truncation and system size effects involved in the phase equilibrium and
-interfacial properties calculations
+interfacial properties calculations.
 
 For the case of fluids with electrostatic contributions to the energy, the
 potential energy decays proportional to \textit{r}$^{2}$ ( rather than
@@ -1288,9 +1285,11 @@ calculated as {${\rho}$}$_{i}$ $^{\mathrm{C10H22}}$
 whereas {${\rho}$}$_{i}$ $^{\mathrm{C10H22}}$
 = (\textit{N}$_{i}$/3)/\textit{V}$_{j}$ for the case of CG model.
 \todo[inline]{Erich, I don't know if you meant the following sentences as a remark, or to be added here?}
+\begin{mdframed}[backgroundcolor=orange!20]
 Note that we suggest to calculate the densities based on the number of sites observed
 in a given slab. In most cases of chain fluids, molecules will span several slabs,
 and this must be accounted for.
+\end{mdframed}
 
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gfx/image51.png}
@@ -1757,11 +1756,11 @@ pitfalls caused by the initial density value are schematized in Fig. \ref{fig:23
 \begin{figure}
 	\centering
 	\begin{subfigure}{0.3\textwidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image70.png}
+    \includegraphics[width=1\textwidth]{gfx/Fig_23_a.png}
     \caption{Average density very low, no liquid slab}
 	\end{subfigure}
 	\begin{subfigure}{0.3\textwidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image71.png}
+    \includegraphics[width=1\textwidth]{gfx/Fig_23_b.png}
     \caption{Average density increased, but liquid slab too narrow}
 	\end{subfigure}
 	\begin{subfigure}{0.3\textwidth} % width of left subfigure
@@ -1833,15 +1832,15 @@ carry out MS at temperatures from 0.5 {\textless} \textit{T/T}$_{c}$
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{0.3\textwidth} % width of left subfigure
+	\begin{subfigure}{0.38\textwidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image75.png}
     \caption{temperature close to the triple point}
 	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth} % width of left subfigure
+	\begin{subfigure}{0.38\textwidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image76.png}
     \caption{temperature too close to critical state}
 	\end{subfigure}
-\caption{Illustration of the poor temperature definition}
+\caption{Illustration of poor temperature choices}
 \label{fig:25}
 \end{figure}
 
@@ -1953,6 +1952,8 @@ reproduce selected results presented here.
 %\end{algorithm}
 
 
+
+\begin{mdframed}[backgroundcolor=orange!20]
 \section{Author Contributions}
 %%%%%%%%%%%%%%%%
 % This section mustt describe the actual contributions of
@@ -1993,6 +1994,7 @@ For a more detailed description of contributions from the community and others, 
 %%%%%%%
 
 Declare any potentially conflicting interests here, whether or not they pose an actual conflict in your view.
+\end{mdframed}
 
 \section{Funding Information}
 %%%%%%%
