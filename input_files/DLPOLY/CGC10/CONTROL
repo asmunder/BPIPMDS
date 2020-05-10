@@ -1,0 +1,62 @@
+MD simulation of C10H22 using Mie potential (BPMS)
+
+# ============================================================== #
+# Quench conditions
+
+#temperature             1000.00
+# simulation length and equilibration for Quench conditions
+
+#steps                   100000
+#equilibration           100000
+
+# ============================================================== #
+
+# MD conditions
+
+temperature             500.00
+
+# ensemble options
+
+ensemble nvt hoover   1.0
+
+# simulation length and equilibration
+
+steps                   12000000
+equilibration           5000000
+scale                   10
+
+timestep                0.0030
+multiple step           1.0000
+
+# specify cutoffs
+
+cutoff                  27.774
+delr                    6.9435      
+
+# statistics controls
+
+stats                   100
+stack                   1000
+
+# printer controller
+print                   50000
+# forces options
+
+no elec
+cap forces              1000
+
+# rdf
+
+rdf                     100
+print rdf 
+
+#density profile along z direction
+zden                    
+
+# job time and close time
+
+job time              258000.00
+close time             1200.00
+
+finish
+

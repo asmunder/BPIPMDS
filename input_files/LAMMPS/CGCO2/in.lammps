@@ -1,0 +1,56 @@
+#---------------------------------------------------------------------------------#
+#------------------------------ Type of simulation -------------------------------#
+#---------------------------------------------------------------------------------#
+units		real			# units A, fs, kcal/mol, K, atm
+boundary	p p p			# periodic in x, y, z directions
+dimension	3			# 3-D simulation
+atom_style	full			# set of interacting molecules
+#---------------------------------------------------------------------------------#
+#----------------------------- System & Force field ------------------------------#
+#---------------------------------------------------------------------------------#
+read_data	data.lammps		# read the data file
+
+group		CO2	type	1	# name type 1 atoms with the CO2 label
+
+pair_style 	mie/cut	22.446		# type of pair interactions and cutoff
+
+# nm potential    i  j          eps(Kcal/mol)   sigma(A)  Lrep    Latt
+  pair_coeff      1  1          0.702		3.741	  23.00	  6.66       # CO2 parameters
+
+minimize 1.0e-4 1.0e-6 100 1000		# energy minimize the system to relax it 
+reset_timestep	0			# reset the timestep to 0
+#---------------------------------------------------------------------------------#
+#-------------------------------- Property Calculation ---------------------------#
+#---------------------------------------------------------------------------------#
+## Block averages of temperature, total energy, global pressure tensor and IFT (output in ave.lammps)
+variable	TotEng  equal		etotal
+variable	IFT     equal 		(-((zhi-zlo)/2.0)*(((pxx+pyy)/2.0)-pzz))*0.0101325
+fix 	aves	all	ave/time	50 20000  1000000  	c_thermo_temp c_thermo_press[1] c_thermo_press[2] c_thermo_press[3] v_TotEng v_IFT   file ave.lammps
+
+## Compute local pressure tensor and density profiles (output in CO2.hist.lammps)
+compute 	p 	all	stress/atom NULL
+compute 	bins  	all	chunk/atom bin/1d z lower 1.0
+fix	histo1  CO2	ave/chunk	50 100000 5000000	bins density/mass c_p[1] c_p[2] c_p[3] file CO2.hist.lammps               ave one
+#---------------------------------------------------------------------------------#
+#--------------------------------- Writting info ---------------------------------#
+#---------------------------------------------------------------------------------#
+thermo 5000			# Print TD output every 1000 time steps (instantaneous values)
+thermo_style 	custom	step cpu temp etotal pxx pyy pzz	# print this instantaneous ppts
+
+dump 	1	all	xyz	100000	lammpstrj.xyz 	# print the xyz coords into lammpstrj.xyz
+restart		2000000	rst			      	# create a restart file every 2e6 timesteps
+#---------------------------------------------------------------------------------#
+#--------------------------------- Simulation info -------------------------------#
+#---------------------------------------------------------------------------------#
+timestep 	3			# 3 fs time step
+neighbor	5.611 	bin		# Neighboring distance = Cutoff + 5.611A
+
+fix 	1 	all 	nvt 	temp 	1000.00 1000.00 1000	# High Temperature NVT-NH time evolution (Ti,Tf,constant)
+  run		3000000
+unfix	1
+fix 	1 	all 	nvt 	temp 	240.00 240.00 1000	# NVT-NH time evolution (Ti,Tf,constant)
+  run		17000000		# run that many time steps
+unfix	1
+
+write_data	data.out.lammps		# write a data file with the final configuration
+write_restart	rst.out.lammps		# write a restart file with the final configuration

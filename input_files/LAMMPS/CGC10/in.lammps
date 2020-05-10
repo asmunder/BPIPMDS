@@ -1,0 +1,61 @@
+#---------------------------------------------------------------------------------#
+#------------------------------ Type of simulation -------------------------------#
+#---------------------------------------------------------------------------------#
+units		real			# units A, fs, kcal/mol, K, atm
+boundary	p p p			# periodic in x, y, z directions
+dimension	3			# 3-D simulation
+atom_style	full			# set of interacting molecules
+#---------------------------------------------------------------------------------#
+#----------------------------- System & Force field ------------------------------#
+#---------------------------------------------------------------------------------#
+read_data	data.lammps		# read the data file
+
+group		C10	type	1	# name type 1 atoms with the C10 label
+
+pair_style 	mie/cut	27.774		# type of pair interactions and cutoff
+bond_style	harmonic		# type of bond
+special_bonds 	lj  0.0 1.0 1.0		# Exclude pair interactions in bonded atoms
+
+# nm potential    i  j          eps(Kcal/mol)   sigma(A)  Lrep    Latt
+  pair_coeff      1  1          0.825		4.629	  19.61   6.00  # Decane parameters
+
+# harm. bond 	  i	K 	re	
+  bond_coeff	  1	7.583 	4.629	# Decane-Decane bead bond 
+
+minimize 1.0e-5 1.0e-7 1000 10000	# energy minimize the system to relax it 
+reset_timestep	0			# reset the timestep to 0
+#---------------------------------------------------------------------------------#
+#-------------------------------- Property Calculation ---------------------------#
+#---------------------------------------------------------------------------------#
+## Block averages of temperature, total energy, global pressure tensor and IFT (output in ave.lammps)
+variable	TotEng  equal		etotal
+variable	IFT     equal 		(-((zhi-zlo)/2.0)*(((pxx+pyy)/2.0)-pzz))*0.0101325
+fix 	aves	all	ave/time	50 20000 1000000  	c_thermo_temp c_thermo_press[1] c_thermo_press[2] c_thermo_press[3] v_TotEng v_IFT   file ave.lammps
+
+## Compute local pressure tensor (Pz.lammps) and density profiles (1 *.hist.lammps file per species)
+compute 	p 	all	stress/atom NULL
+compute 	bins  	all	chunk/atom bin/1d z lower 1.0
+fix	histo1	all	ave/chunk	10 500000 5000000	bins density/mass c_p[1] c_p[2] c_p[3] file Pz.lammps                     ave one
+#---------------------------------------------------------------------------------#
+#--------------------------------- Writting info ---------------------------------#
+#---------------------------------------------------------------------------------#
+thermo 5000			# Print TD output every 1000 time steps (instantaneous values)
+thermo_style 	custom	step cpu temp etotal pxx pyy pzz	# print this instantaneous ppts
+
+dump 	1	all	xyz	100000	lammpstrj.xyz 	# print the xyz coords into lammpstrj.xyz
+restart		2000000	rst			      	# create a restart file every 2e6 timesteps
+#---------------------------------------------------------------------------------#
+#--------------------------------- Simulation info -------------------------------#
+#---------------------------------------------------------------------------------#
+timestep 	3			# 3 fs time step
+neighbor	6.9435 	bin		# Neighboring distance = Cutoff + 6.9435 A
+
+fix 	1 	all 	nvt 	temp 	1000.00 1000.00 1000	# High Temperature NVT-NH time evolution (Ti,Tf,constant)
+  run		5000000			# run that many time steps
+unfix	1
+fix 	1 	all 	nvt 	temp 	500.00 500.00 1000	# NVT-NH time evolution (Ti,Tf,constant)
+  run		15000000		# run that many time steps
+unifx	1
+
+write_data	data.out.lammps		# write a data file with the final configuration
+write_restart	rst.out.lammps		# write a restart file with the final configuration

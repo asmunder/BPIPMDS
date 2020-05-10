@@ -1,0 +1,64 @@
+MD simulation of CO2+C10H22 using Mie potential (BPMS)
+
+# ============================================================== #
+# Quench conditions
+
+# temperature            1000.00
+# simulation length and equilibration for Quench conditions
+
+# steps                   100000
+# equilibration           100000
+
+# ============================================================== #
+
+# MD conditions
+
+temperature      344.15
+
+# ensemble options
+
+ensemble nvt hoover     1.0
+
+# simulation length and equilibration
+
+steps               75000000
+equilibration       25000000
+scale                  10
+timestep            0.0030
+multiple step         1
+
+# specify cutoffs
+
+cutoff           28.00
+delr             7.000
+
+# statistics controls
+
+stack               100
+stats               1000
+
+
+# printer controller
+
+
+print                5000
+
+# forces options
+no electrostatics
+cap forces 1000
+
+
+# rdf & zden options
+rdf collection every  100
+print rdf
+
+#density profile along z direction
+zden 
+          
+
+# job time and close time
+
+job time              258000.00
+close time             1200.00
+
+finish

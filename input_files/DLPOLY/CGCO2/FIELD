@@ -1,0 +1,11 @@
+CO2 Mie (BPMS)
+UNITS kJ
+molecules   1
+CO2
+nummols 3500
+atoms 1
+CGC       44.0100000  0.00000000   1
+finish
+vdw  1
+CGC     CGC       nm    2.9371520  23.0000   6.66000     4.03579
+close

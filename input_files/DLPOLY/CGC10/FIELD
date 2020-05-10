@@ -1,0 +1,14 @@
+C10H22 Mie (BPMS)
+UNITS kJ
+molecules   1
+C10H22
+nummols 1667
+atoms 3
+DCG       142.281700  0.00000000   3
+constraints 2
+1     2   4.62900
+2     3   4.62900
+finish
+vdw  1
+DCG     DCG       nm    3.4468232  19.6100   6.00000     5.0498387
+close
