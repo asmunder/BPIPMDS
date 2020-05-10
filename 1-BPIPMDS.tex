@@ -43,14 +43,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE SETUP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Best Practices for Computing Interfacial Properties from Molecular Dynamics Simulations [Article v\versionnumber]}
+\title{Best Practices for Computing Interfacial Properties from Molecular Simulations [Article v\versionnumber]}
 
 \author[1*]{Erich A. M\"{u}ller}
 \author[2*]{\AA{}smund Ervik}
 \author[3*]{Andres Mej\'{i}a}
-\affil[1]{Imperial College London, London SW7 2AZ, United Kingdom}
-\affil[2]{SINTEF Energy Research, NO-7465 Trondheim, Norway}
-\affil[3]{Departamento de Ingenier\'{i}a Qu\'{i}mica, Universidad de Concepci\'{o}n, Concepci\'{o}n 4089100, Chile}
+\affil[1]{Department of Chemical Engineering, Imperial College London, United Kingdom}
+\affil[2]{Department of Gas Technology, SINTEF Energy Research, Trondheim, Norway}
+\affil[3]{Departamento de Ingenier\'{i}a Qu\'{i}mica, Universidad de Concepci\'{o}n, Chile}
 
 \corr{e.muller@imperial.ac.uk}{EAM}  % Correspondence emails.
 \corr{asmund.ervik@sintef.no}{\AA{}E}
@@ -88,20 +88,20 @@
 Molecular simulation is ideally suited to explore and describe the behavior of
 inhomogeneous fluid mixtures as it allows a unique perspective into the physics
 at the scale relevant to interfacial properties, filling the gaps between
-experimental determinations and theoretical predictions. Although simulations
-are carried out by using rather common Molecular Dynamics and Monte Carlo
-schemes, the technical implementation and the post-processing of the results
+experimental determinations and theoretical predictions. Although
+rather common Molecular Dynamics and Monte Carlo
+schemes are employed, the technical implementation and the post-processing of the results
 are more challenging than for homogeneous fluids due to the spatial dependence
-of the interfacial properties. This work is devoted to recommend the best
+of the interfacial properties. This work is devoted to recommending the best
 practices for molecular computing of the most important interfacial properties
 of pure fluids and fluid mixtures, \textit{i.e}., interfacial concentration of
 species, the interfacial thickness, the surface activity or adsorption of
 species, superficial enthalpy and entropy, wetting between phases and the
-interfacial or surface tension. In this work, a detailed description is given
+interfacial or surface tension. Herein, a detailed description is given
 of the steps required to perform classical molecular simulations including
-initial configuration, cell dimension, thermodynamic conditions, technical
-definition of simulations, selection of force field, simulation length, etc.
-and a discussion of the required post-processing of the information in order to
+setting up of the initial configuration, choice of cell dimensions, thermodynamic conditions
+and ensemble, selection of the force field, simulation length, etc.
+and a discussion of the required post-processing steps in order to
 obtain interfacial properties. Additionally, general background and description
 of the expected results of interfacial fluid properties are provided.   
 \end{abstract}
@@ -129,8 +129,8 @@ whereas others must be inferred from direct measurements, albeit
 usually with a high level of accuracy. 
 
 Molecular theories for interfacial properties are well developed, usually based
-on classical density functional theory \citep{evans1992}, including the van der Waals square gradient
-theory \citep{davis1982}.
+on classical density functional theory \citep{evans1992,rowlinson1982}, including the van der Waals square gradient
+theory \citep{davis1982,rowlinson1982}.
 These theories have been shown to provide accurate results for both simple and
 complex mixtures, but inevitably need extraneous information regarding
 interfacial properties to be effectively used as correlation tools.
@@ -140,10 +140,10 @@ physical phenomena at the fluid interfaces. In these scenarios, while the
 perturbations caused by the fluid heterogeneities typically extend for several
 nanometers, rarely do the correlations in the neighbouring bulk phase fluid
 span distances larger than 50 nm. These are the system sizes which we are
-comfortable simulating with commonly available modern computer power (and
+comfortable simulating with commonly available modern computers (and
 clearly this will only improve with time). This accessibility of the size and
-length scales pertinent to fluid interfaces has spawned a surge in studies in
-the recent past decades on the computational aspects of the interfacial
+length scales pertinent to fluid interfaces has spawned in the recent past decades a surge in studies
+on the computational aspects of the interfacial
 tensions of pure fluids and mixtures, including the effects of third players
 (surfactants, nanoparticles, etc.) 
 
@@ -154,7 +154,7 @@ These are not equilibrium conditions, but rather situations where the
 properties of the interfacial region are continually evolving, typically due to
 the slow mass transfer to/from the interfacial region of a third component,
 \textit{e.g}., a surfactant. We will not be covering these aspects in this
-manuscript. See for example \citet{dukhin1995}.},\citep{rowlinson1982}, hence it amenable to be computed on
+manuscript. See for example \citet{dukhin1995}.}, \citep{rowlinson1982}, hence it is amenable to be computed on
 the basis of an ensemble average of appropriate configurations. Both Molecular
 Dynamics (MD) \citep{allen2017} and Monte Carlo (MC) \citep{frenkel2002} methods can be employed
 with equal success to generate these configurations and this review makes
@@ -169,7 +169,7 @@ environment which is commensurate with the dimension of the interfacial region
 of fluids (${\simeq}$ 10 to 100 \AA{}). The interfacial regions are
 characterized by sharp changes in densities and compositions, and these have to
 be considered explicitly, hence the overall system sizes, in terms of number of
-particles, can easily reach \textit{O}(10$^{5}$), which is considerably more
+particles, can easily reach $O$(10$^{5}$), which is considerably more
 than what is typical in single phase studies. Notwithstanding, the increasing
 power of computers and the improvement in speed of the available MS packages
 mean that evermore, this region of matter can be studied with increased
@@ -185,13 +185,13 @@ set-up, running and data analysis. In this work, we are focused on MS for
 computing interfacial properties of pure fluids and fluid mixtures in
 vapor-liquid and liquid-liquid equilibrium. 
 
-In addition to the recommendations, highlights and other issues concerning the
-prediction of interfacial properties are described in this document; we
-recommend the following textbooks and selected review and regular articles in
-this field. 
-
 \section{Prerequisites}
 \subsection{Recommended Reading}
+In addition to the recommendations, highlights and other issues concerning the
+prediction of interfacial properties are described in this document; we
+recommend the following textbooks and selected reviews and regular articles in
+this field. 
+
 \begin{itemize}
   \item Allen and Tildesley, \textit{Computer simulation of liquids}, 2$^{\mathrm{ed}}$. pages 84\textendash{}89 and Chap. 14. \citep{allen2017}
 
@@ -208,8 +208,8 @@ This book lucidly presents the principal elements of the statistical mechanics i
 \item Holcomb et al. \textit{A critical study of the simulation of the liquid-vapour
 interface of a Lennard-Jones fluid.} \citep{holcomb1993}
 
-  This article is one of
-  the seminal papers where the implementation and use of Kirkwood pressure
+  This is a 
+  seminal paper where the implementation and use of Kirkwood pressure
   tensor to calculate interfacial tension is described. Still relevant today,
   this work summarizes some important issues concerning to the impact of the
   initial condition on the results from Kirkwood pressure tensor.
@@ -220,7 +220,7 @@ interface of a Lennard-Jones fluid.} \citep{holcomb1993}
 
 \item Zhang et al., \textit{Computer simulation of liquid/liquid interfaces. I. Theory and application to octane/water.} \citep{zhang1995}
 
-  This work enumerates and comments on the several types of molecular ensembles available to carry our MS of interfacial tensions.
+  This work enumerates and comments on the several types of molecular ensembles available to carry out MS of interfacial tensions.
 
 \item Additionally, references \citep{walton1983,chapela1977,trokhymchuk1999,mecke1997,mecke1999,duque2004,errington2007,stephan2019} are a few
   selected articles where the calculation of interfacial density (or
@@ -230,50 +230,24 @@ interface of a Lennard-Jones fluid.} \citep{holcomb1993}
 \end{itemize}
 
 \subsection{Software}
-
-In order to carry out molecular simulations of inhomogeneous fluids, there is
-a spectrum of molecular simulation packages to choose from, ranging from commercial and academic
+There is
+a spectrum of molecular simulation packages to choose from
+in order to carry out molecular simulations of inhomogeneous fluids,
+ranging from commercial and academic
 versions to homemade codes. Most of them have a built-in subroutine to
 calculate the density or concentration along the interfacial region but rarely
 is there built-in provision to calculate interfacial/surface tension. This
-interfacial property should be calculated by modifying the original code or to
-computing it in a post-processing step as we will describe later. Table
-1 summarizes some examples of the molecular simulation packages frequently
+interfacial property should be calculated by modifying the original code or
+computed in a post-processing step as will be described later. Table
+\ref{tab:1} summarizes some examples of the molecular simulation packages frequently
 employed in academia for describing interfacial properties of fluids. In
 general terms, MD software is available in parallelized versions, capable of
 running on multiple CPUs (and/or multiple GPUs) whereas MC software is normally
 only available in serial versions. The corresponding websites of these
-simulation packages include the user manual, some examples of the input
+simulation packages typically include the user manual, some examples of the input
 files and output files as well as some benchmarks. The reader is redirected to
 Ref. \citep{wiki} for a general classification of MS software. 
 
-\begin{table}
-  \caption{Summary of selected software to perform molecular simulations
-of inhomogeneous fluids. Checks and crosses indicates the availability and
-unavailability of provisions to output the density profile ${\rho}(z)$,
-interfacial tension $\gamma$, the ensemble average of the pressure tensor
-${\langle}$\textit{P}$_{kk}$${\rangle}$ and/or the ensemble average of the
-pressure tensor in each slab along the \textit{z} coordinate
-${\langle}$\textit{P}$_{kk}$ (\textit{z})${\rangle}$.}
-\begin{tabularx}{\textwidth}{
-p{\dimexpr 0.23\linewidth-2\tabcolsep}
-p{\dimexpr 0.16\linewidth-2\tabcolsep}
-p{\dimexpr 0.11\linewidth-2\tabcolsep}
-p{\dimexpr 0.11\linewidth-2\tabcolsep}
-p{\dimexpr 0.12\linewidth-2\tabcolsep}
-p{\dimexpr 0.12\linewidth-2\tabcolsep}
-p{\dimexpr 0.15\linewidth-2\tabcolsep}}
-\centering\arraybackslash{}Software & \centering\arraybackslash{}Language & \centering\arraybackslash{}MS & \centering\arraybackslash{}${\rho}$ (z) & \centering\arraybackslash{}${\gamma}$ & \centering\arraybackslash{}${\langle}$P$_{\mathrm{ii}}$${\rangle}$ & \centering\arraybackslash{}${\langle}$P$_{\mathrm{ii}}$(z)${\rangle}$ \\
-\midrule
-\href{https://www.scd.stfc.ac.uk/Pages/DL_POLY.aspx}{DL\_POLY}  & Fortran & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
-\href{http://www.gromacs.org}{GROMACS}   & C++ & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
-\href{http://glotzerlab.engin.umich.edu/hoomd-blue/}{HOOMD}     & C++ & MD & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
-\href{https://lammps.sandia.gov}{LAMMPS}    & C & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} \\
-\href{http://www.ks.uiuc.edu/Research/namd/}{NAMD}      & C++ & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
-\href{http://pagesperso.lcp.u-psud.fr/rousseau/gibbs.html}{Gibbs}\footnotemark     & Fortran & MC & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} \\
-\end{tabularx}
-\end{table}
-\footnotetext{The Gibbs program is commercially available as part of the Materials Design software suite \url{https://www.materialsdesign.com}}
 
 The selection of a simulation package is to some extent a personal decision,
 influenced by the general environment (\textit{i.e.}, available support ) and
@@ -290,19 +264,48 @@ software, MS typically uses extra programs for three purposes: to setup initial 
 (\textit{i.e}., molecular editor), to plot resulting tabular data like such as 
 time evolution of temperature and pressure, and to visualize 
 spatial configurations and their temporal evolution. Some selected examples are
-the Avogadro\citep{avogadro}, xmgrace\citep{xmgrace},
-VMD\citep{VMD}, Ovito\citep{ovito}, and PyMOL\citep{pymol} softwares.
+the Avogadro \citep{avogadro}, xmgrace \citep{xmgrace},
+VMD \citep{VMD}, Ovito \citep{ovito}, and PyMOL \citep{pymol} softwares.
 Avogadro is a molecular editor and visualizer which can
 be used to build initial configurations or to read molecular configurations in
-several style, including the NIST webbook\citep{lemmon2013}. xmgrace is a 2D graphic software with high capability to
+a myriad of styles, including the NIST webbook \citep{lemmon2013}. xmgrace is a 2D graphic software with high capability to
 easily read, manipulate data, compute preliminary results and plot the output
 files from MS. VMD, Ovito and PyMol are 3D visualization programs useful to
-obtain snapshots of spatial configurations and to visualize their temporal
+produce snapshots of spatial configurations and to visualize their temporal
 evolution. VMD, Ovito and PyMol can read numerous different file formats which
 making them very versatile. They also include some plugins to
 carry out some simpler calculations, such as computing and plotting density profiles. VMD and Ovito
 are free of charge software, whereas PyMol is a commercial software and
 requires an annual fee.
+
+\begin{table}[hb]
+  \caption{Summary of selected software to perform molecular simulations
+    of inhomogeneous fluids. Checks (crosses) indicate the availability
+    (unavailability) of provisions to output the density profile ${\rho}(z)$,
+interfacial tension $\gamma$, the ensemble average of the pressure tensor
+${\langle}P_{kk}{\rangle}$ and/or the ensemble average of the
+pressure tensor in each slab along the $z$ coordinate
+${\langle}P_{kk}$ ($z$)${\rangle}$.}
+\label{tab:1}
+\begin{tabularx}{\textwidth}{
+p{\dimexpr 0.23\linewidth-2\tabcolsep}
+p{\dimexpr 0.22\linewidth-2\tabcolsep}
+p{\dimexpr 0.08\linewidth-2\tabcolsep}
+p{\dimexpr 0.13\linewidth-2\tabcolsep}
+p{\dimexpr 0.08\linewidth-2\tabcolsep}
+p{\dimexpr 0.10\linewidth-2\tabcolsep}
+p{\dimexpr 0.14\linewidth-2\tabcolsep}}
+\centering\arraybackslash{}Software & \centering\arraybackslash{}Language & \centering\arraybackslash{}MS & \centering\arraybackslash{}${\rho}$ (z) & \centering\arraybackslash{}${\gamma}$ & \centering\arraybackslash{}${\langle}$P$_{\mathrm{ii}}{\rangle}$ & \centering\arraybackslash{}${\langle}$P$_{\mathrm{ii}}$(z)${\rangle}$ \\
+\midrule
+\href{https://www.scd.stfc.ac.uk/Pages/DL_POLY.aspx}{DL\_POLY}  & Fortran & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
+\href{http://www.gromacs.org}{GROMACS}   & C++ & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
+\href{http://glotzerlab.engin.umich.edu/hoomd-blue/}{HOOMD}     & C++ & MD & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
+\href{https://lammps.sandia.gov}{LAMMPS}    & C & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} \\
+\href{http://www.ks.uiuc.edu/Research/namd/}{NAMD}      & C++ & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
+\href{http://pagesperso.lcp.u-psud.fr/rousseau/gibbs.html}{Gibbs}\footnotemark     & Fortran & MC & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} \\
+\end{tabularx}
+\end{table}
+\footnotetext{The Gibbs program is commercially available as part of the Materials Design software suite \url{https://www.materialsdesign.com}}
 
 This Best Practices Guide discusses the background and details of molecular simulation for computing interfacial properties over the next eight sections. A checklist for performing simulations is given in Sec. \ref{checklist}.
 
@@ -313,35 +316,35 @@ This Best Practices Guide discusses the background and details of molecular simu
 The properties in the interfacial region are characterized by their spatial
 dependence. In molecular simulations, the interfacial region is generally
 described as a function of a unidimensional coordinate. For the case of planar
-interfaces, the selected coordinate is \textit{z} which is perpendicular to the
-interfacial area, here \textit{xy}. For the case of spherical interfaces, such
+interfaces, the selected coordinate is $z$ which is perpendicular to the
+interfacial area, here $xy$. For the case of spherical interfaces, such
 as drops or bubbles, the interfacial region is generally described as
 a function of a radius.
 
 In this section, we enumerate the most common interfacial properties and the
-expressions to compute them in planar interfaces. For a complete description of
+expressions for the planar interfaces case. For a complete description of
 these expressions, the reader is redirected to Refs. \citep{allen2017,gray2011}.
 
 \subsection{Density Profiles}
 
-Fig. \ref{fig:1} illustrates a typical density profile, ${\rho}$ (\textit{z}), in the
-\textit{z} direction ( perpendicular to the interface plane) for a pure fluid
-in a state of vapor-liquid equilibrium. A characteristic of the state is the
+Fig. \ref{fig:1} illustrates a typical density profile, ${\rho}$ ($z$), in the
+$z$ direction (perpendicular to the interface plane) for a pure fluid
+in a state of vapor-liquid equilibrium. A characteristic feature is the
 constant density in the bulk regions of the liquid (L) and vapor (V)
-(\textit{i.e}., ${\rho}$ = ${\rho}$$^{\mathrm{L}}$ or ${\rho}$$^{\mathrm{V}}$),
-and  sharp, but continuous, changes along the interfacial zone. 
+(\textit{i.e}., ${\rho}$ = ${\rho}^{\mathrm{L}}$ or ${\rho}^{\mathrm{V}}$),
+and  sharp, but continuous, changes along the interfacial regions. 
 
 \begin{figure}
 	\centering
   \includegraphics[width=0.4\textwidth]{gfx/image1.png}
-  \caption{Density profile, ${\rho}$ (black line) against the position coordinate perpendicular to the interface (\textit{z}) for a pure liquid CO$_{2}$ in equilibrium with its vapor at 240 K. Overlaid is a snapshot of the detail of a simulation of a liquid-vapor interface.}
+  \caption{Density profile, ${\rho}$ (black line) against the position coordinate perpendicular to the interface ($z$) for a pure liquid CO$_{2}$ in equilibrium with its vapor at 240 K. Overlaid is a snapshot of the detail of a simulation of a liquid-vapor interface.}
   \label{fig:1}
 \end{figure}
 
 For the case of mixtures, the interfacial concentration of each component can
-be exhibit different patterns than that shown in figure 1, where a simple
+exhibit different patterns than those shown in Fig. \ref{fig:1}, where a simple
 monotonous drift is seen in the concentration profile from a higher to a lower
-density. The other two possible cases are schematically shown in Figs.
+density. Two other possible cases are schematically shown in Figs.
 \ref{fig:2} (a) and (b). Fig. \ref{fig:2} (c) illustrates a typical example of a binary mixture
 (\textit{e.g}., CO$_{2}$ + C$_{10}$H$_{22}$ at 344.15 K) where the fluid with
 lower interfacial tension shows adsorption (\textit{e.g}., CO$_{2}$)
@@ -350,13 +353,13 @@ In Fig. \ref{fig:2} (a) and (b), the concentration profile displays a stationary
 which is a maximum (point A) or a minimum (point D) of the concentration with
 respect to position. Both points reflect what is referred to as \textit{surface
 activity}. In general terms, surface activity refers to the accumulation (may
-it be positive or negative) of a species \textit{i} at the interface region and
-is characterized by the condition, d${\rho}$$_{\mathrm{i}}$/dz = 0. The
+it be positive or negative) of a species $i$ at the interface region and
+is characterized by the condition, d${\rho}_{\mathrm{i}}$/dz = 0. The
 positive surface activity reflects absolute adsorption of species along the
 interface region and is reflected in a negative second derivative,
-d$^{2}$${\rho}$$_{\mathrm{i}}$/dz$^{2}$ {\textless} 0. Conversely, the negative
+d$^{2}{\rho}_{\mathrm{i}}$/dz$^{2}$ {\textless} 0. Conversely, the negative
 surface activity denotes depletion of a species along the interface region, and
-its condition is given by d$^{2}$${\rho}$$_{\mathrm{i}}$ /dz$^{2}$
+its condition is given by d$^{2}{\rho}_{\mathrm{i}}$ /dz$^{2}$
 {\textgreater} 0. As can be appreciated, a finite surface activity implies that
 the species reach higher (adsorption) or lower (desorption) concentrations than
 those seen in the bulk phases. This behavior will be described latter by using
@@ -364,8 +367,8 @@ the traditional Gibbs adsorption. Additionally, Fig. \ref{fig:2} (c) shows the
 concentration profiles for the case of the CO$_{2}$ + C$_{10}$H$_{22}$ mixture.
 In this case, the CO$_{2}$ exhibits adsorption, where the interfacial
 concentration of CO$_{2}$ is higher in the interfacial zone than bulk
-concentration. This behavior is common in mixtures where the adsorbed fluid
-exhibits the lower interfacial tension.     
+concentration. This behavior is common in mixtures for the component that 
+exhibits the lower interfacial tension.
 
 \begin{figure}
 	\centering
@@ -382,43 +385,39 @@ exhibits the lower interfacial tension.
     \includegraphics[width=1\textwidth]{gfx/image4.png}
 		\caption{CO$_{2}$ + C$_{10}$H$_{22}$ mixture} % subcaption
 	\end{subfigure}
-	\caption{Concentration profiles in mixtures. (a) Schematic representation of positive surface activity (adsorption); (b) Schematic representation negative surface activity (desorption); (c) CO$_{2}$ + C$_{10}$H$_{22}$ mixture} % caption for whole figure
+  \caption{Concentration profiles in mixtures. (a) Schematic representation of positive surface activity (adsorption); (b) Schematic representation negative surface activity (desorption); (c) Density profile for the CO$_{2}$ + C$_{10}$H$_{22}$ mixture at 344.15 K and 2.39 MPa (cf. Example 2).} % caption for whole figure
   \label{fig:2}
 \end{figure}
 
-
 \subsection{Interfacial Tensions}
-
 The interfacial (or surface) tension, $\gamma$, is arguably the best known and
-most widely studied of the interfacial properties. Strictly speaking, surface
-tension refers to the fluid-air interface, while interfacial tension is between
-a fluid and its vapor. However, both terms are indistinctly used in the
-literature. In MS, the interfacial (or surface) tension of pure fluids and
+most widely studied of the interfacial properties. Strictly speaking, the term
+interfacial tension applies in any situation where two regions in space with
+different composition and/or state are separated by a clearly defined interface
+(\textit{e.g.} solid/fluid, solid/solid, fluid/fluid). Many authors let
+interfacial tension refer specifically to liquid-liquid
+interfaces, and let surface tension refer to gas-liquid interfaces that may be 
+a liquid in contact with its own vapor phase, or with a general gas such as air.
+In the context of this manuscript, the methods and discussion are more general,
+and so we do not make this distinction but use the terms interchangeably.
+
+In MS, the interfacial (or surface) tension of pure fluids and
 fluid mixtures can be typically calculated from two different approaches,
 namely a) the mechanical or pressure approach and b) the thermodynamic or
-perturbation approach. A third and final class of methods is based on the
-concepts of finite-size scaling within the grand canonical ensemble 
-\citep{binder1982,errington2003}. Essentially, umbrella
-sampling is used to fully sample the relevant range of values for the number of
-particles N present in the grand canonical system, thus providing a free-energy
-density profile (which is directly related to the density profile) from where
-the interfacial density may be derived. The method is particularly suitable for
-the critical region where other methods are cumbersome to apply, but its
-implementation \cite{allen2017,schrader2009} will not be discussed
-herein.
+perturbation approach.
 
 For an inhomogeneous fluid, the pressure is a second-order tensor \textbf{P},
-where each component \textit{P}$_{ij}$ gives the force per unit area in the
-\textit{j}-direction on a surface pointing in the \textit{i}-direction. The
-axial symmetry about the \textit{z}-axis (normal to the interface) and
-translational symmetry in the \textit{xy}-plane imply that all the off-diagonal
+where each component $P_{ij}$ gives the force per unit area in the
+$j$-direction on a surface pointing in the $i$-direction. The
+axial symmetry about the $z$-axis (normal to the interface) and
+translational symmetry in the $xy$-plane imply that all the off-diagonal
 components are zero, thus there are only two independent, non-zero components:
-\textit{P}\textit{\raisebox{-1pt}{xx}} = \textit{P}\textit{\raisebox{-1pt}{yy}}
-= \textit{P}$_{T}$, the tangential pressure (which changes along the
-interfacial region in the \textit{z} direction); and the normal, or bulk
-pressure \textit{P}$_{N}$ = \textit{P}$_{zz}$ = \textit{P} [10]. In the
-pressure approach, the interfacial tension, $\gamma$\textit{,} is given by the
-Hulshof integral\citep{hulshof1901}, which
+$P_{xx} = P_{yy} = P_T$, the tangential pressure (which changes along the
+interfacial region in the $z$ direction); and the normal, or bulk
+pressure $P_{N} = P_{zz} = P$ which remains constant
+throughout the system, guaranteeing mechanical equilibrium. In the
+pressure approach, the interfacial (or surface) tension, $\gamma$, is given by the
+Hulshof integral \citep{hulshof1901}, which
 is based on evaluating the inhomogeneity of the pressure tensor:
 
 \begin{equation}
@@ -427,7 +426,7 @@ is based on evaluating the inhomogeneity of the pressure tensor:
 \end{equation}
 
 An alternative, but equally rigorous approach, recognizes that the interfacial
-tension may be expressed statistically as the difference in free energy for
+(or surface) tension may be expressed statistically as the difference in free energy for
 systems in closely related macrostates with different interfacial areas. In
 this so-called thermodynamic approach, $\gamma$ is calculated from the
 following expression \citep{gray2011,gloor2005,errington2007}:
@@ -437,13 +436,13 @@ following expression \citep{gray2011,gloor2005,errington2007}:
 \label{eq:2}
 \end{equation}
 
-Where \textit{F} is the Helmholtz free energy of the system\footnote{
-Most commonly in the literature the Helmholtz free energy is symbolized by the
-letter "\textit{A}". However, in the context of this manuscript this would lead
-to a confusion between this quantity and the area, which we label herein as
-"\textit{A}".}.  The derivative is calculated by performing an (almost)
-infinitesimal perturbation in the interfacial area at canonical conditions
-(keeping the compositions, volume \textit{V} and temperature \textit{T} of the
+Where $F$ is the Helmholtz free energy of the system\footnote{
+Most commonly in the engineering literature the Helmholtz free energy is symbolized by the
+letter "$A$". However, in the context of this manuscript this would lead
+to a confusion between this quantity and the surface area, which we label herein as
+"$A$".}.  The derivative is calculated by performing an (almost)
+infinitesimal perturbation in the interfacial area $A$ at canonical conditions
+(keeping the compositions, volume $V$ and temperature $T$ of the
 system constant). The details of the implementation of these methods is the
 subject of section 5.
 
@@ -458,78 +457,89 @@ case of azeotropic [(${\partial}$P/${\partial}$x$_{\mathrm{i}}$) = 0 or
 {${\gamma}$} exhibits a stationary point [(${\partial}${${\gamma}$}
 /${\partial}$x$_{\mathrm{i}}$) = 0; (${\partial}${${\gamma}$}/${\partial}$P)
 = 0; (${\partial}${${\gamma}$}/${\partial}$T) = 0]. These stationary points
-reflect a change of the surface activity of species \textit{i}. These are
+reflect a change of the surface activity of species $i$. These are
 infrequently encountered systems and conditions, normally associated with
 certain pathological types of liquid-liquid equilibria, where {${\gamma}$} shows a parabolic
 behaviour with temperature or pressure.
 \begin{figure}
   \centering
   \includegraphics[width=0.4\textwidth]{gfx/image7.png}
-  \caption{Schematic examples of the behaviour of the interfacial tension ({${\gamma}$}) with temperature (\textit{T}), pressure (\textit{P}) or mole fraction (\textit{x}) in either vapor-liquid, or liquid-liquid equilibria. \textit{An} refers to aneotropic points, \textit{Az} refers to azeotropic points.}
+  \caption{Schematic examples of the possible behaviour of the interfacial (or surface) tension ({${\gamma}$}) with temperature ($T$), pressure ($P$) or mole fraction ($x$) in either vapor-liquid, or liquid-liquid equilibria. $An$ refers to aneotropic points, $Az$ refers to azeotropic points.}
   \label{fig:3}
 \end{figure}
+
+A third class of methods is based on the
+concepts of finite-size scaling within the grand canonical ensemble 
+\citep{binder1982,errington2003}. Essentially, umbrella
+sampling is used to fully sample the relevant range of values for the number of
+particles $N$ present in the grand canonical system, thus providing a free-energy
+density profile (which is directly related to the density profile) from where
+the interfacial density may be derived. The method is particularly suitable in the vicinity of
+the critical region where other methods are cumbersome to apply, but its
+implementation \cite{allen2017,schrader2009} will not be discussed
+herein.
 
 \subsection{Derivative interfacial properties}
 
 The density (or concentration) profiles along the interfacial region,
-${\rho}$$_{i}$ (\textit{z}), and the interfacial (or surface) tension,
+${\rho}_{i}$ ($z$), and the interfacial (or surface) tension,
 {${\gamma}$}, are by far the most reported of the thermophysical properties of
 fluid interfaces. Aside from their own inherent value, these properties provide
 a route to calculate others descriptors of the interface such as the
 interfacial thickness, {${\delta}$}, the relative Gibbs adsorption isotherm,
-${\Gamma}$$_{ij}$, the change of surface entropy
-, ${\Updelta}$\textit{s}$^{{\gamma}}$, and surface enthalpy
-, ${\Updelta}$\textit{h}$^{{\gamma}}$, and the critical temperature of pure
-fluids, \textit{T}$_{c}$, as we describe below. 
+${\Gamma}_{ij}$, the change of surface entropy
+, ${\Updelta}s^{{\gamma}}$, and surface enthalpy
+, ${\Updelta}h^{{\gamma}}$, and the critical temperature of pure
+fluids, $T_{c}$, as we describe below. 
 
-\subsubsection{The density profile and interfacial thickness,} {${\delta}$}
+\subsubsection{The density profile and interfacial thickness}
 
-The interfacial thickness is defined as the width where properties such as
+The interfacial thickness $\delta$ is defined as the width of the region where observable properties such as
 density change with the spatial coordinate. The range of the interfacial
-thickness oscillates between 10 to 200 \AA{} at subcritical conditions and has
+thickness typically oscillates between 10 to 200 \AA{} at subcritical conditions and has
 an exponential increase with temperature. As the system tends to the critical
-state, the width diverges, {${\delta}$} ${\rightarrow}$ ${\infty}$. Clearly, as
+state, the width diverges, {${\delta}$} ${\rightarrow}{\infty}$. Clearly, as
 the continuous nature of the density (composition) variation precludes any
 unique definition of where the bulk region ends and where the interface itself
-dominates, some arbitrary criterion must be invoked. A popular choice is that
-called the 10/90 criteria. Within this definition, {${\delta}$} represents the
-\textit{z} range where the density profile changes from
-${\rho}$$^{\mathrm{{\upalpha}}}$ + 0.1(${\rho}$$^{\mathrm{{\upbeta}}}$
-\textendash{} ${\rho}$$^{\mathrm{{\upalpha}}}$) to
-${\rho}$$^{\mathrm{{\upalpha}}}$ + 0.9 (${\rho}$$^{\mathrm{{\upbeta}}}$
-\textendash{} ${\rho}$$^{\mathrm{{\upalpha}}}$), being
-${\rho}$$^{\mathrm{{\upalpha}}}$ and ${\rho}$$^{\mathrm{{\upbeta}}}$ the bulk
+dominates, some arbitrary criterion must be invoked. A popular choice is the so-called
+10/90 criteria. Within this definition, {${\delta}$} represents the
+$z$ range where the density profile changes from
+${\rho}^{\mathrm{{\upalpha}}} + 0.1({\rho}^{\mathrm{{\upbeta}}}
+- {\rho}^{\mathrm{{\upalpha}}}$) to
+${\rho}^{\mathrm{{\upalpha}}} + 0.9 ({\rho}^{\mathrm{{\upbeta}}}
+- {\rho}^{\mathrm{{\upalpha}}}$), where
+${\rho}^{\mathrm{{\upalpha}}}$ and ${\rho}^{\mathrm{{\upbeta}}}$ are the bulk
 densities in the {${\alpha}$} and {${\beta}$} phases, respectively.
 
-For the case of pure fluid, {${\delta}$} can be calculated by fitting the following expression to the density profile\citep{evans1992}:
+For the case of pure fluid, {${\delta}$} can be calculated by fitting the following expression to the density profile\citep{evans1992,rowlinson1982}:
 \begin{equation}
 \rho\left(z\right)=\frac{1}{2}\left(\rho^{\alpha}+\rho^{\beta}\right)-\frac{1}{2}\left(\rho^{\alpha}-\rho^{\beta}\right)tanh\left[\frac{\theta\left(z-z_{0}\right)}{\delta}\right]
   \label{eq:3}
 \end{equation}
 where $\rho^\alpha$ and $\rho^\beta$ are the densities of the bulk phases with 
-$\rho^\alpha > \rho^\beta$; \textit{z}$_{0}$ is a reference coordinate, which is usually taken as the
-divide position or the position of the Gibbs dividing surface (see next
+$\rho^\alpha > \rho^\beta$; $z_{0}$ is a reference coordinate, which is usually taken as the
+mean interface or the position of the Gibbs dividing surface (see next
 section) and {${\uptheta}$} = 2 tanh$^{-1}$ 0.8 = 2.19722; this latter value
 chosen so that {${\delta}$} can be defined as the 10/90 interfacial thickness.
 
-The \textit{tanh} (or equivalent fitting function such as \textit{erf}) suggest
+The use of the $\tanh$ (or equivalent fitting function such as $\mathrm{erf}$) suggests
 that one could express the adsorption (or depletion) of a species as the
-difference between the actual composition (or density) and that of the bulk
-regions. The relative Gibbs adsorption isotherm of a species \textit{i}
-relative to a species \textit{j} (${\Gamma}$$_{ij}$ ) can be thus defined in
-terms of ${\rho}$$_{i}$ (\textit{z}) by the following integral
-equation\citep{evans1992}:
+difference between the pointwise composition (or density) and that of the bulk
+regions. The relative Gibbs adsorption isotherm of a species $i$
+relative to a species $j$ (${\Gamma}_{ij}$ ) can be thus defined in
+terms of ${\rho}_{i}$ ($z$) by the following integral
+equation \citep{rowlinson1982}:
 \begin{equation}
 \varGamma_{ij}=\int_{-\infty}^{z_{0}^{j}}\left[\rho_{i}\left(z\right)-\rho{}_{i}^{\alpha}\right]dz+\int_{z_{0}^{j}}^{+\infty}\left[\rho_{i}\left(z\right)-\rho{}_{i}^{\beta}\right]dz
  \label{eq:4}
 \end{equation}
 
-In Eq. \ref{eq:4}, z$_{0}$$^{\mathrm{j}}$ is the transition point between the two bulk
+In Eq. \ref{eq:4}, $z_{0}^{\mathrm{j}}$ is the transition point between the two bulk
 phases and corresponds to the position of the Gibbs dividing surface relative
-to a species \textit{j}. z$_{0}$$^{\mathrm{j}}$ is calculated from Eq. \ref{eq:4}
-considering that species \textit{j} does not have adsorption along the
-interfacial region, \textit{i.e}., z$_{0}$$^{\mathrm{j}}$ is solved for the
-case that ${\Gamma}$$_{jj}$ = 0. Mathematically, z$_{0}$$^{\mathrm{j}}$ is
+to a species $j$. $z_{0}^{\mathrm{j}}$ is calculated from Eq. \ref{eq:4}
+considering that species $j$ does not have adsorption along the
+interfacial region, \textit{i.e}., $z_{0}^{\mathrm{j}}$ is solved for the
+case that ${\Gamma}_{jj}$ = 0. Mathematically, $z_{0}^{\mathrm{j}}$ is
 given by the expression:
 \begin{equation}
 z_{o}^{j}=\frac{\int_{-\infty}^{+\infty}\rho_{j}\left(z\right)dz}{\rho_{j}^{\alpha}-\rho_{j}^{\beta}}
@@ -539,23 +549,23 @@ Fig. \ref{fig:4} (a) illustrates this construction, which essentially maps the a
 between the smooth density profile and a hypothetical infinitely steep (and
 thin) interface in such a way that the dividing surface corresponds to the
 average interface. If there is more than one component in the system, the
-Gibbs dividing surface for component \textit{j} does not need to correspond
+Gibbs dividing surface for component $j$ does not need to correspond
 a point of average null adsorption for other components. As seen in Fig. \ref{fig:4} (b),
-another component \textit{i} in the mixture may display adsorption at the
-interface relative to a species \textit{j.}
+another component $i$ in the mixture may display adsorption at the
+interface relative to a species $j.$
 
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gfx/image11.png}
-\caption{(a) Schematic position of the Gibbs dividing surface \textit{z}$^{j}$$_{0 }$calculated by selecting the point of no adsorption, ${\Gamma}$$_{jj}$ = 0, where the areas above and below the density profile cancel out. (b) For other components \textit{i}  in the mixture, this Gibbs dividing surface suggests the adsorption of a species \textit{i,} ${\Gamma}$$_{ij}$ {\textgreater} 0.}
+\caption{(a) Schematic position of the Gibbs dividing surface $z^{j}_{0 }$calculated by selecting the point of no adsorption, ${\Gamma}_{jj}$ = 0, where the areas above and below the density profile cancel out. (b) For other components $i$  in the mixture, this Gibbs dividing surface suggests the adsorption of a species $i,{\Gamma}_{ij}$ {\textgreater} 0.}
 \label{fig:4}
 \end{figure}
 
-\subsubsection{The surface entropy (${\Updelta}$s$^{{\gamma}}$\textit{) and surface enthalpy (${\Updelta}$h}$^{{\gamma}}$\textit{)}}
+\subsubsection{The surface entropy and surface enthalpy}
 
-The entropy (${\Updelta}$\textit{s}$^{{\gamma}}$) and enthalpy
-(${\Updelta}$\textit{h}$^{{\gamma}}$) change of surface formation can be
+The entropy (${\Updelta}s^{{\gamma}}$) and enthalpy
+(${\Updelta}h^{{\gamma}}$) change of surface formation can be
 calculated from the following derivative expressions which are related to
-{${\gamma}$}\citep{evans1992}: 
+{${\gamma}$} \citep{rowlinson1982}: 
 \begin{equation}
   \Delta s^{\gamma} =-\left(\frac{\partial\gamma}{\partial T}\right)_{P,x} \\
   \label{eq:6}
@@ -569,15 +579,15 @@ These quantities cannot be directly measured, but are inferred from surface tens
 \subsubsection{Critical temperature of a pure fluid}
 
 Although not strictly an interfacial property, the value of the critical
-temperature of a pure fluid\textit{, T}$_{c, }$can be conveniently estimated by
+temperature of a pure fluid$, T_{c, }$can be conveniently estimated by
 extrapolating the thermal evolution of the interfacial tension (${\gamma}$
-\textendash{} \textit{T}) and employing the appropriate scaling laws. For the
-case of ${\gamma}$, the follow expression holds\citep{evans1992}
+\textendash{} $T$) and employing scaling laws. For the
+case of ${\gamma}$, the following expression holds \citep{rowlinson1982}
 \begin{equation}
 \gamma=\gamma_{0}\left(1-\frac{T}{T_{c}}\right)^{1.26}
 \label{eq:8}
 \end{equation}
-where ${\gamma}$$_{0}$ and \textit{T}$_{c}$ are treated as unknown constants,
+where ${\gamma}_{0}$ and $T_{c}$ are treated as unknown constants,
 and their values are found by fitting the interfacial tension data with
 temperature.
 
@@ -591,27 +601,27 @@ GEMC simulations), as one must simultaneously track two bulk phases and two
 interfacial regions at the same time. In order to guarantee the simultaneous
 formation of two bulk phases (\textit{e.g}., vapor and liquid or liquid and
 liquid) and the interfacial region, it is customary to use a rectangular
-parallelepiped simulation cell, where one cartesian direction is larger than
+parallelepiped simulation cell, where one Cartesian direction is larger than
 the other two. By employing this geometry, one forces the appearance of slabs
 of liquid and vapor ( or liquid 2 ) sandwiched side by side. The system will
 spontaneously form the interfaces spanning the minimal area, parallel to the
-\textit{xy} plane. The volume of the simulation box, \textit{V}, is given by
-\textit{L}$_{x}$ \textit{L}$_{y}$ \textit{L}$_{z}$, where \textit{L}$_{x}$
-= \textit{L}$_{y}$ and \textit{L}$_{z}$ {\textgreater}{\textgreater}
-\textit{L}$_{x}$. Due to the periodic boundary conditions, each bulk phase is
-bounded by two independent interfaces. The periodic boundary conditions in the
-\textit{xy} directions should allow for the unimpeded simulation. The use of
+$xy$ plane. The volume of the simulation box, $V$, is given by
+$L_{x}L_{y}L_{z}$, where $L_{x}$
+= $L_{y}$ and $L_{z}$ {\textgreater}{\textgreater}
+$L_{x}$. Due to the periodic boundary conditions, each bulk phase is
+bounded by two independent interfaces. The periodic boundary conditions in $xy$ directions
+allow for conditions representative of essentially infinite interfaces. The use of
 small systems and/or cubic geometries risks the formation of bubbles/drops or
 similar bridges between clusters of molecules and their periodic
-images\footnote{In some case, this may actually be the desired outcome.
+images\footnote{In some cases, this may actually be the desired outcome.
 For example in the study of the interfacial tension of drops and bubbles,
-relatively large cubic boxes are employed, where a drop/bubble forms in the
-middle and is far away from its periodic images. See for example \citep{lau2015}}.
+relatively large cubic boxes are employed, where a drop/bubble forms 
+far away from its periodic images. See for example \citep{lau2015}}.
 
 Standard practice is to make the box large (and elongated), as a rule of thumb one can consider
-\textit{L}$_{x}$ = \textit{L}$_{y}$ {\textgreater} 10 times the molecular
-diameter (or bead diameter) and \textit{L}$_{z}$ should be 3 to 10 times
-\textit{L}$_{x}$. These values are chosen with the propose to accommodate
+$L_{x}$ = $L_{y}$ {\textgreater} 10 times the molecular
+diameter (or bead diameter) and $L_{z}$ 3 to 8 times
+$L_{x}$. These values are chosen with the purpose to accommodate
 enough molecules to ensure sensible-sized bulk phases and the corresponding two
 interfacial regions. 
 
@@ -627,26 +637,13 @@ boundary conditions must be unravelled and the interface region is prone to
 have overlaps between the cojoined boxes. There are two practical ways around
 this problem, the volume expansion or the temperature quench methods. 
 
-In the volume expansion ( or volume quench \citep{holcomb1993} ) case,
-an initial ensemble of molecules is placed,  usually in a cubic periodic box,
-in a lattice configuration or randomly distributed within the simulation cell.
-The dimension of the simulation box can be set by specifying the number of
-molecules desired (see below) and the expected liquid density. Once the system
-equilibrates to the required temperature, two empty boxes are included at both
-z-sides, making the final dimension box equal to \textit{L}$_{x}$
-x \textit{L}$_{x}$ x (3 to 8) \textit{L}$_{x}$.  A further equilibration will
-allow some of the liquid molecules to evaporate and fill the void regions until
-the equilibrium vapor pressure is attained. This technique is particularly
-suited for the case of vapor-liquid equilibria of single site molecules
-(spheres) at low temperatures. 
-
-\begin{figure}
+\begin{figure}[h]
 \centering
-	\begin{subfigure}{0.12\textwidth} % width of left subfigure
+	\begin{subfigure}{0.11\textwidth} % width of left subfigure
     \includegraphics[width=\textwidth]{gfx/image16.png}
-		\caption{Initial configuration} % subcaption
+		\caption{Initial $\qquad$ configuration} % subcaption
 	\end{subfigure}
-	\begin{subfigure}{0.28\textwidth} % width of left subfigure
+	\begin{subfigure}{0.31\textwidth} % width of left subfigure
     \includegraphics[width=\textwidth]{gfx/image17.png}
     \caption{Volume quench}
 	\end{subfigure}
@@ -664,19 +661,34 @@ filling the void space until the vapor pressure is attained.}
 \label{fig:5}
 \end{figure}
 
+In the volume expansion ( or volume quench \citep{holcomb1993} ) case,
+an initial ensemble of molecules is placed,  usually in a cubic periodic box,
+in a lattice configuration or randomly distributed within the simulation cell.
+The dimension of the simulation box can be set by specifying the number of
+molecules desired (see below) and the expected liquid density. Once the system
+equilibrates to the required temperature, two empty boxes are included at both
+z-sides, making the final dimension box equal to $L_{x}
+\times L_{x} \times$(3 to 8)$L_{x}$. This procedure is illustrated in Fig. \ref{fig:5}.
+A further equilibration will
+allow some of the liquid molecules to evaporate and fill the void regions until
+the equilibrium vapor pressure is attained. This technique is particularly
+suited for the case of vapor-liquid equilibria of single site molecules
+(spheres) at low temperatures. 
+
+
 \begin{mdframed}[linewidth=0pt,backgroundcolor=LiveCoMSLightBlue!8,fontcolor=LiveCoMSDarkBlue!80!black]
 \textbf{EXAMPLE 1:} \textbf{\textit{Selection of simulation box size and number of particles for a volume expansion.}}
 
 As an example, let us consider the MS for pure CO$_{2}$ at 240 K in the liquid
 state. For this case, CO$_{2}$ will be represented by a single sphere (Mie
-potential) of diameter of {${\upsigma}$} = 3.741 \AA{}\citep{avendano2011}. We take a total of 3200 spheres
+potential) of diameter of {${\upsigma}$} = 3.741 \AA{} \citep{avendano2011}. We take a total of 3200 spheres
 and using the expected liquid density, ${\rho}$ = 24.742 mol/L \citep{lemmon2013}:
 \begin{equation}
-V=\frac{\left(3200\,molecules\right)\left(10^{10}\right)^{3}\left(\frac{\textrm{Å}}{m}\right)^{3}}{24.742\left(\frac{mol}{L}\right)\left(N_{av}\right)\left(\frac{molecules}{mol}\right)\left(1000\right)\left(\frac{L}{m^{3}}\right)}=214735\textrm{Å}^{3}
+  V=\frac{\left(3200\,\textrm{particles}\right)\left(10^{10}\right)^{3}\left(\frac{\textrm{Å}}{m}\right)^{3}}{24.742\left(\frac{mol}{L}\right)\left(N_{av}\right)\left(\frac{\textrm{molecules}}{mol}\right)\left(1000\right)\left(\frac{L}{m^{3}}\right)}=214770\textrm{Å}^{3}
 \end{equation}
-Where N$_{\mathrm{av}}$ = 6.022 . 10$^{23}$ is Avogadro's constant. Using the
+where N$_{\mathrm{av}}$ = 6.022 . 10$^{23}$ is Avogadro's constant. Using the
 value of the expected volume and a cubic cell, its vertex will be
-$L_x = \sqrt[3]{V} = $ 59.883 \AA{}, which is larger than 10 $\sigma$  (37.41
+$L_x = \sqrt[3]{V} = $ 59.886 \AA{}, which is larger than 10 $\sigma$  (37.41
 \AA{}). 
 \end{mdframed}
 
@@ -684,18 +696,17 @@ There are many instances where the volume expansion technique is not practical,
 notably liquid-liquid equilibria, systems with high vapor pressures (where
 a significant portion of the liquid will need to evaporate), mixtures with
 large number of components, etc.  An alternative is to design the simulation
-cell from the onset as a rectangular parallelepiped with \textit{L}$_{x}$
-x \textit{L}$_{x}$ x (3 to 8) \textit{L}$_{x}$. In order to define the
-\textit{L}$_{x}$ dimension, an average \textit{global} density of the fluid is
+cell from the onset as a rectangular parallelepiped with $L_{x} \times L_{x} \times$(3 to 8)$L_{x}$. In order to define the
+$L_{x}$ dimension, an average \textit{global} density of the fluid is
 used. As an example, for the case of liquid-vapor system, the initial density
-average is ${\rho}$ = (${\rho}$$^{\mathrm{V}}$
-+ ${\rho}$$^{\mathrm{L}}$)/2\textit{.} Using this value of density and the
-number of molecules, \textit{M}, it is possible to calculate the total volume,
-\textit{V} (\textit{V} = \textit{M/${\rho}$}) and \textit{L}$_{x}$
-= (\textit{V}/(3 to 8))$^{\mathrm{1/3}}$. This initial configuration is
+average is ${\rho}$ = (${\rho}^{\mathrm{V}}$
++ ${\rho}^{\mathrm{L}}$)/2\textit{.} Using this value of density and the
+number of molecules, $M$, it is possible to calculate the total volume,
+$V$ ($V$ = $M/\rho$) and $L_{x}$
+= ($V$/(3 to 8))$^{\mathrm{1/3}}$. This initial configuration is
 simulated at high temperature (above the critical state) to homogenize the
-system. After few steps (\textit{e.g}., 50.000 steps), the temperature of the
-simulations is abruptly scaled to the final temperature (hence the name of
+system. After a few steps (\textit{e.g}., 50 000 steps), the temperature of the
+simulation is abruptly scaled to the final temperature (hence the name of
 temperature quench \citep{martinez2005}).  If the initial
 density is chosen appropriately, the system is left in a state of mechanical
 instability and separates into coexisting equilibrium phases, equilibrating by
@@ -707,23 +718,23 @@ diffusion, as shown in Fig. \ref{fig:6b}.
   \label{fig:6b}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\begin{subfigure}{0.3\textwidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image20.png}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image21.png}
-	\end{subfigure}
-  \caption{
-    Top: three typical pitfalls which are apparent from a density profile:
-    (a) insufficient statistics in the vapor region. The box should be longer to have room for the vapor phase. 
-    (b) the liquid slab does not show a plateau corresponding to a bulk liquid. Instead it shows two interfaces merging. This is resolved by increasing the average density of the system.
-    (c) the appearance of a drop outside the liquid slab. The simulation must be repeated, or run for a longer time.\\
-    Bottom: a density profile which shows a correct outcome.
-  }
-\label{fig:7b}
-\end{figure}
+%\begin{figure}
+%	\centering
+%	\begin{subfigure}{0.3\textwidth} % width of left subfigure
+%    \includegraphics[width=1\textwidth]{gfx/image20.png}
+%	\end{subfigure}
+%	\begin{subfigure}{0.3\textwidth} % width of left subfigure
+%    \includegraphics[width=1\textwidth]{gfx/image21.png}
+%	\end{subfigure}
+%  \caption{
+%    Top: three typical pitfalls which are apparent from a density profile:
+%    (a) insufficient statistics in the vapor region. The box should be longer to have room for the vapor phase. 
+%    (b) the liquid slab does not show a plateau corresponding to a bulk liquid. Instead it shows two interfaces merging. This is resolved by increasing the average density of the system.
+%    (c) the appearance of a drop outside the liquid slab. The simulation must be repeated, or run for a longer time.\\
+%    Bottom: a density profile which shows a correct outcome.
+%  }
+%\label{fig:7b}
+%\end{figure}
 
 In either case mentioned above, the final outcome is an elongated simulation
 box with slabs containing the two coexisting phases. A point to consider is the
@@ -731,77 +742,77 @@ use of an appropriate number of particles to describe not only the liquid and
 vapor (or second liquid) bulk phases but also the interfacial region. The
 resulting density profiles should show significant flat density regions for
 each bulk phase and sufficient molecules in the sparse (vapor) phases to
-provide for adequate statistics. Fig. \ref{fig:7b} shows schematically some typical
+provide for adequate statistics. Sec. \ref{sec:init-dens} discusses some typical
 pitfalls.
 
 For the case of pure fluids in vapor \textendash{} liquid equilibria, it is not
-necessary to specify the values of \textit{N}$^{L}$ and \textit{N}$^{V}$, it is
-only necessary to define \textit{N}$^{T}$ \textit{= N}$^{L}$\textit{+ N}$^{V}$,
+necessary to specify the values of $N^{L}$ and $N^{V}$, it is
+only necessary to define $N^{T}= N^{L}+ N^{V}$,
 as the system naturally evolves to the liquid-vapor distribution. For the case
 of fluid mixtures in vapor \textendash{} liquid equilibria, it is necessary to
 take into account the total number of particles for each component in all
-phases (\textit{i.e}., \textit{N}$_{i}$$^{T}$ = \textit{N}$_{i}$$^{L}$
-\textit{+ N}$_{i}$$^{V}$). In order to calculate \textit{N}$_{i}$$^{T}$, it is
+phases (\textit{i.e}., $N_{i}^{T}$ = $N_{i}^{L}$
+$+ N_{i}^{V}$). In order to calculate $N_{i}^{T}$, it is
 advised to consider not only the total number of particles in each phase
-(\textit{N}$^{L}$ and \textit{N}$^{V}$) but also their composition. The
-compositions in \textit{N}$^{L}$ and \textit{N}$^{V}$ are given by the
-corresponding mole fractions in the liquid (\textit{x}$_{i}$) and vapor
-(\textit{y}$_{i}$) state. The same idea can be applied for the case of mixtures
+($N^{L}$ and $N^{V}$) but also their composition. The
+compositions in $N^{L}$ and $N^{V}$ are given by the
+corresponding mole fractions in the liquid ($x_{i}$) and vapor
+($y_{i}$) state. The same idea can be applied for the case of mixtures
 in liquid-liquid equilibria.
 
 \begin{mdframed}[linewidth=0pt,backgroundcolor=LiveCoMSLightBlue!8,fontcolor=LiveCoMSDarkBlue!80!black]
   \textbf{EXAMPLE 2: \textit{Selection of simulation box size and number of particles for a mixture}}
 
 Let us to consider a CO$_{2}$ (1) + n-C$_{10}$H$_{22}$ (2) mixture at 344.15
-K and 3.45 MPa. The available information\citep{shaver2001} suggests that at these
+K and 3.47 MPa. The available information \citep{shaver2001} suggests that at these
 conditions, the expected mole fraction in the liquid and vapor phases are
-\textit{x}$_{1}$ = 0.262 and \textit{y}$_{1}$ = 0.994, respectively, and the
-mass densities of the phases are ${\rho}$$^{V}$ = 62.9 kg/m$^{3}$ and
-${\rho}$$^{L}$ = 698.7 kg / m$^{3}$. Considering the mole fractions and the
+$x_{1}$ = 0.262 and $y_{1}$ = 0.994, respectively, and the
+mass densities of the phases are ${\rho}^{V}$ = 62.9 kg/m$^{3}$ and
+${\rho}^{L}$ = 698.7 kg / m$^{3}$. Considering the mole fractions and the
 molecular weight for the pure fluids (M$_{\mathrm{w}}$CO$_{2}$ = 44.01
 kg/kgmol, M$_{\mathrm{w}}$C$_{10}$H$_{22}$ = 142.282 kg/kgmol), the average molecular
 weight of the mixture in the liquid and vapor phase are M$_{\mathrm{w}}$liquid
 = 116.535 kg/kgmol and M$_{\mathrm{w}}$vapor = 44.6 kg/kgmol, respectively.
-Therefore, the molar densities of the mixture are  ${\rho}$$^{V}$ = 1.410 mol/L
-and ${\rho}$$^{L}$ = 5.996 mol/L, hence (${\rho}$$^{V}$ + ${\rho}$$^{L}$)/2
+Therefore, the molar densities of the mixture are  ${\rho}^{V}$ = 1.410 mol/L
+and ${\rho}^{L}$ = 5.996 mol/L, hence (${\rho}^{V}$ + ${\rho}^{L}$)/2
 = 3.703 mol/L.
 
 Fluids can be described with coarse grained potentials, where CO$_{2}$ is
-modelled as a single sphere ${\sigma}$$_{1}$ = 3.741 \AA{}\citep{mejia2014a}
+modelled as a single sphere ${\sigma}_{1}$ = 3.741 \AA{} \citep{avendano2011,mejia2014a}
  and n-decane as
 a chain of three spheres, each with a size (diameter) constant of
-${\sigma}$$_{2}$ = 4.585 \AA{}\citep{mejia2014b}. 
+${\sigma}_{2}$ = 4.629 \AA{} \citep{mejia2014a}.
 
-In this example, initially, \textit{N}$_{t}$$^{L}$ = \textit{N}$_{1}$$^{L}$
-+ \textit{N}$_{2}$$^{L}$ = 4150 particles (beads) in the liquid phase and
-\textit{N}$_{t}$$^{V}$ = \textit{N}$_{1}$$^{V}$ + \textit{N}$_{2}$$^{V}$ = 1850
+In this example, initially, $N_{t}^{L}$ = $N_{1}^{L}$
++ $N_{2}^{L}$ = 4150 particles (beads) in the liquid phase and
+$N_{t}^{V}$ = $N_{1}^{V}$ + $N_{2}^{V}$ = 1850
 particles in the vapor phase. While these numbers are in principle arbitrary,
 as a starting point one can consider around 2000 to 5000 particles for the
-liquid (\textit{N}$^{L}$), whereas for the vapor phase 1000 to 2000 particles
-(\textit{N}$^{V}$) could suffice. Smaller systems tend to promote oscillations
-in the vapor pressure and interfacial tension results \citep{gonzalez2005,orea2005,janecek2009}
+liquid ($N^{L}$), whereas for the vapor phase 1000 to 2000 particles
+($N^{V}$) could suffice. Smaller systems tend to promote oscillations
+in the vapor pressure and interfacial tension results \citep{gonzalez2005,orea2005,janecek2009};
 larger systems will be computationally more expensive.
 
-The number of molecules of each species \textit{N}$_{i}$ is calculated by
+The number of molecules of each species $N_{i}$ is calculated by
 employing the mole fraction definition and the mass balance expressions and
 rewriting them it in terms of particles and the number of sites of each
-component. The final expression for \textit{N}$_{1}$$^{L}$ is given by:
+component. The final expression for $N_{1}^{L}$ is given by:
 \begin{equation}
-N_{1}^{L}=\frac{x_{1}N_{t}^{L}/f_{2}}{\frac{1}{f_{1}}-\frac{x_{1}}{f_{2}}+\frac{x_{1}}{f_{2}}}
+N_{1}^{L}=\frac{x_{1}N_{t}^{L}/f_{2}}{\frac{1}{f_{1}}-\frac{x_{1}}{f_{1}}+\frac{x_{1}}{f_{2}}}
 \end{equation}
-where \textit{f}$_{i}$ denotes the number of particles that conform the
-component \textit{i}. In this example, \textit{f}$_{1}$ = 1, \textit{f}$_{2}$
+where $f_{i}$ denotes the number of particles that conform the
+component $i$. In this example, $f_{1}$ = 1, $f_{2}$
 = 3, therefore:
 \begin{equation}
 N_{1}^{L}=\frac{0.262\times4150/3}{\frac{1}{1}-\frac{0.262}{1}+\frac{0.262}{3}}\approx439
 \end{equation}
-Considering the value of \textit{N}$_{t}$$^{L}$, \textit{N}$_{2}$$^{L}$ = 4150
-\textendash{} 439 ${\approx}$ 3711 particles or \textit{M}$_{2}$$^{L}$
-= \textit{N}$_{2}$$^{L}$/\textit{f}$_{2}$ ${\approx}$ 1237 molecules. For the
+Considering the value of $N_{t}^{L}$, $N_{2}^{L}$ = 4150
+\textendash{} 439 ${\approx}$ 3711 particles or $M_{2}^{L}$
+= $N_{2}^{L}$/$f_{2}{\approx}$ 1237 molecules. For the
 case of vapor phase, similar procedure can be followed replacing
-\textit{N}$_{1}$$^{L}$ by \textit{N}$_{1}$$^{V}$ and \textit{x}$_{1}$ by
-\textit{y}$_{1}$. \textit{N}$_{t}$$^{V}$ = 1850, \textit{N}$_{1}$$^{V}$
-${\approx}$ 1817 and \textit{N}$_{2}$$^{V}$ ${\approx}$ 33. In summary, the box
+$N_{1}^{L}$ by $N_{1}^{V}$ and $x_{1}$ by
+$y_{1}$ giving $N_{t}^{V}$ = 1850, $N_{1}^{V}$
+${\approx}$ 1817 and $N_{2}^{V}{\approx}$ 33. In summary, the box
 can be built with a total of 2256 CO$_{2}$ molecules and 1248 n-decane
 molecules.
 
@@ -810,16 +821,15 @@ Considering these values, the simulation volume can be calculated from:
 V=\frac{\left(6000\,molecules\right)\left(10^{10}\right)^{3}\left(\frac{\textrm{Å}}{m}\right)^{3}}{3.703\left(\frac{mol}{L}\right)\left(N_{av}\right)\left(\frac{molecules}{mol}\right)\left(1000\right)\left(\frac{L}{m^{3}}\right)}\simeq2690600\textrm{Å}^{3}
 \end{equation}
 
-In this case, V = \textit{L}$_{x}$ x \textit{L}$_{x}$ x 6 \textit{L}$_{x}$,
-\textit{L}$_{x}$ ${\approx}$ 76.5 \AA{} and \textit{L}$_{z}$ = 459.0 \AA{}. As
-in the previous examples, it is important to verify that \textit{L}$_{x}$ will
-be larger than 10 ${\sigma}$$_{\mathrm{max}}$ (45.85 \AA{}). This initial
+In this case, V = $L_{x}$ x $L_{x}$ x 6 $L_{x}$,
+$L_{x}{\approx}$ 76.5 \AA{} and $L_{z}$ = 459.0 \AA{}. As
+in the previous examples, it is important to verify that $L_{x}$ will
+be larger than 10 ${\sigma}_{\mathrm{max}}$ (46.29 \AA{}). This initial
 simulation box is heated to an arbitrarily high temperature, significantly
 higher than the critical temperature of the mixture (\textit{e.g}., 1000 K).
 A subsequent quench of the mixed system to the final temperature produces a two
 phase split. This design of simulation cell was used to describe the
-interfacial behavior in CO$_{2}$ + n-decane, and CO$_{2}$ + n-eicosane binary
-mixtures \citep{mejia2014b}. In the supplementary material, some
+interfacial behavior in CO$_{2}$ + n-decane \citep{mejia2014a}. In the supplementary material, some
 examples of initial configurations are included.
 \end{mdframed}
 
@@ -832,7 +842,7 @@ and error, or very large systems where the interfacial volume is much smaller
 than the bulk will be needed in such cases. Similarly, in cases where the
 composition of a given component in the mixture is very small, there is the
 need to run increasingly larger systems for the coexisting phases to be
-representative.
+statistically representative.
 
 From a practical perspective, most of the popular molecular simulation software
 suites provide auxiliary codes or GUI to build the initial configurations.
@@ -847,7 +857,7 @@ or DECHEMA (\url{https://i-systems.dechema.de/detherm/}).
 Alternatively, the density can be estimated using a reference equation of state
 (\textit{e.g}. GERG-2008 \citep{kunz2012}),
 or a molecular-based equation of
-state, such as SAFT\citep{lafitte2013}.
+state, such as SAFT \citep{lafitte2013}.
 Versions of the latter model have been implemented in process simulation
 software such as Aspen (\url{https://www.aspentech.com/en/products/engineering/aspen-plus})
 or gProms (\url{https://www.psenterprise.com/products/gproms}).
@@ -856,34 +866,35 @@ or gProms (\url{https://www.psenterprise.com/products/gproms}).
 \subsection{Selection of Ensemble}
 \label{sec:ensemble}
 The natural ensemble to obtain interfacial properties for a pure component is
-the canonical (\textit{NVT}) ensemble, where the number of molecules
-\textit{N}, the volume \textit{V} and the temperature \textit{T} are kept
+the canonical ($NVT$) ensemble, where the number of molecules
+$N$, the volume $V$ and the temperature $T$ are kept
 constant\textit{.} For a mixture, the added degrees of freedom suggest that
 apart from keeping the compositions and the temperature, an added constraint is
-needed, namely the pressure \textit{P}. While an isobaric-isothermal
-(\textit{NPT}) ensemble would seemingly be appropriate, this ensemble is based
+needed, namely the pressure $P$. While an isobaric-isothermal
+($NPT$) ensemble would seemingly be appropriate, this ensemble is based
 on isometric changes in the volume of the box. In the case of systems with
 interfaces, this would amount to changing the interfacial area, which brings in
 additional stresses due to the effects of the interfacial tension. Furthermore,
 the pressure in these heterogeneous systems is not a scalar, but rather
 a tensor, with different values for the elements of the tensor associated to
 the different Cartesian directions.  For mixtures the
-\textit{NP}$_{zz}$\textit{AT} ensemble is the recommended choice. In this
+$NP_{zz}AT$ ensemble is the recommended choice. In this
 ensemble, the normal pressure (which is the component of the pressure tensor in
 the direction perpendicular to the interface and corresponds to the bulk
-pressure) is maintained constant by modifying the \textit{L}$_{z}$ dimension of
-the box keeping the interfacial area, \textit{A}, constant (equivalently
-keeping \textit{L}$_{x }$and \textit{L}$_{y}$ fixed). We note in passing that
+pressure) is maintained constant by modifying the $L_{z}$ dimension of
+the box keeping the interfacial area, $A$, constant (equivalently
+keeping $L_{x }$and $L_{y}$ fixed). We note in passing that
 application of the Gibbs phase rule suggests that the
-\textit{NP}$_{zz}$\textit{AT} ensemble can only be employed for mixtures, not
+$NP_{zz}AT$ ensemble can only be employed for mixtures, not
 for pure components. Other alternative ensembles are available
 \citep{zhang1995} whereby the tangential pressure and/or the tension
 is kept fixed, but are seldomly used.  
 
 
 \begin{figure}
+  \centering
 \includegraphics[width=0.35\textwidth]{gfx/image25.png}
-\caption{Schematic illustration of the variation of energy (total, kinetic and potential) as a function of thermostat constant. The recommend values are those ${\tau}$$_{ T}$ ${\geq}$ \textit{min${\tau}$}$_{T}$}
+\caption{Schematic illustration of the variation of energy (total, kinetic and potential) as a function of thermostat constant. The recommend values are those ${\tau}_{ T}{\geq}$ \textit{min${\tau}$}$_{T}$}
 \label{fig:5b}
 \end{figure}
 
@@ -891,10 +902,10 @@ is kept fixed, but are seldomly used.
 \label{sec:thermostat}
 For any ensemble employed (barring the microcanonical) it is necessary to use
 a \textit{thermostat} to fix the temperature and/or a \textit{barostat} to fix
-the pressure. In general terms, these constrains (\textit{T}, \textit{P}) are
+the pressure. In general terms, these constrains ($T$, $P$) are
 obtained modifying the Hamiltonian expressions of movement by adding an
 artificial coupling. The commonly used thermo/barostats are those proposed by
-Nos\'{e} and latter modified by Hoover, the Nos\'{e}-Hoover\citep{hoover1985},
+Nos\'{e} and later modified by Hoover, the Nos\'{e}-Hoover \citep{hoover1985},
 however there is a trend to employ more advanced propositions such as
 those by Martyna-Tobias-Klein \citep{martyna1992} who use a series of
 Nos\'{e}\textendash{}Hoover thermostats to construct
@@ -913,14 +924,13 @@ at ensuring that the total, kinetic, and potential energy reach a stationary
 value.
 
 A schematic illustration is given in Fig. \ref{fig:5b}, where it is seen how a thermostat
-constant of ${\tau}$$_{T}$ larger than \textit{min ${\tau}$}$_{T}$ assures
+constant of ${\tau}_{T}$ larger than \textit{min ${\tau}$}$_{T}$ assures
 a stable simulation, while smaller values provide for unphysical fluctuations.
-Unreassuringly, the value of the thermostat/barostat constant is a function of
-the system and the best practice advice to select this value by using this
-simple test. As a guideline reference values of {${\uptau}$} are 0.5 to 2 ps
-(Nos\'{e}-Hoover) for the case of the thermostat, whereas for the case of
-barostat are 0.2 to 1 ps (Nos\'{e}-Hoover). There are no particular special
-considerations to be taken into account in terms of the thermos/barostats for
+Unreassuringly, the value of the thermostat/barostat constant is an extensive quantity and a function of
+the particular system and the best advice is to select this value by using this
+simple test. As a guideline reference one may use values of {${\uptau}$} of 0.5 to 2 ps
+(Nos\'{e}-Hoover) for the case of the thermostat, and 0.2 to 1 ps (Nos\'{e}-Hoover) for the case of the barostat. There are no particular special
+considerations to be taken into account in terms of the thermo/barostats for
 interfacial systems, hence general suggestions applicable to bulk MS uphold. For an excellent
 discussion concerning thermostats and barostats, the reader is referred to the
 textbook by Tuckerman \citep{tuckerman2010}.
@@ -952,7 +962,7 @@ bead. Fig. \ref{fig:9b} displays models for n-decane (n-C$_{10}$H$_{22}$) for al
     \includegraphics[width=1\textwidth]{gfx/image28.png}
 		\caption{Coarse-grained atoms (CG)} % subcaption
 	\end{subfigure}
-  \caption{Molecular description for n-C$_{10}$H$_{22}$}
+  \caption{Plausible molecular descriptions for n-C$_{10}$H$_{22}$}
   \label{fig:9b}
 \end{figure}
 
@@ -972,28 +982,27 @@ Industrial Fluid Properties Simulation Challenge
 (\url{http://fluidproperties.org}) where a blind test of the capabilities of
 diverse force fields was performed by predicting the interfacial tension of
 oil/water systems at high temperatures and pressures. Coarse Grained models
-\citet{herdes2018} fared as well as more detailed UA and AA models\citet{chen2018}.}.
+\citep{herdes2018} fared as well as more detailed UA and AA models\citep{chen2018}.
+See also Ref. \citep{avendano2011} for an example relevant to this manuscript.}.
 In many cases for
 simple fluids, the reduction in the fidelity of the model does not have an
 influence on the accuracy of the results. 
-\citet{avendano2011} show a direct comparison of CG to AA for the case of
-CO$_{2}$ (see Fig. 11 in Ref. \citep{avendano2011}), where it is possible
-to observe the obvious reduction in wallclock time steps for as a function of
-the number of molecules. Some detail is obviously lost upon coarse-graining,
+Some detail is obviously lost upon coarse-graining,
 which might be relevant if the onus is on exploring the interfacial orientation
 and /or charged fluids. In these cases, the use of UA models seems an
 acceptable compromise. 
 
 \begin{table}
+\begin{mdframed}[linewidth=0pt,backgroundcolor=LiveCoMSLightBlue!8,fontcolor=LiveCoMSDarkBlue!80!black]
   \caption{Contribution to the potential energy in the TraPPE UA for n-C$_{10}$H$_{22}$. $k_B$ is Boltzmann’s constant. $\theta$ is the bond angle between three consecutive united-atoms, and subscript $_0$ denotes its equilibrium value. $\phi$ is the dihedral angle between four consecutive united- atoms. $r_{ij}$ is the distance between united-atoms i and j. $\epsilon_{ij}$ is the energy parameter of the interaction, whereas $\sigma_{ij}$ is the Lennard-Jones size parameter.}
   \includegraphics[width=\linewidth]{gfx/graphics-table-2.png}
 %\begin{tabularx}{\textwidth}{
 %p{\dimexpr 0.18\linewidth-2\tabcolsep}
 %p{\dimexpr 0.43\linewidth-2\tabcolsep}
 %p{\dimexpr 0.40\linewidth-2\tabcolsep}}
-%\centering\arraybackslash{}\textit{description} & \centering\arraybackslash{}\textit{equation} & \centering\arraybackslash{}\textit{values} \\
+%\centering\arraybackslash{}\textit{description} & \centering\arraybackslash{}\textit{equation} & \centering\arraybackslash{}$values$ \\
 %\midrule
-%\includegraphics[width=\linewidth]{gfx/image30.png} & $U^{bend}\left(\theta\right)=\frac{k_{\theta}}{2}\left(\theta-\theta_{0}\right)^{2}$ & \textit{k}$_{{\theta}}$ \textit{/ k}$_{B}$ = 62500 K/rad$^{2}$ \par ${\theta}$$_{0}$ = 114.0$^{0}$ \\
+%\includegraphics[width=\linewidth]{gfx/image30.png} & $U^{bend}\left(\theta\right)=\frac{k_{\theta}}{2}\left(\theta-\theta_{0}\right)^{2}$ & $k_{{\theta}}/ k_{B}$ = 62500 K/rad$^{2}$ \par ${\theta}_{0}$ = 114.0$^{0}$ \\
 %
 %\includegraphics[width=\linewidth]{gfx/image32-2.png}\vspace{-20pt} & 
 %$U^{torsion}\left(\varphi\right)$
@@ -1002,7 +1011,7 @@ acceptable compromise.
 % & + c_{2}\left(1-cos2\varphi\right)\\
 % & + c_{3}\left(1+cos3\varphi\right)
 %\end{array}$
-%                       & \textit{c}$_{1}$ \textit{/ k}$_{B}$ = 355.0 K \par \textit{c}$_{2}$ \textit{/ k}$_{B}$ = - 68.19 K \par \textit{c}$_{3}$ \textit{/ k}$_{B}$ = 791.3 K. \\
+%                       & $c_{1}/ k_{B}$ = 355.0 K \par $c_{2}/ k_{B}$ = - 68.19 K \par $c_{3}/ k_{B}$ = 791.3 K. \\
 %\includegraphics[width=\linewidth]{gfx/image34.png} & \vspace{-20pt} 
 %$U^{LJ}\left(r\right)$
 %$\begin{array}{cc}
@@ -1010,51 +1019,55 @@ acceptable compromise.
 %  &\varepsilon_{ij}=\sqrt{\varepsilon_{ii}\,\varepsilon_{jj}} \\
 %  &\sigma_{ij}=\left(\sigma_{ii}+\sigma_{jj}\right)/2
 %\end{array}$
-%                  & ${\varepsilon}$$_{CH3}$ / \textit{k}$_{B}$ = 98 K \par ${\varepsilon}$$_{CH2}$ / \textit{k}$_{B}$ = 46 K \par ${\sigma}$$_{CH3}$ = 3.75 \AA{}  \par ${\sigma}$$_{CH2}$ = 3.95 \AA{} \\
+%                  & ${\varepsilon}_{CH3}$ / $k_{B}$ = 98 K \par ${\varepsilon}_{CH2}$ / $k_{B}$ = 46 K \par ${\sigma}_{CH3}$ = 3.75 \AA{}  \par ${\sigma}_{CH2}$ = 3.95 \AA{} \\
 %\end{tabularx}
+\end{mdframed}
 \end{table}
 
 \begin{mdframed}[linewidth=0pt,backgroundcolor=LiveCoMSLightBlue!8,fontcolor=LiveCoMSDarkBlue!80!black]
   \textbf{EXAMPLE 3: \textit{Selection of force field}}
 
 The molecule description, its values, and restrictions depend on the type of
-force field ( UA or GC ) used. As an example, the UA force field for
+force field used. As an example, the UA force field for
 n-C$_{10}$H$_{22}$ can be described by using the TraPPE-UA model (\url{http://chem-siepmann.oit.umn.edu/siepmann/trappe/index.html}).
 In this case, the potential energy $U$ is given by:
 \begin{equation}
 U=U^{str}\left(r\right)+U^{bend}\left(\theta\right)+U^{torsion}\left(\varphi\right)+U^{LJ}\left(r\right)
 \end{equation}
-
-where \textit{U}$^{str}$ is the stretch, \textit{U}$^{bend}$ is the bending,
-\textit{U}$^{torsion}$ is the torsional and \textit{U}$^{LJ}$ is the
+where $U^{str}$ is the stretch, $U^{bend}$ is the bending,
+$U^{torsion}$ is the torsional and $U^{LJ}$ is the
 Lennard-Jones potentials. In TraPPE-UA, the stretch contribution is described
 by a rigid bond between two consecutive united-atoms with a length of 1.54
 \AA{} for the case of decane. The remaining terms are summarized in Table 2.
-Here \textit{k}$_{B}$ is Boltzmann's constant. ${\theta}$ is the bond angle between
+Here $k_{B}$ is Boltzmann's constant. ${\theta}$ is the bond angle between
 three consecutive united-atoms, and subscript 0 denotes its equilibrium value.
 ${\varphi}$ is the dihedral angle between four consecutive united- atoms.
-\textit{r}$_{ij}$ is the distance between united-atoms \textit{i} and
-\textit{j}. ${\varepsilon}$$_{ij}$ is the energy parameter of the interaction,
-whereas ${\sigma}$$_{ij}$ is the Lennard- Jones size parameter. 
+$r_{ij}$ is the distance between united-atoms $i$ and
+$j$. ${\varepsilon}_{ij}$ is the energy parameter of the interaction,
+whereas ${\sigma}_{ij}$ is the Lennard- Jones size parameter. 
 
 In the case of a CG force field, n-C$_{10}$H$_{22}$ can be represented by three
 tangential spheres. Using the Mie potential (See Ref. \citep{muller2014} and
-references therein), these spheres interacting with each other according to:
+references therein), these spheres interact with each other according to:
 \begin{equation}
-U\left(r\right)=\varepsilon_{ij}\left[\frac{\lambda_{r_{ij}}}{\lambda_{r_{ij}}-\lambda_{a_{ij}}}\left(\frac{\lambda_{r_{ij}}}{\lambda_{a_{ij}}}\right)^{\frac{\lambda_{a_{ij}}}{\lambda_{r_{ij}}-\lambda_{a_{ij}}}}\right]\left[\left(\frac{\sigma_{ij}}{r_{ij}}\right)^{\lambda_{r_{ij}}}-\left(\frac{\sigma_{ij}}{r_{ij}}\right)^{\lambda_{a_{ij}}}\right]
+\begin{aligned}
+  U\left(r\right) &= C\varepsilon_{ij}\left[\left(\frac{\sigma_{ij}}{r_{ij}}\right)^{\lambda_{r_{ij}}}-\left(\frac{\sigma_{ij}}{r_{ij}}\right)^{\lambda_{a_{ij}}}\right] \\
+  & C = \left[\frac{\lambda_{r_{ij}}}{\lambda_{r_{ij}}-\lambda_{a_{ij}}}\left(\frac{\lambda_{r_{ij}}}{\lambda_{a_{ij}}}\right)^{\frac{\lambda_{a_{ij}}}{\lambda_{r_{ij}}-\lambda_{a_{ij}}}}\right]
+\end{aligned}
 \end{equation}
+\ignorespacesafterend
 where {${\lambda}$}$_{rij}$ and {${\lambda}$}$_{aij}$ are the repulsion and
 attraction parameters of the intermolecular potential, respectively.
-\textit{r}$_{ij}$ is the center-to-center distance of the interacting segments.
-${\varepsilon}$$_{ij}$ is the energy scale corresponding to the potential well
-depth, ${\sigma}$$_{ij}$ is the length scale, corresponding loosely with an
+$r_{ij}$ is the center-to-center distance of the interacting segments.
+${\varepsilon}_{ij}$ is the energy scale corresponding to the potential well
+depth, ${\sigma}_{ij}$ is the length scale, corresponding loosely with an
 effective segment diameter. The Mie potential reverts to the well-known
 Lennard-Jones model if the repulsive and attractive exponents are taken as 12
 and 6, respectively. For the case of n-C$_{10}$H$_{22}$ the Mie parameters are
 \citep{mejia2014a}:
-{${\lambda}$}$_{rii}$ = 20.92, {${\lambda}$}$_{aii}$ = 6,
-${\varepsilon}$$_{ii}$ / \textit{k}$_{B}$ = 415.19 K and ${\sigma}$$_{ii}$
-= 4.584 \AA{}.
+{${\lambda}$}$_{rii}$ = 19.21, {${\lambda}$}$_{aii}$ = 6,
+${\varepsilon}_{ii}$ / $k_{B}$ = 414.90 K and ${\sigma}_{ii}$
+= 4.629 \AA{}.
 
 For the case of heteronuclear molecules or mixtures, the cross parameters for the Mie are obtained by using the following combination rules:
 \begin{align}
@@ -1062,7 +1075,7 @@ For the case of heteronuclear molecules or mixtures, the cross parameters for th
   \varepsilon_{ij} &= \left(1-k_{ij}\right)\frac{\sqrt{\sigma_{ii}^{3}\sigma_{jj}^{3}}}{\sigma_{ij}^{3}}\sqrt{\varepsilon_{ii}\,\varepsilon_{jj}} \\
   \left(\lambda_{k_{ij}}-3\right) &= \sqrt{\left(\lambda_{k_{ii}}-3\right)\left(\lambda_{k_{jj}}-3\right)} \\
 \end{align}
-where \textit{k} = \textit{r} o \textit{a}, \textit{k}$_{ij}$ is a binary
+where $\lambda_{k_{ii}}$ = $\lambda_{r_{ii}}$ or $\lambda_{a_{ii}}$, etc., and $k_{ij}$ is a binary
 interaction parameter, which can be obtained from experimental data of phase
 equilibria.
 
@@ -1073,7 +1086,7 @@ mixture are included for both TraPPE-UA and CG-Mie schemes.
 
 \subsection{Cutoff radius and long range corrections} 
 \label{sec:cutoff}
-The most time-consuming aspect of any simulation is related to calculation of the nonbonded (van
+The most time-consuming aspect of any simulation is related to the calculation of the nonbonded (van
 der Waals or long-range interactions) terms in the potential energy function.
 Approximately, the number of interactions that must be calculated scale with
 the square of the number of force centers (although with the use of elaborate
@@ -1107,9 +1120,9 @@ a given $r_c$.
 %    \end{array}\right.$
 %    }
 %	\end{subfigure}
-%  \caption{Cutoff radius, \textit{r}$_{c}$ as applied to the Lennard-Jones
-%potential. (left) schematic illustration of \textit{r}$_{c}$ and Verlet delta
-%of \textit{r}$_{c}$ (delr). (right) The long tail of the attractive potential
+%  \caption{Cutoff radius, $r_{c}$ as applied to the Lennard-Jones
+%potential. (left) schematic illustration of $r_{c}$ and Verlet delta
+%of $r_{c}$ (delr). (right) The long tail of the attractive potential
 %tails off slowly toward the value of zero (Blue curve). Switching the tail off
 %smoothly makes the potential energy zero after a given cutoff. Lower figure
 %shows how the only interactions calculated for particle 1 are those with
@@ -1123,8 +1136,8 @@ interaction between all particles in the simulations cell. Many of these
 interactions correspond to pairs of molecules which are at a significant
 distance from each other and essentially do not interact. Fig. \ref{fig:11} shows the
 effect of a cutoff radius, where the calculation of forces is only taken into
-account for molecules whose centers are at a distance \textit{r} {\textless}
-\textit{r}$_{c}$ apart. However, the application of a cutoff is, in effect,
+account for molecules whose centers are at a distance $r$ {\textless}
+$r_{c}$ apart. Note however that the application of a cutoff is, in effect,
 modifying the potential (and consequently the results) hence the balance
 between the speed up of the calculation and the accuracy of the results is
 important. Excellent discussions of this topic have been provided in Ref.
@@ -1158,22 +1171,22 @@ typifies the impact of cutoff in bulk and interfacial properties.
 %    \includegraphics[width=1\textwidth]{gfx/image48.jpeg}
 %	\end{subfigure}
 \includegraphics[width=\linewidth]{gfx/fig_11_op4.JPG}
-\caption{Impact of cutoff (\textit{r}$_{c}$) on the bulk and interfacial properties for the case of CO$_{2}$ (single Mie sphere) at 240 K. $\lozenge$, surface tension $\gamma$; $\triangle$, vapor pressure $P$; $\ocircle$, liquid density $\rho^L$; $\square$, vapor density $\rho^V$.}
+\caption{Impact of cutoff ($r_{c}$) on the bulk and interfacial properties for the case of CO$_{2}$ (single Mie sphere) at 240 K. $\lozenge$, surface tension $\gamma$; $\triangle$, vapor pressure $P$; $\ocircle$, liquid density $\rho^L$; $\square$, vapor density $\rho^V$.}
 \label{fig:11}
 \end{figure}
 
-From this figure, it is seen how at \textit{r}$_{c}$ larger all properties of
+From this figure, it is seen how at larger $r_{c}$ all properties of
 relevance reach a stationary value. Clearly, the large cutoff can never be more
-than half of the smallest cell dimension (e.g., \textit{L}$_{x}$/2).
+than half of the smallest cell dimension (e.g., $L_{x}$/2).
 Therefore, as a suggestion, a value of cutoff equal or larger than
-6 ${\sigma}$$_{\mathrm{max}}$ (typically $\approx 2$ nm) will be an adequate choice to avoid the
+6 ${\sigma}_{\mathrm{max}}$ (typically $\approx 2$ nm) will be an adequate choice to avoid the
 truncation and system size effects involved in the phase equilibrium and
 interfacial properties calculations.
 
 For the case of fluids with electrostatic contributions to the energy, the
-potential energy decays proportional to \textit{r}$^{2}$ ( rather than
-\textit{r}$^{6}$ as in the case of simple dispersion as in the LJ potential).
-In this case, the definition of "a short distance \textit{r}$_{c}$ where the
+potential energy decays proportional to $r^{2}$ (rather than
+$r^{6}$ as in the case of simple dispersion).
+In this case, the definition of "a short distance $r_{c}$ where the
 potential tails to effectively a zero value", ceases to make sense, as
 illustrated in Fig. \ref{fig:6}. 
 
@@ -1184,37 +1197,36 @@ illustrated in Fig. \ref{fig:6}.
 \end{figure}
 
 The na\"{i}ve solution suggests using a simulation cell with very long
-dimension \textit{L}$_{x}$ (\textit{r}$_{c}$\textit{,}$_{max}$ = \textit{L}$_{x}$/2).
-Unfortunately, such large \textit{L}$_{x}$ implicates a very (very) big
-simulation box (e.g., V = \textit{L}$_{x}$ \textit{L}$_{x}$ (3-6)
-\textit{L}$_{x}$) , both impractical and ultimately unnecessary. This issue can
+dimension $L_{x}$ ($r_{c},_{max}$ = $L_{x}$/2).
+Unfortunately, such large $L_{x}$ implicates a very (very) big
+simulation box, both impractical and ultimately unnecessary. This issue can
 be solved by using a numerical strategy that converts the real space to
 the reciprocal (or complex) space effectively providing for an alternative force
-calculation.  The most popular of said methods \citep{ewald1921}
+calculation.  The most popular of said methods, Ewald summation \citep{ewald1921},
 proposes to neutralize
 each partial charge in the fluid by a superposition of spherical Gaussian
 distributions of opposite charge while employing a second Gaussian of similar
 charge to the original to annul the effect of the first set. The resulting
 potential stemming from these Gaussians is obtained from Poisson's equation and
 is solved as a Fourier series. This combination provides a route to replace the
-real space (where \textit{r}$_{c}$ would be very large) to a combination of
+real space (where $r_{c}$ would be very large) to a combination of
 real, and reciprocal (or complex) space. In practice, Ewald's methodology
-is controlled by three variables: the real space cutoff (\textit{r}$_{c}$); the
+is controlled by three variables: the real space cutoff ($r_{c}$); the
 convergence parameter and the largest reciprocal space vector used in the
 reciprocal space sum. The convergence parameter and reciprocal space vector are
 obtained using a minimization procedure, which uses the Coulombic energy and
-the coulombic virial. From a technical view point, a very efficient algorithm
+the Coulombic virial. From a technical view point, a very efficient algorithm
 for optimization is implemented in DLPOLY software, where these parameters are
 obtained when the simulation starts. Ewald summations are time consuming from
 a point of view of the MS so efforts to reduce the simulation time are in
 continuous development (e.g. reaction field \citep{barker1973,watts1974},
-the smoothed particle mesh\citep{darden1993},
-and the Wolf\citep{wolf1999} methods; see further details in Ref. \citep{allen2017}).
+the smoothed particle mesh \citep{darden1993},
+and the Wolf \citep{wolf1999} methods; see further details in Ref. \citep{allen2017}).
 While the electrostatic potentials are the
 prototypical examples of long-ranged potentials, some very soft potentials
 ( \textit{e.g.,} an 8-6 Mie ) will also exhibit relatively long attractive
 tails, for which Ewald summations can also be applied in order to avoid the use
-of calculating long range corrections\citep{kissel}.
+of calculating long range corrections \citep{kissel}.
 
 \subsection{Simulation length} 
 \label{sec:length}
@@ -1222,7 +1234,7 @@ Simulations are divided into two stages: equilibration and production. During
 the equilibration, the thermostat and/or barostat force the system to reach the
 desired thermodynamic state conditions. In the subsequent production stage, the
 thermostat and/or barostat are commonly (although not necessarily) turned off,
-and the system naturally evolves in \textit{NVE} ensemble, where statistics are
+and the system naturally evolves in $NVE$ ensemble, where statistics are
 collected. As a rule of thumb, the production length is at least twice the
 equilibration stage. 
 
@@ -1237,7 +1249,7 @@ for Lennard-Jones fluids:
 \begin{equation}
 \Delta t=0.01\sqrt{\frac{m\:\sigma^{2}}{\varepsilon}}
 \end{equation}
-where \textit{m, ${\varepsilon}$,} and ${\sigma}$  take their usual meaning (as
+where $m$, $\varepsilon$, and $\sigma$  take their usual meaning (as
 in the LJ potential). For the particular case of interfacial properties of pure
 fluids, simulations are typically longer than those of one phase bulk fluids,
 namely because of the requirement of the establishment of the interface and the
@@ -1248,10 +1260,10 @@ equilibrations are needed, to the tone of 70 to 80 ns after which production
 runs should be set for at least another 150 ns.
 
 In the case of MC simulations, the simulation length is usually defined in
-terms of the number of cycles, where each cycle consists of \textit{N} randomly
+terms of the number of cycles, where each cycle consists of $N$ randomly
 selected moves that include translation, rotation, flips, etc. A typical MC run
-in the \textit{NVT} or \textit{NP}$_{zz}$\textit{AT} ensemble consists of
-\textit{O}(10$^{6}$) cycles for equilibration and \textit{O}(10$^{7}$) cycles
+in the $NVT$ or $NP_{zz}AT$ ensemble consists of
+$O$(10$^{6}$) cycles for equilibration and $O$(10$^{7}$) cycles
 for production.
 
 \section{Post-processing}
@@ -1267,49 +1279,46 @@ enthalpy are illustrated.
 \subsection{Calculation of interfacial density profiles and related interfacial properties}
 
 The density profile is calculated by dividing the simulation box
-(\textit{L}$_{x}$\textit{L}$_{y}$\textit{L}$_{z}$) in \textit{n} slabs
-(\textit{n} ${\simeq}$ 250 to 500) along the \textit{z} direction, as it is
+($L_{x}L_{y}L_{z}$) in $n$ slabs
+($n{\simeq}$ 250 to 500) along the $z$ direction, as it is
 illustrated in Fig. \ref{fig:7}. At each position, the density of a molecule
-\textit{i} in the slab \textit{j}, {${\rho}$}$_{i}$  is calculated as:
+$i$ in the slab $j$, {${\rho}$}$_{i}$  is calculated as:
 \begin{equation}
 \rho_{i}=\frac{\left\langle N_{i}\right\rangle }{V_{j}}=\frac{\left(\sum_{s=1}^{ns}N_{is}\right)/ns}{V_{j}}
 \end{equation}
-where \textit{N}$_{i}$ is the number of molecules \textit{i} in the \textit{j}
-slab; \textit{s} represents the sites of the molecule \textit{i}, and
-\textit{ns} is the number of sites per molecule. \textit{V}$_{j}$ is the volume of each
-slab, which is \textit{L}$_{x}$\textit{L}$_{y}$\textit{L}$_{z\,j}$. As an
-example, the density of n-C$_{10}$H$_{22}$ in the slab \textit{j} can be
-calculated as {${\rho}$}$_{i}$ $^{\mathrm{C10H22}}$
-= ((\textit{N}$_{i}$$^{\mathrm{CH3}}$
-+ \textit{N}$_{i}$$^{\mathrm{CH2}}$)/10)/\textit{V}$_{j}$ for the case of UA
-whereas {${\rho}$}$_{i}$ $^{\mathrm{C10H22}}$
-= (\textit{N}$_{i}$/3)/\textit{V}$_{j}$ for the case of CG model.
-\todo[inline]{Erich, I don't know if you meant the following sentences as a remark, or to be added here?}
-\begin{mdframed}[backgroundcolor=orange!20]
+where $N_{i}$ is the number of molecules $i$ in the $j$
+slab; $s$ represents the sites of the molecule $i$, and
+$ns$ is the number of sites per molecule. $V_{j}$ is the volume of each
+slab, which is $L_{x}L_{y}L_{z\,j}$. As an
+example, the density of n-C$_{10}$H$_{22}$ in the slab $j$ can be
+calculated as {${\rho}$}$_{i}^{\mathrm{C10H22}}$
+= (($N_{i}^{\mathrm{CH3}}$
++ $N_{i}^{\mathrm{CH2}}$)/10)/$V_{j}$ for the case of UA
+whereas {${\rho}$}$_{i}^{\mathrm{C10H22}}$
+= ($N_{i}$/3)/$V_{j}$ for the case of CG model.
 Note that we suggest to calculate the densities based on the number of sites observed
 in a given slab. In most cases of chain fluids, molecules will span several slabs,
 and this must be accounted for.
-\end{mdframed}
 
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gfx/image51.png}
-\caption{n-slabs for computing the density profile, ${\rho}$$_{\mathrm{i}}$.}
+\caption{Partitioning of the simulation box in $n$ vertical slabs for computing the density profile, ${\rho}_{\mathrm{i}}$.}
 \label{fig:7}
 \end{figure}
 
 In order to guarantee that the simulated systems are at a true equilibrium
 state, neither transient nor steady state, it is advised to monitor the time
 evolution of the concentration of species in the direction normal to the
-interface, {${\rho}$}$_{i}$(\textit{z}). \citet{holcomb1993} demonstrated that the time evaluation of
-{${\rho}$}$_{i}$(\textit{z}) can bring not only a picture of the progression to
+interface, {${\rho}$}$_{i}$($z$). Holcomb \textit{et al.} \citep{holcomb1993} demonstrated that the time evaluation of
+{${\rho}$}$_{i}$($z$) can bring not only a picture of the progression to
 equilibrium but also provides a way to establish a true equilibrium condition.
-Fig. \ref{fig:8} shows the time evolution of \textit{z} \textendash{} {${\rho}$}(z)
+Fig. \ref{fig:8} shows the time evolution of $z$ \textendash{} {${\rho}$}(z)
 for the case of CO$_{2}$ represented as single Mie sphere (see Ref. \citep{mejia2005} for the case of
 Lennard \textendash{} Jones fluid.) 
 
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gfx/Fig_14_2.jpeg}
-\caption{Time evolution of {${\rho}$} vs \textit{z} profiles for the case of CO$_{2}$ (single Mie sphere) at 240 K at vapor \textendash{} liquid equilibria. ({\textbullet}{\textbullet}{\textbullet}) 18 ns, (${-}$ ${-}$) 36 ns, and (\textemdash) 54 ns.}
+\caption{Time evolution of {${\rho}$} vs $z$ profiles for the case of CO$_{2}$ (single Mie sphere) at 240 K at vapor \textendash{} liquid equilibria. ({\textbullet}{\textbullet}{\textbullet}) 18 ns, (${-}{-}$) 36 ns, and (\textemdash) 54 ns.}
 \label{fig:8}
 \end{figure}
 
@@ -1318,69 +1327,69 @@ density in the bulk regions plateau while the interfacial regions adjust their
 shape until eventually reaching a steady state ( after 36 ns in the example in
 Fig. \ref{fig:8}). 
 
-It is possible that systematic round-off errors in the simulation induces a drift
+It is possible that systematic round-off errors in the simulation induce a drift
 in the position of the slabs. If this is not corrected or accounted for, the
 density profiles might be smeared out and interfacial widths misrepresented.
 A trick of the trade is to re-center the center of mass of the system every
 once in a while, or to periodically zero out the total momentum of the system,
-to avoide these spurious effects.
+to avoid these spurious effects.
 
 The interfacial profiles for pure fluids and also for fluid in mixtures without
 surface activity can be fitted using Eq. \ref{eq:3} which can also be used directly to
 provide an estimate of the interfacial thickness. For the case of mixtures, the
-interfacial concentration of species, \textit{z} \textendash{}
+interfacial concentration of species, $z$ \textendash{}
 {${\rho}$}$_{i}$(z) provide a route to evaluate the surface activity of the
-fluids in mixture. As an illustration, Fig. \ref{fig:9} displays the \textit{z} ${-}$
-${\rho}$$_{i}$ projections for the case of CO$_{2}$ + n-C$_{10}$H$_{22}$
+fluids in mixture. As an illustration, Fig. \ref{fig:9} displays the $z{-}$
+${\rho}_{i}$ projections for the case of CO$_{2}$ + n-C$_{10}$H$_{22}$
 mixture at 344.15 K. In this figure, we only include one vapor${-}$liquid
 interface, as the system is symmetrical along the z coordinate (see Fig. \ref{fig:8}). 
 
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gfx/image54.jpeg}
-\caption{Interfacial profiles for CO$_{2}$ + n-C$_{10}$H$_{22}$ mixture at 344.15 K and P = 2.39 MPa (\textit{x}$_{1}$ = 0.238). MD results for ${-}$.${-}$, \textit{z} \textendash{} ${\rho}$$_{1}$; ${-}$..${-}$, z\textendash{} ${\rho}$$_{2}$. Insert is a snapshot of the interfacial region, seen from the CO$_{2}$-rich side, depicting only the first layer of adsorbed molecules. CO$_{2}$ (red), n-C$_{10}$H$_{22}$ (gray).(adapted from Ref. \citep{mejia2014a})}
+\caption{Interfacial profiles for CO$_{2}$ + n-C$_{10}$H$_{22}$ mixture at 344.15 K and P = 2.39 MPa ($x_{1}$ = 0.238). MD results for ${-}$.${-}$, $z$ \textendash{} ${\rho}_{1}$; ${-}$..${-}$, z\textendash{} ${\rho}_{2}$. Insert is a snapshot of the interfacial region, seen from the CO$_{2}$-rich side, depicting only the first layer of adsorbed molecules. CO$_{2}$ (red), n-C$_{10}$H$_{22}$ (gray).(adapted from Ref. \citep{mejia2014a})}
 \label{fig:9}
 \end{figure}
 
 The interfacial profiles provide a method to evaluate the surface activity of
 the fluids inside the interfacial zone. In the example of Fig. \ref{fig:9}, a positive
-surface activity is seen for CO$_{2}$ (d${\uprho}$$_{1}$/dz = 0;
-d$^{2}$${\uprho}$$_{1}$/dz$^{2}$ {\textless} 0 in the interfacial region),
+surface activity is seen for CO$_{2}$ (d${\uprho}_{1}$/dz = 0;
+d$^{2}{\uprho}_{1}$/dz$^{2}$ {\textless} 0 in the interfacial region),
 whereas n-C$_{10}$H$_{22}$ does not show surface activity. Additionally, the
 interfacial density profiles provide the needed information to describe the
 observed surface activity behavior in terms of the relative Gibbs adsorption
 isotherm of CO$_{2}$ (1) with respect to n- C$_{10}$H$_{22}$ (2),
-${\Gamma}$$_{12}$ (see Eq. \ref{eq:4}). Again, as an example, for the system and
-condition of the figure, ${\Gamma}$$_{12}$ = 1.523 x 10$^{-9}$
+${\Gamma}_{12}$ (see Eq. \ref{eq:4}). Again, as an example, for the system and
+condition of the figure, ${\Gamma}_{12}$ = 1.523 x 10$^{-9}$
 kmol/m$^{2}$\citep{mejia2014a}.
 
 \subsection{The mechanical route for the interfacial tension: The pressure tensor method}
 
-The pressure tensor method (PT) is the most common way of calculating the
-interfacial tension, {${\gamma}$}, for pure fluids and fluid mixtures. The
+The pressure tensor method is the most common way of calculating the
+interfacial tension for pure fluids and fluid mixtures. The
 basis of this method is to calculate the components of the diagonal element of
-the inhomogeneous pressure tensor, (\textit{P}$_{xx}$(\textit{z}),
-\textit{P}$_{yy}$(\textit{z}), \textit{P}$_{zz}$(\textit{z})) by using the
+the inhomogeneous pressure tensor, ($P_{xx}$($z$),
+$P_{yy}$($z$), $P_{zz}$($z$)) by using the
 Irving-Kirkwood (IK) \citep{irving1950}
 (or alternatively the Harasima \citep{harasima1957})\footnote{For
 a concise discussion on the strategies of calculating the pressure tensor,
 including the IK and Harasima definitions, the reader is referred to Ref. \citep{long2013}.
 }
 formulation which
-then feed into eq. 1 to be employed to calculate the tension. 
+then feeds into Eq. \ref{eq:hulshof} to be employed to calculate the tension. 
 
-In the IK method, the pressure tensor element, \textit{P}$_{kk}$ (\textit{z}) is given by the following expression:
+In the IK method, the pressure tensor element, $P_{kk}$ ($z$) is given by the following expression:
 \begin{equation}
 P_{kk}\left(z\right)=k_{B}T\rho\left(z\right)+\frac{1}{A}\left\langle \sum_{{\scriptstyle i}}^{{\scriptstyle N-1}}\sum_{{\scriptstyle j>i}}^{N}\frac{1}{\left|z_{i}-z_{j}\right|}\left(f_{ij}\right)_{k}\left(r_{ij}\right)_{k}\right\rangle 
   \label{eq:10}
 \end{equation}
-In Eq. \ref{eq:10}, the subscript \textit{kk} represents the spatial coordinate, either
-\textit{x} , \textit{y}, or \textit{z} , \textit{k}$_{B}$ is Boltzmann's
-constant, \textit{T} is the absolute temperature, \textit{A} is the interfacial
-area, \textit{N} is the number of molecules, and the double sum involves the
-force on molecule \textit{i} due to molecule \textit{j}. \textit{f}$_{ij}$ is
-the force on molecule \textit{i} due to molecule \textit{j}, and
-\textit{r}$_{ij}$ represents the distance between molecules \textit{i} and
-\textit{j}. It is important to note that Eq. \ref{eq:10} sums two terms.
+In Eq. \ref{eq:10}, the subscript $kk$ represents the spatial coordinate, either
+$x$ , $y$, or $z$ , $k_{B}$ is Boltzmann's
+constant, $T$ is the absolute temperature, $A$ is the interfacial
+area, $N$ is the number of molecules, and the double sum involves the
+force on molecule $i$ due to molecule $j$. $f_{ij}$ is
+the force on molecule $i$ due to molecule $j$, and
+$r_{ij}$ represents the distance between molecules $i$ and
+$j$. It is important to note that Eq. \ref{eq:10} sums two terms.
 The first term takes into account the kinetic contribution, which is
 proportional to the ideal-gas pressure, while the second term corresponds to
 the configurational contribution which is evaluated as \textit{ensemble averages}, as
@@ -1388,59 +1397,59 @@ indicated by the ${\langle}${\ldots}${\rangle}$ brackets, and not instantaneous
 values.
 
 In MD codes, the most common implementation of the algorithm is to evaluate the
-average of the elements ${\langle}$\textit{P}$_{kk}$${\rangle}$ over the \textit{whole
+average of the elements ${\langle}P_{kk}{\rangle}$ over the \textit{whole
 volume} of the simulation box. Speculating over the possible reason for this
-implementation of ${\langle}$\textit{P}$_{kk}$${\rangle}$ is the inspiration on
+implementation of ${\langle}P_{kk}{\rangle}$ is the inspiration on
 the pressure calculation in homogeneous systems, where the pressure of the
-system is given by the arithmetic average of the diagonal elements: \textit{P}
-= (${\langle}$\textit{P}$_{xx}$${\rangle}$
-+ ${\langle}$\textit{P}$_{yy}$${\rangle}$
-+ ${\langle}$\textit{P}$_{zz}$${\rangle}$)/3, (i.e. the trace divided by 3). As an illustration of the
+system is given by the arithmetic average of the diagonal elements: $P$
+= (${\langle}P_{xx}{\rangle}$
++ ${\langle}P_{yy}{\rangle}$
++ ${\langle}P_{zz}{\rangle}$)/3, (\textit{i.e.} the trace divided by 3). As an illustration of the
 underlying issue, Fig. \ref{fig:16} displays the diagonal elements of the pressure
-tensor ${\langle}$\textit{P}$_{xx}$${\rangle}$,
-${\langle}$\textit{P}$_{yy}$${\rangle}$, and
-${\langle}$\textit{P}$_{zz}$${\rangle}$ evaluated for the whole volume of
+tensor ${\langle}P_{xx}{\rangle}$,
+${\langle}P_{yy}{\rangle}$, and
+${\langle}P_{zz}{\rangle}$ evaluated for the whole volume of
 a simulation box in an inhomogeneous system during the production stage, where
 it is possible to observe that this implementation produces artificial
 fluctuations in the results.  The values of
-${\langle}$\textit{P}$_{xx}$${\rangle}$ and
-${\langle}$\textit{P}$_{yy}$${\rangle}$ vary only along the z coordinate,
-whereas ${\langle}$\textit{P}$_{zz}$${\rangle}$ should be constant along
-\textit{z},  implies that the normal pressure ( that of the bulk phases) is
-\textit{P}$_{N}$ = ${\langle}$\textit{P}$_{zz}$${\rangle}$ while the tangential
+${\langle}P_{xx}{\rangle}$ and
+${\langle}P_{yy}{\rangle}$ vary only along the z coordinate,
+whereas ${\langle}P_{zz}{\rangle}$ should be constant along
+$z$,  implies that the normal pressure ( that of the bulk phases) is
+$P_{N}$ = ${\langle}P_{zz}{\rangle}$ while the tangential
 components will be equal ( due to the symmetry of the problem)
-\textit{P}$_{T}$ = ${\langle}$\textit{P}$_{xx}$${\rangle}$
-= ${\langle}$\textit{P}$_{yy}$${\rangle}$. 
+$P_{T}$ = ${\langle}P_{xx}{\rangle}$
+= ${\langle}P_{yy}{\rangle}$. 
 
 
 \begin{figure}
 	\centering
-	\begin{subfigure}{0.3\textwidth} % width of left subfigure
+	\begin{subfigure}{0.45\linewidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/fig_15_a.jpeg}
 	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth} % width of left subfigure
+	\begin{subfigure}{0.45\linewidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/fig_15_b.jpeg}
 	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth} % width of left subfigure
+	\begin{subfigure}{0.45\linewidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/fig_15_c.jpeg}
 	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth} % width of left subfigure
+	\begin{subfigure}{0.45\linewidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/fig_15_d.jpeg}
 	\end{subfigure}
-\caption{Diagonal elements of the pressure tensor ${\langle}$\textit{P}$_{xx}$${\rangle}$, ${\langle}$\textit{P}$_{yy}$${\rangle}$, and ${\langle}$\textit{P}$_{zz}$${\rangle}$ and interfacial tension, ${\gamma}$, evaluated in the volume simulation box for inhomogeneous systems during the production stage for the case of CO$_{2}$ (single Mie sphere) at 240 K.
+\caption{Diagonal elements of the pressure tensor ${\langle}P_{xx}{\rangle}$, ${\langle}P_{yy}{\rangle}$, and ${\langle}P_{zz}{\rangle}$ and the resulting interfacial tension, ${\gamma}$, evaluated over the volume simulation box for the case of CO$_{2}$ (single Mie sphere) at 240 K.
 }
 \label{fig:16}
 \end{figure}
 
-Considering the values reported in Fig. \ref{fig:16} and average their values
-over the production stage, one obtains ${\langle}$\textit{P}$_{xx}$${\rangle}$
-= 0.4072 MPa, ${\langle}$\textit{P}$_{yy}$${\rangle}$  = 0.40431 MPa, and
-${\langle}$\textit{P}$_{zz}$${\rangle}$ =1.4691 MPa. Taking the average of
-${\langle}$\textit{P}$_{xx}$${\rangle}$ and
-${\langle}$\textit{P}$_{yy}$${\rangle}$ as \textit{P}$_{T}$
-= (${\langle}$\textit{P}$_{xx}$${\rangle}$
-+ ${\langle}$\textit{P}$_{yy}$${\rangle}$)/2, and \textit{P}$_{N}$
-= ${\langle}$\textit{P}$_{zz}$${\rangle}$, Eq. \ref{eq:hulshof} can be rewritten as:
+Considering the values reported in Fig. \ref{fig:16} and averaging their values
+over the production stage, one obtains ${\langle}P_{xx}{\rangle}$
+= 0.4072 MPa, ${\langle}P_{yy}{\rangle}$  = 0.4043 MPa, and
+${\langle}P_{zz}{\rangle}$ =1.4691 MPa. Taking the average of
+${\langle}P_{xx}{\rangle}$ and
+${\langle}P_{yy}{\rangle}$ as $P_{T}$
+= (${\langle}P_{xx}{\rangle}$
++ ${\langle}P_{yy}{\rangle}$)/2, and $P_{N}$
+= ${\langle}P_{zz}{\rangle}$, Eq. \ref{eq:hulshof} can be rewritten as:
 
 \begin{equation}
 \gamma=\frac{L_{z}}{2}\left[\left\langle P_{zz}\right\rangle -\frac{\left\langle P_{zz}\right\rangle +\left\langle P_{zz}\right\rangle }{2}\right]
@@ -1448,48 +1457,47 @@ ${\langle}$\textit{P}$_{yy}$${\rangle}$ as \textit{P}$_{T}$
 \end{equation}
 
 In this latter equation the additional factor of 1/2, takes into account the
-presence of  two interfaces in the system (\textit{e.g}., liquid \textendash{}
-vapor or liquid \textendash{} liquid interfaces). Evaluating Eq. \ref{eq:11}, with
-\textit{L}$_{z}$ = 208 \AA{}, ${\gamma}$ = 11.059 mN m$^{-1}$. The values of
-\textit{P}$_{N}$, and ${\gamma}$ are close to the NIST values (\textit{i.e}.,
+presence of  two interfaces in the system. Evaluating Eq. \ref{eq:11}, with
+$L_{z}$ = 208 \AA{} one obtains ${\gamma}$ = 11.059 mN m$^{-1}$. The values of
+$P_{N}$, and ${\gamma}$ are close to the NIST values (\textit{i.e}.,
 1.2825 MPa and 11.52 mN m$^{-1}$) \citep{lemmon2013}.
 
 The accuracy of this result
 is rather surprising and presumably a consequence of the correlation between the
 fluctuations in the different Cartesian directions. Over the volume of the simulation
 box, and with the exception of the interfacial region, the difference between the
-normal and tangential components is zero (in a statistical sense), hence the unexpected
+normal and tangential components should be zero (in a statistical sense), hence the unexpected
 outcome of a correct result upon averaging the curves in Fig. \ref{fig:16}.
 
-This method, however, fails to describe the elements of the pressure
-tensor for middle or strong inhomogeneous systems and also for inhomogeneous
+This method, albeit computationally convenient and accurate, fails to describe the elements of the pressure
+tensor for medium or strongly inhomogeneous systems and also for inhomogeneous
 systems with more than two interfaces, such as liquid \textendash{} liquid
 \textendash{} vapor and liquid \textendash{} liquid \textendash{} liquid
-interfaces. Unfortunately most post-processing tools embedded in the available MD software
+interfaces. Unfortunately, most post-processing tools embedded in the available MD software
 will rely on this implementation (\textit{c.f}., Table 1)
 
 An alternative (and preferred) implementation of IK tensor for inhomogeneous
 systems considers dividing the simulation box
-(\textit{L}$_{x}$\textit{L}$_{y}$\textit{L}$_{z}$) in \textit{n} slabs
-(\textit{n} ${\simeq}$ 250 to 500) along the \textit{z} direction, as it was
+($L_{x}L_{y}L_{z}$) in $n$ slabs
+($n{\simeq}$ 250 to 500) along the $z$ direction, as it is
 illustrated in Fig \ref{fig:7} for the case of density. For each slab, the
-\textit{P}$_{kk}$ (\textit{z}) (\textit{kk} = \textit{xx}, \textit{yy},
-\textit{zz}) is calculated from Eq. \ref{eq:10}, and an ensemble average of each element
-of the pressure tensor in each slab along the \textit{z} coordinate,
-${\langle}$\textit{P}$_{kk}$(\textit{z})${\rangle}$ is obtained. 
+$P_{kk}$ ($z$) ($kk$ = $xx$, $yy$,
+$zz$) is calculated from Eq. \ref{eq:10}, and an ensemble average of each element
+of the pressure tensor \textit{in each slab} along the $z$ coordinate,
+${\langle}P_{kk}$($z$)${\rangle}$ is obtained. 
 
-Fig. \ref{fig:17} displays the time evolution of \textit{z} \textendash{}
-${\Updelta}$${\langle}$\textit{P}(\textit{z})${\rangle}$
-= (${\langle}$\textit{P}$_{N}$(\textit{z})${\rangle}$ \textendash{}
-${\langle}$\textit{P}$_{T}$(\textit{z})${\rangle}$) for a typical case of an
+Fig. \ref{fig:17} displays the time evolution of 
+${\Updelta}{\langle}P$($z$)${\rangle}$
+= (${\langle}P_{N}$($z$)${\rangle}$ \textendash{}
+${\langle}P_{T}$($z$)${\rangle}$) for a typical case of an
 isothermal VLE. 
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gfx/image61.jpeg}
-\caption{Time evolution of {${\Updelta}$}P = (P$_{\mathrm{N}}$-P$_{\mathrm{T}}$) vs \textit{z} profiles for the case of CO$_{2}$ (single Mie sphere) at 240 K at vapor \textendash{} liquid equilibria. ({\textbullet}{\textbullet}{\textbullet}) 18 ns, (${-}$ ${-}$) 36 ns, and (\textemdash) 54 ns.}
+\caption{Time evolution of {${\Updelta}$}P = (P$_{\mathrm{N}}$-P$_{\mathrm{T}}$) vs $z$ profiles for the case of CO$_{2}$ (single Mie sphere) at 240 K at vapor \textendash{} liquid equilibria. ({\textbullet}{\textbullet}{\textbullet}) 18 ns, (${-}{-}$) 36 ns, and (\textemdash) 54 ns.}
 \label{fig:17}
 \end{figure}
-From the pressure elements ${\langle}$\textit{P}$_{N}$(\textit{z})${\rangle}$
-and ${\langle}$\textit{P}$_{T}$(\textit{z})${\rangle}$, the interfacial
+From the pressure elements ${\langle}P_{N}$($z$)${\rangle}$
+and ${\langle}P_{T}$($z$)${\rangle}$, the interfacial
 tension, ${\gamma}$, between two bulk phases (\textit{e.g}., liquid
 \textendash{} vapor or liquid \textendash{} liquid) can be calculated from Eq.
 \ref{eq:hulshof}, which can be rewritten as:
@@ -1499,15 +1507,15 @@ tension, ${\gamma}$, between two bulk phases (\textit{e.g}., liquid
 \end{equation}
 
 Fig. \ref{fig:18} displays the final average of ${\gamma}$
-= ${\int}$${\Updelta}$${\langle}$P(z)${\rangle}$ dz along the interfacial
-region, \textit{z}, for vapor \textendash{} liquid \textendash{} vapor
-interfaces. From this figure, it is possible to observe two plateau regions.
+= ${\int}{\Updelta}{\langle}$P(z)${\rangle}$ dz along the interfacial
+region, $z$, for vapor \textendash{} liquid \textendash{} vapor
+interfaces. Two plateau regions are evident.
 The first one corresponds to the first interfacial region (vapor \textendash{}
 liquid) and the second correspond to the second interfacial region (liquid
 \textendash{} vapor). The magnitude of the interfacial tension, ${\gamma}$, is
 directly obtained from this figure, where the first plateau corresponds to
 ${\gamma}$ and the second plateau is the cumulative value of ${\gamma}$
-(\textit{i.e.,} 2${\gamma}$ ). For the case illustrates in Fig. \ref{fig:18}, the IK
+(\textit{i.e.,} 2${\gamma}$ ). For the case illustrated in Fig. \ref{fig:18}, the IK
 method (Eq. \ref{eq:12}) predicts ${\gamma}$ = 11.15 mN m$^{-1}$, which is similar to
 the value obtained by Eq. \ref{eq:11}.
 The best practice to evaluate the magnitude of ${\gamma}$ is to use the value
@@ -1515,64 +1523,63 @@ of the first plateau rather than the second value. The second value contains
 all the accumulated error stemming from the liquid phase.
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gfx/image63.jpeg}
-\caption{${\gamma}$ = ${\int}$${\Updelta}$${\langle}$P(z)${\rangle}$ dz along the interfacial region, \textit{z}, for the case of CO$_{2}$ (single Mie sphere) at 240 K at vapor \textendash{} liquid equilibria.}
+\caption{${\gamma}$ = ${\int}{\Updelta}{\langle}$P(z)${\rangle}$ dz along the interfacial region, $z$, for the case of CO$_{2}$ (single Mie sphere) at 240 K at vapor \textendash{} liquid equilibria.}
 \label{fig:18}
 \end{figure}
 
 In summary, the evaluation of the magnitude of interfacial tension through the
 mechanical route (or the pressure tensor) can be carried out by using two types
 of averages over the diagonal element of the pressure tensor,
-\textit{P}$_{xx}$(\textit{z}), \textit{P}$_{yy}$(\textit{z}), and
-\textit{P}$_{zz}$(z). The first approach evaluates these elements as an
+$P_{xx}$($z$), $P_{yy}$($z$), and
+$P_{zz}$(z). The first approach evaluates these elements as an
 ensemble average of the pressure tensor over the whole volume of the simulation
-cell, ${\langle}$\textit{P}$_{kk}$${\rangle}$, whereas a second approach
-calculates them by using an ensemble average of the pressure tensor along
-discrete slab in the \textit{z} coordinate,
-${\langle}$\textit{P}$_{kk}$(\textit{z})${\rangle}$. The best practice to
+cell, ${\langle}P_{kk}{\rangle}$, whereas a second approach
+calculates them by using an ensemble average of the upressure tensor along
+discrete slabs in the $z$ coordinate,
+${\langle}P_{kk}$($z$)${\rangle}$. The best practice to
 compute the interfacial tension from the mechanical route is to use the latter 
 method, which not only provides the interfacial tension value but also the
 normal or equilibrium pressure. Citing \citet{holcomb1993} this route provides information of the time
 evolution of these variables and can bring not only a picture of the
 progression to equilibrium,  but also provides a way to establish a true
-equilibrium condition and to evaluate some possible issues relate with the
+equilibrium condition and to evaluate some possible issues related with the
 initial conditions used (\textit{e.g}., the positive slope of the first plateau
 indicates that the initial density was lower than the expected value.) 
 
 From a practical viewpoint, the IK tensor has been incorporated in all MD and
 some MC codes (c.f. Table 1). However, most of them compute
-${\langle}$\textit{P}$_{kk}$${\rangle}$, rather than
-${\langle}$\textit{P}$_{kk}$(z)${\rangle}$. To the best of our knowledge, only
+${\langle}P_{kk}{\rangle}$, rather than
+${\langle}P_{kk}$(z)${\rangle}$. To the best of our knowledge, only
 the MD-LAMMPS and the MC-Gibbs codes include both
-${\langle}$\textit{P}$_{kk}$${\rangle}$ and
-${\langle}$\textit{P}$_{kk}$(z)${\rangle}$ and also compute the interfacial
+${\langle}P_{kk}{\rangle}$ and
+${\langle}P_{kk}$(z)${\rangle}$ and also compute the interfacial
 tension according to Eqs. \ref{eq:11} and \ref{eq:12}, respectively.
 
 For the other MS codes, it is necessary to include a subroutine able to compute
-\textit{P}$_{kk}$ slabs by slabs along the \textit{z} coordinate. In the
-supplementary information, a Fortran subroutine is included for the case of Mie
+$P_{kk}$ slabs by slabs along the $z$ coordinate. In the
+supplementary information, DL\_POLY and HOOMD subroutines are included for the case of Mie
 potential. 
 
 \subsection{Thermodynamic route for the interfacial tension: Test area method}
 
 The test area (TA) method provides a perturbative route to calculate the
 interfacial tension, {${\gamma}$}. In order to evaluate Eq. \ref{eq:2}, an
-equilibrated system (state 0) with interfacial area \textit{A}$_{0}$
-(\textit{A}$_{0}$ = 2 \textit{L}$_{x,0}$ \textit{L}$_{y,0}$) is perturbed by an
+equilibrated system (state 0) with interfacial area $A_{0}$
+($A_{0}$ = 2 $L_{x,0}L_{y,0}$) is perturbed by an
 infinitesimal change in the interfacial area. This perturbation translates the
 system to a new state (perturbed state or state 1) that has the same volume as
 the original state, but a different interfacial area. The new interfacial area
-in state 1 is \textit{A}$_{1}$, which is obtained using the following
-transformations \textit{L}$_{x,1}$ = \textit{L}$_{x,0}$ (1
-+ {${\upxi}$})$^{\mathrm{1/2}}$, and \textit{L}$_{y,1}$
-= \textit{L}$_{y,}$$_{0}$ (1 + {${\upxi}$})$^{\mathrm{ 1/2}}$, where
+in state 1 is $A_{1}$, which is obtained using the following
+transformations $L_{x,1} = L_{x,0} (1 + \upxi)^{1/2}$, and 
+$L_{y,1} = L_{y,0} (1 + \upxi)^{1/2}$, where
 {${\upxi}$} {\textless}{\textless} 1. Using this transformation,
-\textit{A}$_{1}$ = \textit{A}$_{0}$ + {${\Delta}$}\textit{A} and
-{${\Delta}$}\textit{A} = \textit{L}$_{x,0}$ \textit{L}$_{y,0}$ {${\xi}$}. In
-order to guarantee a constant volume condition, \textit{L}$_{z}$ needs to
-change from \textit{L}$_{z,0}$ to \textit{L}$_{z,1}$ = \textit{L}$_{z,0}$ /(1
+$A_{1}$ = $A_{0}$ + {${\Delta}$}$A$ and
+{${\Delta}$}$A$ = $L_{x,0}L_{y,0}$ {${\xi}$}. In
+order to guarantee a constant volume condition, $L_{z}$ needs to
+change from $L_{z,0}$ to $L_{z,1}$ = $L_{z,0}$ /(1
 + {${\upxi}$}). At each state (0 and 1), the configurational energy of the
-system is calculated, and the difference {${\Delta}$}\textit{U}
-= \textit{U}$_{1}$ ${-}$ \textit{U}$_{0}$ is evaluated. The calculation of
+system is calculated, and the difference {${\Delta}$}$U$
+= $U_{1}{-}U_{0}$ is evaluated. The calculation of
 {${\gamma}$} is carried out by both expanding (+ {${\Updelta}$}A) and
 compressing (${-}${${\Updelta}$}A) the interfacial area, as illustrated
 in Fig. \ref{fig:19}.
@@ -1580,10 +1587,10 @@ in Fig. \ref{fig:19}.
 \begin{figure}
   \centering
 	\begin{subfigure}{\linewidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image64.png}
+    \includegraphics[width=0.9\textwidth]{gfx/image64.png}
 	\end{subfigure}
 	\begin{subfigure}{\linewidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image65.png}
+    \includegraphics[width=0.9\textwidth]{gfx/image65.png}
 	\end{subfigure}
 \caption{Illustration of the area perturbation. Expanding (+ {${\Updelta}$}A) and compressing (${-}${${\Updelta}$}A) the interfacial area.}
 \label{fig:19}
@@ -1592,7 +1599,7 @@ in Fig. \ref{fig:19}.
 The final value of {${\gamma}$} for a given {\textbar}{${\Updelta}$}A{\textbar}
 is the result of the average over these two perturbations. A plot of the
 corresponding Boltzmann average
-${\langle}$exp(${-}${${\Updelta}$}U/k$_{\mathrm{B}}$T)${\rangle}$$_{0}$ as
+${\langle}$exp(${-}${${\Updelta}$}U/k$_{\mathrm{B}}$T)${\rangle}_{0}$ as
 a function of the perturbation {\textbar}{${\Updelta}$}A{\textbar} allows for
 the calculation of the limiting value at {${\Updelta}$}A ${\rightarrow}$ 0. The
 size of the perturbation {${\xi}$} is key in obtaining meaningful results. Too
@@ -1603,14 +1610,14 @@ expected linear regime. As a rule of thumb, it is advised to evaluate expansion
 and compression paths for {${\xi}$} ranging from 10$^{{-}7}$ to 10$^{{-}2}$.
 Fig. \ref{fig:20} illustrates the values of {${\gamma}$} obtained from MD using the TA
 for the case of CO$_{2}$ + n-C$_{10}$H$_{22}$ mixture at 344.3 K and
-\textit{x}$_{1}$ = 0.448, where it is possible to observe that {${\gamma}$} is
+$x_{1}$ = 0.448, where it is possible to observe that {${\gamma}$} is
 constant in the range 10$^{-5}$ {\textless} {${\upxi}$} {\textless} 10$^{-3}$.
 Using a value of {${\upxi}$} = 5 ${\times}$ 10$^{-4}$, the {${\gamma}$} = 8.46
 mN m$^{-1}$.\citep{muller2009} 
 
 \begin{figure}
-\includegraphics[width=0.5\textwidth]{gfx/image66.jpeg}
-\caption{Values of {${\gamma}$} obtained from MD using the TA method at 344.3 K. The results are obtained for different values of the perturbation factor ${\upxi}$: $\blacktriangledown$, expansive perturbations, ${\upxi}$ {\textgreater} 0; $\blacktriangle$, compressive perturbations, ${\upxi}$ {\textless} 0; and \textbigcircle, average of the positive and negative perturbations.}
+\includegraphics[width=0.45\textwidth]{gfx/image66.jpeg}
+\caption{Values of {${\gamma}$} obtained from MD using the TA method at 344.3 K. The results are obtained for different values of the perturbation factor ${\upxi}$: $\blacktriangledown$, expansive perturbations, ${\upxi}$ {\textgreater} 0; $\blacktriangle$, compressive perturbations, ${\upxi}$ {\textless} 0; and O, average of the positive and negative perturbations.}
 \label{fig:20}
 \end{figure}
 
@@ -1627,54 +1634,54 @@ of consistency. Fig. \ref{fig:21} shows the interfacial tension of CO$_{2}$
 results have been obtained from IK, and TA methods and their results are
 favourably compared to experimental data.
 \begin{figure}
-\includegraphics[width=0.9\linewidth]{gfx/image67.jpeg}
-\caption{Interfacial tension for of CO$_{2}$ + n-C$_{10}$H$_{22}$ mixture at 344.3 K. \textbigcircle, Experimental \citep{mejia2014a}; ${\blacksquare}$, IK \citep{mejia2014a}; $\blacklozenge$, TA \citep{muller2009} .}
+\includegraphics[width=0.8\linewidth]{gfx/image67.jpeg}
+\caption{Interfacial tension for of CO$_{2}$ + n-C$_{10}$H$_{22}$ mixture at 344.3 K. O, Experimental \citep{mejia2014a}; ${\blacksquare}$, IK \citep{mejia2014a}; $\blacklozenge$, TA \citep{muller2009} .}
 \label{fig:21}
 \end{figure}
 The TA method has been employed to study phenomena for which the mechanical route
 is ill suited, such as in the determination of the interfacial tension of
 discontinuous potentials \citep{gloor2005}
-and drops and bubbles \citep{sampayo2010}. The TA method will be a poor choice
+and drops and bubbles \citep{lau2015,sampayo2010}. The TA method will be a poor choice
 for systems with long chain fluids. Here, the perturbative step is difficult to
 carry out due to the periodic boundary conditions: operationally, the TA method
 requires the removal of the periodic boundary conditions, the
 expansion/compression of the simulation box and finally the recovery of the
 boundary periodic conditions, steps which can be cumbersome for long chains.
-Similarly, the method is only valid for one type of interface present in the
+Similarly, the method is only valid when one type of interface is present in the
 simulation box, hence is unsuitable to study three-phase systems. 
 
 \subsection{Other properties obtained from the interfacial tension}
 
 By differentiation of the temperature dependence of the interfacial tension,
-one can access both  the surface entropy (${\Updelta}$\textit{s}$^{{\gamma}}$)
-and surface enthalpy (${\Updelta}$\textit{h}$^{{\gamma}}$) change of surface
+one can access both  the surface entropy (${\Updelta}s^{{\gamma}}$)
+and surface enthalpy (${\Updelta}h^{{\gamma}}$) change of surface
 formation, Eqs. \ref{eq:6} and \ref{eq:7}. This evaluation is carried out by a simple
 numerical derivation of the MS results. As an example, Fig. \ref{fig:22} illustrates
-${\Updelta}$\textit{s}$^{\mathrm{{\gamma}}}$ and
-${\Updelta}$\textit{h}$^{\mathrm{{\gamma}}}$ change as a function of
+${\Updelta}s^{\mathrm{{\gamma}}}$ and
+${\Updelta}h^{\mathrm{{\gamma}}}$ change as a function of
 temperature for selected n-alkanes.
 
 Additionally, the interfacial tension as a function of temperature can be also
 used to estimate the critical temperature for pure fluids. In this case, the
 interfacial tension is correlated with the critical temperature by using the
-scaling laws for the case of interfacial tension (see Eq. \ref{eq:8}).
-This methodology is particular useful for the case of fluid with high values of
-critical temperature where the experimental determination is unattainable 
+scaling laws applied to the case of interfacial tension (see Eq. \ref{eq:8}).
+This methodology is particular useful for the case of fluid with high of
+critical temperatures where the experimental determination is unattainable 
 (e.g. in the cases where the fluids suffer a thermal decomposition). Some examples
 are the determination of the critical temperature of ionic liquids and
 longer alkanes over C$_{16}$.
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
-	\begin{subfigure}{0.9\linewidth} % width of left subfigure
+	\begin{subfigure}{0.68\linewidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image68.jpeg}
 	\end{subfigure}
-	\begin{subfigure}{0.9\linewidth} % width of left subfigure
+	\begin{subfigure}{0.68\linewidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image69.jpeg}
 	\end{subfigure}
-\caption{The surface entropy (${\Updelta}$\textit{s}$^{\mathrm{{\gamma}}}$)
-and surface enthalpy (${\Updelta}$\textit{h}$^{\mathrm{{\gamma}}}$) change as
-a function of temperature for selected n-alkanes. \textbigcircle, C$_{10}$H$_{22}$;
+\caption{The surface entropy (${\Updelta}s^{\mathrm{{\gamma}}}$)
+and surface enthalpy (${\Updelta}h^{\mathrm{{\gamma}}}$) change as
+a function of temperature for selected n-alkanes. O, C$_{10}$H$_{22}$;
 ${\square}$, C$_{20}$H$_{42}$; ${\bigtriangleup}$, C$_{60}$H$_{122}$;
 ${\bigtriangledown}$, C$_{100}$H$_{202}$. (adapted from Ref. \citep{muller2011})}
 \label{fig:22}
@@ -1685,14 +1692,14 @@ ${\bigtriangledown}$, C$_{100}$H$_{202}$. (adapted from Ref. \citep{muller2011})
 An important aspect of reporting results is the evaluation of the errors
 associated with the calculations. For the case of interfacial properties, it is
 common to use block statistics where the information is averaged each
-\textit{n} steps or cycles. In such a case, the production period is divided
-into \textit{n} independent blocks. The statistical error is then deduced from
+$n$ steps or cycles. In such a case, the production period is divided
+into $n$ independent blocks. The statistical error is then deduced from
 the standard deviation of the average ${\sigma}$/M$^{\mathrm{1/2}}$ where
-${\sigma}$ is the variance of the block averages and \textit{M} is the number
+${\sigma}$ is the variance of the block averages and $M$ is the number
 of blocks, usually a number close to 10. For further details, the reader is
 redirected to the \citet{allen2017}
 and \citet{frenkel2002}
-textbooks. Considering the advances in computer power (increasing CPU and GPU speed,
+textbooks. Considering the advances in computer power (increased CPU and GPU speed,
 massive parallelization of codes, etc.), an alternative route to evaluate the
 statistics and deviation is to run the same MS a few times from different
 initial states then use the final results for each simulation to calculate the
@@ -1706,15 +1713,14 @@ pressure tensor components and to use this information in constructing an
 optimal error estimate. Another technique which may be easier to implement is
 the so-called ``jackknife'' technique, illustrated in Fig. \ref{fig:jackknife}.
 In this approach, instead of dividing the production period into $n$ blocks,
-one constructs the same number of alternative blocks are the entire data set
-\emph{except for} the usual blocks.  This falls under the more general topic of
-bootstrapping techniques, which are covered e.g. in statistics textbooks \citep{efron1982}.
+one constructs a similar number of alternative blocks each of which comprise the entire data set
+\textit{except for} the block in question.  This falls under the more general topic of
+bootstrapping techniques, which are covered in statistics textbooks \citep{efron1982}.
 
 \section{Common Pitfalls}
 
 In this section, a summary of the most common pitfalls are presented as well as
-their impact in the final results. The most common mistakes observed in MS of
-interfacial systems have their origin in the initial setup. 
+their impact in the final results.
 
 \begin{figure}
 	\centering
@@ -1725,12 +1731,12 @@ interfacial systems have their origin in the initial setup.
 
 
 \subsection{Inappropriate initial density}
-
+\label{sec:init-dens}
 A reasonable initial average of the expected liquid and vapor densities at the
 simulation temperature is required for a two-phase simulation. The choice of
 the initial density has an influence on the volume of each phase which will be
 present at equilibrium.  If too few (too many) molecules are present in the
-simulation box, i.e. the global density is too low (high), the condensed
+simulation box, \textit{i.e.} the global density is too low (high), the condensed
 (vapor) phase will not be able to span the short dimensions of the box,
 essentially condensing into a drop (bubble). This configuration (Fig.
 \ref{fig:23}(a) ) does not allow the calculation of interfacial tensions, as
@@ -1742,16 +1748,14 @@ region and its accompanying two interfaces. Too large of an initial density
 creates problems of a different kind, such as the possible lack of a coexisting
 vapor phase. The volume occupied by the vapor region must be larger than the
 liquid region, as the statistics in the former phases are inherently poorer.
-See \citet{holcomb1993} for further discussions relate
-to wrong initial density and the impact on the interfacial tension
+See Holcomb \textit{et al.} \citep{holcomb1993} for further discussions relating
+to the use of inappropriate initial densities and the impact on the interfacial tension
 calculations.
 
 An associated error appears when the densities are chosen too close to the
 actual phase boundaries, hence giving rise to the possibility of metastable
-one-phase systems when otherwise a phase split is expected. \textit{NVT}
-simulations artificially enhance the stability of liquid phases. Some common
-pitfalls caused by the initial density value are schematized in Fig. \ref{fig:23}.
-
+one-phase systems when otherwise a phase split is expected. $NVT$
+simulations artificially enhance the stability of liquid phases.
 
 \begin{figure}
 	\centering
@@ -1767,7 +1771,7 @@ pitfalls caused by the initial density value are schematized in Fig. \ref{fig:23
     \includegraphics[width=1\textwidth]{gfx/Fig_23c.jpeg}
     \caption{Correct average density}
 	\end{subfigure}
-  \caption{Schematic illustration of common pitfalls in initial density. (a) The overall density is too low
+  \caption{Schematic illustration of common pitfalls in the initial density. (a) The overall density is too low
            and the condensed phase forms a droplet. (b) Increasing the density has removed the droplet.
            Now a slab spans the entire cell. However, the width of the liquid slab is too small and the
            interfacial regions play a significant role in the density profile. (c) A correct vapor-liquid ratio.}
@@ -1779,59 +1783,52 @@ pitfalls caused by the initial density value are schematized in Fig. \ref{fig:23
 The value of the interfacial tension obtained from a force field is
 particularly susceptible to the choice of cutoff, as exemplified in Fig. \ref{fig:11}.
 The most visible effects of choosing a low values of the cutoff are the 
-underprediction of the bulk liquid and vapor densities as illustrated in
-Fig. \ref{fig:24}(a). Lower values of the liquid density
+underprediction of the bulk liquid and vapor densities. Lower values of the liquid density
 and higher values of vapor density directly impact the final value of the
-interfacial tension ({${\gamma}$}  ${\simeq}$ (${\rho}$$^{\mathrm{L}}$
-\textendash{} ${\rho}$$^{\mathrm{V}}$)$^{4}$), as illustrated in Fig. \ref{fig:24}(b).
-
-\begin{figure}
-	\centering
-	\begin{subfigure}{\linewidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image73.jpeg}
-    \caption{phase equilibria}
-	\end{subfigure}
-	\begin{subfigure}{\linewidth} % width of left subfigure
-    \includegraphics[width=1\textwidth]{gfx/image74.jpeg}
-    \caption{interfacial tension}
-	\end{subfigure}
-\caption{Illustration of the impact of cutoff in phase equilibrium (\textit{T}
-\textendash{} {${\rho}$}) and interfacial tension ({${\gamma}$} \textendash{}
-\textit{T}) for the case of CO$_{2}$ (single Mie sphere) at 240 K at vapor
-\textendash{} liquid equilibria. {\color{red}$\ocircle$}, \textit{r}$_{c}$ = 2.0 {${\upsigma}$}; {\color{blue!40}$\ocircle$},
-\textit{r}$_{c}$ = 2.5 {${\upsigma}$}; {\color{blue}$\ocircle$}, \textit{r}$_{c}$ = 3.0
-{${\upsigma}$}; {\color{green}$\ocircle$}, \textit{r}$_{c}$ = 4.0 {${\upsigma}$}; {\color{black!40}$\ocircle$}, \textit{r}$_{c}$
-= 5.0 {${\upsigma}$}; $\ocircle$, \textit{r}$_{c}$ = 6 {${\upsigma}$}. (\textemdash{})
-NIST \citep{lemmon2013}
-}
-\label{fig:24}
-\end{figure}
-
-A key point, however it to recognize that the parametrization of the force
+interfacial tension ({${\gamma}$}  ${\simeq}$ (${\rho}^{\mathrm{L}}$
+\textendash{} ${\rho}^{\mathrm{V}}$)$^{4}$).
+%\begin{figure}
+%	\centering
+%	\begin{subfigure}{\linewidth} % width of left subfigure
+%    \includegraphics[width=1\textwidth]{gfx/image73.jpeg}
+%    \caption{phase equilibria}
+%	\end{subfigure}
+%	\begin{subfigure}{\linewidth} % width of left subfigure
+%    \includegraphics[width=1\textwidth]{gfx/image74.jpeg}
+%    \caption{interfacial tension}
+%	\end{subfigure}
+%\caption{Illustration of the impact of cutoff in phase equilibrium ($T$
+%\textendash{} {${\rho}$}) and interfacial tension ({${\gamma}$} \textendash{}
+%$T$) for the case of CO$_{2}$ (single Mie sphere) at 240 K at vapor
+%\textendash{} liquid equilibria. {\color{red}$\ocircle$}, $r_{c}$ = 2.0 {${\upsigma}$}; {\color{blue!40}$\ocircle$},
+%$r_{c}$ = 2.5 {${\upsigma}$}; {\color{blue}$\ocircle$}, $r_{c}$ = 3.0
+%{${\upsigma}$}; {\color{green}$\ocircle$}, $r_{c}$ = 4.0 {${\upsigma}$}; {\color{black!40}$\ocircle$}, $r_{c}$
+%= 5.0 {${\upsigma}$}; $\ocircle$, $r_{c}$ = 6 {${\upsigma}$}. (\textemdash{})
+%NIST \citep{lemmon2013}
+%}
+%\label{fig:24}
+%\end{figure}
+A key point however is to recognize that the parametrization of the force
 fields is performed for a given cutoff-radius. Hence the choice of the cutoff
 is generally not arbitrary, but dictated by the model employed. 
-
-A related problem is associated with the choice of box dimensions. As boxes are
-elongated, it is crucial to verify that the length of shortest side
-( \textit{L}$_{x}$ and \textit{L}$_{y}$ ) be at least twice the cutoff radius.
+A related problem is associated with the choice of box dimensions; it is crucial to verify that the length of shortest side
+( $L_{x}$ and $L_{y}$ ) be at least twice the cutoff radius.
 
 \subsection{Poor temperature control/choice}
 
 MS for interfacial properties of fluids are traditionally carried out in two
-ensembles: \textit{NVT} and \textit{NP}$_{zz}$\textit{AT}, where the definition
+ensembles: $NVT$ and $NP_{zz}AT$, where the definition
 of the temperature is required. However, the temperature range needs to be
 selected very carefully to obtained trusty results of interfacial properties in
-fluid-fluid interfaces. At low value of temperature, the MS can display
-some cluster formation which denotes some solid-like phase (see Fig. \ref{fig:25} (a) ).
-At high temperature (near to the critical state), the interfacial region will
+fluid-fluid interfaces. At low temperatures, the MS can display
+cluster formation indicating the onset of a solid-like phase (see Fig. \ref{fig:25} (a) ).
+At high temperatures (near to the critical state), the interfacial region will
 be very diffuse causing a poor definition of both the bulk densities and the
 interfacial region. In order to avoid these effects, the best practice is to
-carry out MS at temperatures from 0.5 {\textless} \textit{T/T}$_{c}$
+carry out MS at temperatures from 0.5 {\textless} $T/T_{c}$
 {\textless} 0.90.
 
-
 \begin{figure}
-	\centering
 	\begin{subfigure}{0.38\textwidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/image75.png}
     \caption{temperature close to the triple point}
@@ -1857,7 +1854,7 @@ first and then setting the thermostat to the selected simulation temperature
 used.
 
 \begin{figure}
-\includegraphics[width=0.4\textwidth]{gfx/image77.png}
+\includegraphics[width=0.38\textwidth]{gfx/image77.png}
 \caption{Illustration of insufficient equilibration time}
 \label{fig:26}
 \end{figure}
@@ -1877,12 +1874,12 @@ might eventually creep into the results. More frequently however, human errors
 and faulty implementations are the cause of fatal errors
 \citep{wong2016}. In either case, it is important to validate in
 detail an existing calculation (as provided in this manuscript) and to ensure
-reproducibility and to minimize the effect of bugs and humans.  
+reproducibility and to minimize the pernicious effect of bugs and humans.  
 
 \section{Conclusions}
 Molecular simulation (MS) of interfacial properties of pure fluids and fluid
-mixtures can be carried out by using Molecular Dynamics (MD) or Monte Carlo
-(MC) schemes. However, the design of the molecular simulation and the route to
+mixtures can be carried out by using Molecular Dynamics or Monte Carlo
+schemes. However, the design of the molecular simulation and the route to
 evaluate the interfacial properties plays a central role to obtain meaningful
 results. This work describes the best practices to design and analysis of
 molecular simulations of inhomogeneous fluids to obtain the most important
@@ -1893,10 +1890,10 @@ design the simulation box dimension using the average of the bulk phases at the
 selected temperature (or at the lower value of temperature to be simulated)
 with a total number of particles ranging from 5000 to 8000 sites, which can be
 described as united atoms (UA) and coarse-grained atoms (CG). The ideal
-simulation box is a parallelepiped cell with \textit{L}$_{x}$
-= \textit{L}$_{y}$ {\textgreater} 10 ${\upsigma}$$_{\mathrm{max}}$ (the larger
-molecular diameter) and \textit{L}$_{z}$ = 3 to 10
-\textit{L}$_{x}$$_{\mathrm{.}}$ The initial configuration of the molecules in
+simulation box is a parallelepiped cell with $L_{x}$
+= $L_{y}$ {\textgreater} 10 ${\upsigma}_{\mathrm{max}}$ (the larger
+molecular diameter) and $L_{z}$ = 3 to 10
+$L_{x}$. The initial configuration of the molecules in
 the simulation box should be assigned using their spatial positions in
 a solidlike configuration without velocities nor forces. This initial
 configuration should be first simulated at high temperature (above the critical
@@ -1904,13 +1901,13 @@ state) to homogenize the system. After a few steps, the final configuration is
 quenched and used as the initial configuration to carry out the MS at the
 desired temperature.
 
-In order to reach an equilibrium state, MS uses \textit{NVT} or
-\textit{NP}$_{zz}$\textit{AT} ensembles, where it is necessary to use
-a thermostat to fix the temperature and/or a barostat to fix the pressure. The
-most commonly used are the Nos\'{e}-Hoover, which include a constant
-({${\uptau}$}) to control the MS conditions. The range of the constant are
-{${\uptau}$}$_{\mathrm{T}}$ are 0.5 to 2 ps (Nos\'{e}-Hoover), and
-{${\uptau}$}$_{\mathrm{P}}$ are 0.2 to 1 ps (Nos\'{e}-Hoover). The simulation
+In order to reach an equilibrium state, we suggest using either the $NVT$ or
+$NP_{zz}AT$ ensembles, where it is necessary to use
+a thermostat to fix the temperature and/or a barostat to fix the pressure. A
+very common choice is the Nos\'{e}-Hoover, which includes constants
+({${\uptau}$}) to control the MS conditions. The range of these constant are
+{${\uptau}$}$_{\mathrm{T}}$ are 0.5 to 2 ps, and
+{${\uptau}$}$_{\mathrm{P}}$ are 0.2 to 1 ps, for temperature and pressure respectively. The simulation
 length for inhomogeneous fluids needs to be larger than for homogeneous fluids.
 For the case of MD, it is advised to use 10 to 15 ns for equilibration stage,
 and 30 ns for the production state. For the case of mixtures, the system should
@@ -1919,8 +1916,8 @@ the production stage, it is advised to use block statistics to collect the
 numerical results.
 
 The actual calculation of interfacial tensions should be performed by dividing
-the simulation box in \textit{n} slabs (\textit{n} ${\simeq}$ 250 to 500) along
-the \textit{z-}direction. Within each slab, the density and the pressure tensor
+the simulation box in $n$ slabs ($n{\simeq}$ 250 to 500) along
+the $z-$direction. Within each slab, the density and the pressure tensor
 (\textit{e.g}., using the Irving-Kirkwood formulation) and the results averaged
 on a per-slab basis. These results will be used to calculate other interfacial
 properties such as the relative Gibbs adsorption isotherm, surface entropy, and
@@ -1930,71 +1927,8 @@ Besides the recommended best practices, this work also includes a worked-out
 example and input files required to carry out the corresponding simulations to
 reproduce selected results presented here.
 
-
-%\subsection{Algorithms and Pseudocode}
-%\label{sec:reference_this}
-%
-%The \texttt{algpseudocode} and \texttt{algorithms} packages is loaded by the document class. \ALG{euclid} was taken directly from the package documentation. (Please do not load \texttt{algorithm2e}; it's not compatible with \texttt{algpseudocde} nor \texttt{algorithms}!)
-%
-%\begin{algorithm}
-%\caption{Euclid's algorithm}\label{alg:euclid}
-%\begin{algorithmic}%[1]  %% uncomment to enable line numbers
-%\Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
-%   \State $r\gets a\bmod b$
-%   \While{$r\not=0$}\Comment{We have the answer if r is 0}
-%      \State $a\gets b$
-%      \State $b\gets r$
-%      \State $r\gets a\bmod b$
-%   \EndWhile\label{euclidendwhile}
-%   \State \textbf{return} $b$\Comment{The gcd is b}
-%\EndProcedure
-%\end{algorithmic}
-%\end{algorithm}
-
-
-
-\begin{mdframed}[backgroundcolor=orange!20]
-\section{Author Contributions}
-%%%%%%%%%%%%%%%%
-% This section mustt describe the actual contributions of
-% author. Since this is an electronic-only journal, there is
-% no length limit when you describe the authors' contributions,
-% so we recommend describing what they actually did rather than
-% simply categorizing them in a small number of
-% predefined roles as might be done in other journals.
-%
-% See the policies ``Policies on Authorship'' section of https://livecoms.github.io
-% for more information on deciding on authorship and author order.
-%%%%%%%%%%%%%%%%
-
-(Explain the contributions of the different authors here)
-
-% We suggest you preserve this comment:
-For a more detailed description of author contributions,
-see the GitHub issue tracking and changelog at \githubrepository.
-
-\section{Other Contributions}
-%%%%%%%%%%%%%%%
-% You should include all people who have filed issues that were
-% accepted into the paper, or that upon discussion altered what was in the paper.
-% Multiple significant contributions might mean that the contributor
-% should be moved to authorship at the discretion of the a
-%
-% See the policies ``Policies on Authorship'' section of https://livecoms.github.io for
-% more information on deciding on authorship and author order.
-%%%%%%%%%%%%%%%
-
-(Explain the contributions of any non-author contributors here)
-% We suggest you preserve this comment:
-For a more detailed description of contributions from the community and others, see the GitHub issue tracking and changelog at \githubrepository.
-
 \section{Potentially Conflicting Interests}
-%%%%%%%
-%Declare any potentially competing interests, financial or otherwise
-%%%%%%%
-
-Declare any potentially conflicting interests here, whether or not they pose an actual conflict in your view.
-\end{mdframed}
+The authors declare no conflicting interests.
 
 \section{Funding Information}
 %%%%%%%
@@ -2015,6 +1949,11 @@ through the Basic Research Funding scheme of the Research Council of Norway.
 \label{checklist}
 The recommendations of this manuscript are summarized in the checklist provided on the next page.
 
+\section{Attached code examples}
+Some example codes are attached to this manuscript at \githubrepository.
+These can be used for computing the interfacial properties of three systems: coarse-grained CO$_2$, coarse-grained decane, and finally a mixture of these.
+The example codes are provided for DLPOLY, HOOMD, and LAMMPS.
+
 % This provides a checklist which
 % - spans a full page
 % - consists of multiple sub-checklists
@@ -2025,27 +1964,27 @@ The recommendations of this manuscript are summarized in the checklist provided 
 \begin{checklist}{Setup}
 \textbf{Steps for setup the initial conditions}
 \begin{itemize}
-\item Select the \textit{NVT} ensemble \\
-%\item Define the initial reference (or lower) simulation temperature (\textit{T}$_{ref}$) (0.5 {\textless} \textit{T/T}$_{c}$ {\textless} 0.90) \\
-\item Select an appropriate total number of particles, \textit{N}$_{T}$ (N$_{\mathrm{T}}$ = N$^{\mathrm{L}}$ + N$^{\mathrm{V}}$ ; N$^{\mathrm{L}}$ ${\approx}$ 2000 to 5000; N$^{\mathrm{V}}$ ${\approx}$ 1000 to 2000). For mixtures, check to see if there are enough molecules of each type to satisfy the expected compositions in each phase. \checkref{See Example 1 and Example 2.} \\
-\item Choose a global density of the pure fluid or fluid mixture at \textit{T}$_{ref}$ (\textit{i.e}., {${\rho}$} = ({${\rho}$}$^{\mathrm{L}}$ + {${\rho}$}$^{\mathrm{V}}$)/2). \checkref{See discussion around Fig. \ref{fig:23}.} \\
-\item Calculate the simulation cell parameters (V = N$_{\mathrm{T}}$/ {${\rho}$} \textit{= L}$_{x}$ \textit{L}$_{y}$ \textit{L}$_{z}$; \textit{L}$_{x}$ = \textit{L}$_{y}$ {\textgreater} 10 ${\sigma}$$_{\mathrm{max}}$;  \textit{L}$_{z}$ ${\approx}$ 3 to 10 \textit{L}$_{x}$). \checkref{See Example 2.} \\
+\item Select the $NVT$ ensemble \\
+%\item Define the initial reference (or lower) simulation temperature ($T_{ref}$) (0.5 {\textless} $T/T_{c}$ {\textless} 0.90) \\
+\item Select an appropriate total number of particles, $N_{T}$ (N$_{\mathrm{T}}$ = N$^{\mathrm{L}}$ + N$^{\mathrm{V}}$ ; N$^{\mathrm{L}}{\approx}$ 2000 to 5000; N$^{\mathrm{V}}{\approx}$ 1000 to 2000). For mixtures, check to see if there are enough molecules of each type to satisfy the expected compositions in each phase. \checkref{See Example 1 and Example 2.} \\
+\item Choose a global density of the pure fluid or fluid mixture at $T_{ref}$ (\textit{i.e}., {${\rho}$} = ({${\rho}$}$^{\mathrm{L}}$ + {${\rho}$}$^{\mathrm{V}}$)/2). \checkref{See discussion around Fig. \ref{fig:23}.} \\
+\item Calculate the simulation cell parameters (V = N$_{\mathrm{T}}$/ {${\rho}$} $= L_{x}L_{y}L_{z}$; $L_{x}$ = $L_{y}$ {\textgreater} 10 ${\sigma}_{\mathrm{max}}$;  $L_{z}{\approx}$ 3 to 10 $L_{x}$). \checkref{See Example 2.} \\
 \item Choose a force field: UA or CG. \checkref{See Sec. \ref{sec:forcefields}.} \\
-\item Select a cutoff compatible with the force field , otherwise choose \textit{r}$_{c}$ ${\geq}$ 6 ${\sigma}$$_{\mathrm{max}}$ . Verify that r$_{\mathrm{c}}$$^{\mathrm{max}}$ = \textit{L}$_{x}$ /2). \checkref{See Sec. \ref{sec:cutoff}.} \\
-\item Select a thermostat (e.g. Nos\'e-Hoover or better) with an appropriate constant (${\uptau}$$_{\mathrm{T}}$ ${\approx}$ 0.5 to 1 ps). \checkref{See Sec. \ref{sec:thermostat}.} If using Verlet radii, choose delr = 1.5 ${\sigma}$$_{\mathrm{max}}$ \\
+\item Select a cutoff compatible with the force field , otherwise choose $r_{c}{\geq}$ 6 ${\sigma}_{\mathrm{max}}$ . Verify that r$_{\mathrm{c}}^{\mathrm{max}}$ = $L_{x}$ /2). \checkref{See Sec. \ref{sec:cutoff}.} \\
+\item Select a thermostat (e.g. Nos\'e-Hoover or better) with an appropriate constant (${\uptau}_{\mathrm{T}}{\approx}$ 0.5 to 1 ps). \checkref{See Sec. \ref{sec:thermostat}.} If using Verlet radii, choose delr = 1.5 ${\sigma}_{\mathrm{max}}$ \\
 \item Set total Simulation Steps (SS ${\approx}$ 50000 to 100000). \\
 \item Set a time step (${\Updelta}$t ${\approx}$ 0.01 to 0.003 ps) \\
-\item Run MS at high temperature (\textit{T}$_{H}$ {\textgreater}{\textgreater} \textit{T}$_{C}$) to generate an initial configuration for the quench. \checkref{See Sec. \ref{sec:setup}.} \\
+\item Run MS at high temperature ($T_{H}$ {\textgreater}{\textgreater} $T_{C}$) to generate an initial configuration for the quench. \checkref{See Sec. \ref{sec:setup}.} \\
 \end{itemize}
 \end{checklist}
 
 \begin{checklist}{Production run}
 \textbf{Steps for running simulation at production conditions, after setup}
 \begin{itemize}
-  \item Set simulation ensemble: \textit{NVT} or \textit{NP}$_{zz}$\textit{AT}. \checkref{See Sec. \ref{sec:ensemble}.} \\
-\item Set simulation temperature \textit{T}$_{s}$ (0.5 {\textless} \textit{T/T}$_{c}$ {\textless} 0.90)  \\
-\item Set simulation pressure \textit{P}$_{zz}$ (only for \textit{NP}$_{zz}$\textit{AT}) \\
-\item Select a thermostat as before, and (only for \textit{NP}$_{zz}$\textit{AT}) a barostat with an appropriate constant ${\uptau}$$_{\mathrm{P}}$ ${\approx}$ 0.5 to 1 ps, i.e. a barostat that maintains the desired $P_zz$ by scaling only the z-dimension of the box. \checkref{See Sec. \ref{sec:thermostat}.}\\
+  \item Set simulation ensemble: $NVT$ or $NP_{zz}AT$. \checkref{See Sec. \ref{sec:ensemble}.} \\
+\item Set simulation temperature $T_{s}$ (0.5 {\textless} $T/T_{c}$ {\textless} 0.90)  \\
+\item Set simulation pressure $P_{zz}$ (only for $NP_{zz}AT$) \\
+\item Select a thermostat as before, and (only for $NP_{zz}AT$) a barostat with an appropriate constant ${\uptau}_{\mathrm{P}}{\approx}$ 0.5 to 1 ps, i.e. a barostat that maintains the desired $P_zz$ by scaling only the z-dimension of the box. \checkref{See Sec. \ref{sec:thermostat}.}\\
 \item Set total Simulation Steps (SS ${\approx}$ 20 x 10$^{6}$ for pure fluids; 40 x 10$^{6}$ for fluids mixtures) of which the first third should be discarded as equilibration steps. \checkref{See Sec. \ref{sec:length}.} \\
 \item Decide strategy for statistics, visualization, printing of configurations to disk (frequency to save) and post-processing ( if not included in main program). \checkref{See Sec. \ref{sec:post-proc}.}\\
 \end{itemize}
