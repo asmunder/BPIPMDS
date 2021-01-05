@@ -6,7 +6,7 @@
 %%% PLEASE COMPILE USING LUALATEX.
 %%%
 %%% PREAMBLE
-\documentclass[9pt,bestpractices]{livecoms}
+\documentclass[9pt,tutorial]{livecoms}
 % Use the 'onehalfspacing' option for 1.5 line spacing
 % Use the 'doublespacing' option for 2.0 line spacing
 % Use the 'lineno' option for adding line numbers.
@@ -32,6 +32,7 @@
 \usepackage{ulem}
 \definecolor{color-3}{rgb}{1,0,0}
 \newcommand{\checkref}[1]{\uline{\emph{{\color{LiveCoMSDarkBlue}#1}}}}
+%\newcommand{\checkref}[1]{{\color{LiveCoMSDarkBlue}#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% IMPORTANT USER CONFIGURATION
@@ -43,7 +44,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE SETUP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Best Practices for Computing Interfacial Properties from Molecular Simulations [Article v\versionnumber]}
+\title{A Guide to Computing Interfacial Properties from Molecular Simulations [Article v\versionnumber]}
 
 \author[1*]{Erich A. M\"{u}ller}
 \author[2*]{\AA{}smund Ervik}
@@ -92,8 +93,8 @@ experimental determinations and theoretical predictions. Although
 rather common Molecular Dynamics and Monte Carlo
 schemes are employed, the technical implementation and the post-processing of the results
 are more challenging than for homogeneous fluids due to the spatial dependence
-of the interfacial properties. This work is devoted to recommending the best
-practices for molecular computing of the most important interfacial properties
+of the interfacial properties. The aim of this work is to provide a guide
+to molecular-simulation computation of the most important interfacial properties
 of pure fluids and fluid mixtures, \textit{i.e}., interfacial concentration of
 species, the interfacial thickness, the surface activity or adsorption of
 species, superficial enthalpy and entropy, wetting between phases and the
@@ -178,8 +179,8 @@ properties from the middle of '70s \citep{liu1974}, several
 authors have included in their manuscripts guidelines for obtaining meaningful
 calculations. However, these guidelines are dispersed and sometimes differ from
 author to author. The main goal of this manuscript is to provide a general,
-self-contained and unified guide of the best practices to perform a MS for
-interfacial properties for fluids using MD or MC. We do this by carrying out an
+self-contained and unified guide to perform a MS for calculating
+interfacial properties of fluids using MD or MC. We do this by carrying out an
 exemplary MS of an inhomogeneous fluid detailing the advice with regards to the
 set-up, running and data analysis. In this work, we are focused on MS for
 computing interfacial properties of pure fluids and fluid mixtures in
@@ -252,7 +253,7 @@ Ref. \citep{wiki} for a general classification of MS software.
 The selection of a simulation package is to some extent a personal decision,
 influenced by the general environment (\textit{i.e.}, available support ) and
 familiarity. For most simulations described here, the programs have been
-tested, validated and debugged (see however section 6.6). For research
+tested, validated and debugged (see however section \ref{sec:bugs}). For research
 applications it is well advisable to select a program written in a language
 which is familiar to the user, as most likely some level of modification will eventually
 be needed. In this regard, and with no prejudice, DL\_POLY is an exemplary
@@ -307,7 +308,7 @@ p{\dimexpr 0.14\linewidth-2\tabcolsep}}
 \end{table}
 \footnotetext{The Gibbs program is commercially available as part of the Materials Design software suite \url{https://www.materialsdesign.com}}
 
-This Best Practices Guide discusses the background and details of molecular simulation for computing interfacial properties over the next eight sections. A checklist for performing simulations is given in Sec. \ref{checklist}.
+This guide discusses the background and details of molecular simulation for computing interfacial properties over the next six sections. A checklist for performing simulations is given in Appendix \ref{checklist}.
 
 %Here you would identify prerequisites/background knowledge that are assumed by your work and your checklist which you view as critical, ideally giving links to good sources on these topics.
 %Checklists are normally focused on errors made by users with training and experience in molecular simulations, so you can assume a basic familiarity with the fundamentals of molecular simulations.
@@ -444,7 +445,7 @@ to a confusion between this quantity and the surface area, which we label herein
 infinitesimal perturbation in the interfacial area $A$ at canonical conditions
 (keeping the compositions, volume $V$ and temperature $T$ of the
 system constant). The details of the implementation of these methods is the
-subject of section 5.
+subject of Sec.~\ref{sec:simdetails}.
 
 Fig. \ref{fig:3} illustrates some examples of the experimentally observed behaviour of
 $\gamma$ in pure fluids and fluid mixtures. For the case of pure fluids and
@@ -597,7 +598,7 @@ temperature.
 
 The system sizes for the MS of interfacial systems are necessarily larger than
 their pure phase counterparts (or the vapor-liquid equilibrium if one considers
-GEMC simulations), as one must simultaneously track two bulk phases and two
+Gibbs Ensemble MC simulations), as one must simultaneously track two bulk phases and two
 interfacial regions at the same time. In order to guarantee the simultaneous
 formation of two bulk phases (\textit{e.g}., vapor and liquid or liquid and
 liquid) and the interfacial region, it is customary to use a rectangular
@@ -683,9 +684,10 @@ As an example, let us consider the MS for pure CO$_{2}$ at 240 K in the liquid
 state. For this case, CO$_{2}$ will be represented by a single sphere (Mie
 potential) of diameter of {${\upsigma}$} = 3.741 \AA{} \citep{avendano2011}. We take a total of 3200 spheres
 and using the expected liquid density, ${\rho}$ = 24.742 mol/L \citep{lemmon2013}:
-\begin{equation}
-  V=\frac{\left(3200\,\textrm{particles}\right)\left(10^{10}\right)^{3}\left(\frac{\textrm{Å}}{m}\right)^{3}}{24.742\left(\frac{mol}{L}\right)\left(N_{av}\right)\left(\frac{\textrm{molecules}}{mol}\right)\left(1000\right)\left(\frac{L}{m^{3}}\right)}=214770\textrm{Å}^{3}
-\end{equation}
+\begin{eqnarray}
+  V & = & \frac{\left(3200\,\textrm{particles}\right)\left(10^{10}\right)^{3}\left(\frac{\textrm{Å}}{m}\right)^{3}}{24.742\left(\frac{mol}{L}\right)\left(N_{av}\right)\left(\frac{\textrm{molecules}}{mol}\right)\left(1000\right)\left(\frac{L}{m^{3}}\right)}\nonumber\\
+  & = & 214770\textrm{Å}^{3}
+\end{eqnarray}
 where N$_{\mathrm{av}}$ = 6.022 . 10$^{23}$ is Avogadro's constant. Using the
 value of the expected volume and a cubic cell, its vertex will be
 $L_x = \sqrt[3]{V} = $ 59.886 \AA{}, which is larger than 10 $\sigma$  (37.41
@@ -817,9 +819,10 @@ can be built with a total of 2256 CO$_{2}$ molecules and 1248 n-decane
 molecules.
 
 Considering these values, the simulation volume can be calculated from:
-\begin{equation}
-V=\frac{\left(6000\,molecules\right)\left(10^{10}\right)^{3}\left(\frac{\textrm{Å}}{m}\right)^{3}}{3.703\left(\frac{mol}{L}\right)\left(N_{av}\right)\left(\frac{molecules}{mol}\right)\left(1000\right)\left(\frac{L}{m^{3}}\right)}\simeq2690600\textrm{Å}^{3}
-\end{equation}
+\begin{eqnarray}
+  V & = & \frac{\left(6000\,molecules\right)\left(10^{10}\right)^{3}\left(\frac{\textrm{Å}}{m}\right)^{3}}{3.703\left(\frac{mol}{L}\right)\left(N_{av}\right)\left(\frac{molecules}{mol}\right)\left(1000\right)\left(\frac{L}{m^{3}}\right)}\nonumber\\
+  & \simeq & 2690600\textrm{Å}^{3}
+\end{eqnarray}
 
 In this case, V = $L_{x}$ x $L_{x}$ x 6 $L_{x}$,
 $L_{x}{\approx}$ 76.5 \AA{} and $L_{z}$ = 459.0 \AA{}. As
@@ -863,6 +866,7 @@ software such as Aspen (\url{https://www.aspentech.com/en/products/engineering/a
 or gProms (\url{https://www.psenterprise.com/products/gproms}).
 
 \section{Simulation details}
+\label{sec:simdetails}
 \subsection{Selection of Ensemble}
 \label{sec:ensemble}
 The natural ensemble to obtain interfacial properties for a pure component is
@@ -913,7 +917,7 @@ a Nos\'{e}\textendash{}Hoover "chain".  The choice of coupling is critical to
 the outcome of the simulation \citep{shirts2013}
 and an inappropriate use can give rise to results which are biased
 or even unphysical \citep{wong2016}, \textit{e.g}. the use of
-the Berendsen \citep{berendsen1984}
+the Berendsen thermostat \citep{berendsen1984},
 once popular, is now generally discouraged.
 
 The strength or magnitude of the coupling is expressed in terms of the
@@ -1150,7 +1154,7 @@ particularly for molecules in the vicinity of interfacial region where
 different environments are present at either side of the interface
 \citep{lotfi1990,janecek2006,siperstein2002,lishchuk2018}
 For most simple systems, given the
-availability of cheap computer power, the best practice of MS of interfacial
+availability of cheap computer power, the recommended practice of MS of interfacial
 properties is to use large cutoffs rather than to have to correct the results. In
 order to define its value, it is advised to run a few simulations to define the
 lower value to capture the interfacial properties. As an example, Fig. \ref{fig:11}
@@ -1216,7 +1220,7 @@ convergence parameter and the largest reciprocal space vector used in the
 reciprocal space sum. The convergence parameter and reciprocal space vector are
 obtained using a minimization procedure, which uses the Coulombic energy and
 the Coulombic virial. From a technical view point, a very efficient algorithm
-for optimization is implemented in DLPOLY software, where these parameters are
+for optimization is implemented in DL\_POLY software, where these parameters are
 obtained when the simulation starts. Ewald summations are time consuming from
 a point of view of the MS so efforts to reduce the simulation time are in
 continuous development (e.g. reaction field \citep{barker1973,watts1974},
@@ -1518,7 +1522,7 @@ ${\gamma}$ and the second plateau is the cumulative value of ${\gamma}$
 (\textit{i.e.,} 2${\gamma}$ ). For the case illustrated in Fig. \ref{fig:18}, the IK
 method (Eq. \ref{eq:12}) predicts ${\gamma}$ = 11.15 mN m$^{-1}$, which is similar to
 the value obtained by Eq. \ref{eq:11}.
-The best practice to evaluate the magnitude of ${\gamma}$ is to use the value
+The recommended practice to evaluate the magnitude of ${\gamma}$ is to use the value
 of the first plateau rather than the second value. The second value contains
 all the accumulated error stemming from the liquid phase.
 \begin{figure}
@@ -1536,7 +1540,7 @@ ensemble average of the pressure tensor over the whole volume of the simulation
 cell, ${\langle}P_{kk}{\rangle}$, whereas a second approach
 calculates them by using an ensemble average of the upressure tensor along
 discrete slabs in the $z$ coordinate,
-${\langle}P_{kk}$($z$)${\rangle}$. The best practice to
+${\langle}P_{kk}$($z$)${\rangle}$. The recommended practice to
 compute the interfacial tension from the mechanical route is to use the latter 
 method, which not only provides the interfacial tension value but also the
 normal or equilibrium pressure. Citing \citet{holcomb1993} this route provides information of the time
@@ -1824,7 +1828,7 @@ fluid-fluid interfaces. At low temperatures, the MS can display
 cluster formation indicating the onset of a solid-like phase (see Fig. \ref{fig:25} (a) ).
 At high temperatures (near to the critical state), the interfacial region will
 be very diffuse causing a poor definition of both the bulk densities and the
-interfacial region. In order to avoid these effects, the best practice is to
+interfacial region. In order to avoid these effects, it is recommnded to
 carry out MS at temperatures from 0.5 {\textless} $T/T_{c}$
 {\textless} 0.90.
 
@@ -1859,7 +1863,7 @@ used.
 \label{fig:26}
 \end{figure}
 
-\subsection{Bugs and humans}
+\subsection{Bugs and humans}\label{sec:bugs}
 
 Our amazement at the speed in which modern computers can process data often
 blinds us form the obvious statement that the computers are not (yet)
@@ -1881,7 +1885,7 @@ Molecular simulation (MS) of interfacial properties of pure fluids and fluid
 mixtures can be carried out by using Molecular Dynamics or Monte Carlo
 schemes. However, the design of the molecular simulation and the route to
 evaluate the interfacial properties plays a central role to obtain meaningful
-results. This work describes the best practices to design and analysis of
+results. This work provides a detailed guide to the design and analysis of
 molecular simulations of inhomogeneous fluids to obtain the most important
 interfacial properties of fluids.
 
@@ -1923,14 +1927,14 @@ on a per-slab basis. These results will be used to calculate other interfacial
 properties such as the relative Gibbs adsorption isotherm, surface entropy, and
 surface enthalpy change and the interfacial tension.
 
-Besides the recommended best practices, this work also includes a worked-out
+Besides provided general recommendations for advantageous methods, this work also includes a worked-out
 example and input files required to carry out the corresponding simulations to
 reproduce selected results presented here.
 
-\section{Potentially Conflicting Interests}
+\section*{Potentially Conflicting Interests}
 The authors declare no conflicting interests.
 
-\section{Funding Information}
+\section*{Funding Information}
 %%%%%%%
 % Authors should acknowledge funding sources here. Reference specific grants.
 %%%%%%%
@@ -1945,14 +1949,16 @@ through the Basic Research Funding scheme of the Research Council of Norway.
 
 \section*{Author Information}
 \makeorcid
+
+\appendix
 \section{Checklist}
 \label{checklist}
 The recommendations of this manuscript are summarized in the checklist provided on the next page.
 
-\section{Attached code examples}
+\section*{Supplementary Information: Attached code examples}
 Some example codes are attached to this manuscript at \githubrepository.
 These can be used for computing the interfacial properties of three systems: coarse-grained CO$_2$, coarse-grained decane, and finally a mixture of these.
-The example codes are provided for DLPOLY, HOOMD, and LAMMPS.
+The example codes are provided for DL\_POLY, HOOMD, and LAMMPS.
 
 % This provides a checklist which
 % - spans a full page
