@@ -44,11 +44,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE SETUP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{A Guide to Computing Interfacial Properties from Molecular Simulations [Article v\versionnumber]}
+\title{A Guide to Computing Interfacial Properties of Fluids from Molecular Simulations [Article v\versionnumber]}
 
 \author[1*]{Erich A. M\"{u}ller}
 \author[2*]{\AA{}smund Ervik}
-\author[3*]{Andres Mej\'{i}a}
+\author[3*]{Andr{\'e}s Mej\'{i}a}
 \affil[1]{Department of Chemical Engineering, Imperial College London, United Kingdom}
 \affil[2]{Department of Gas Technology, SINTEF Energy Research, Trondheim, Norway}
 \affil[3]{Departamento de Ingenier\'{i}a Qu\'{i}mica, Universidad de Concepci\'{o}n, Chile}
@@ -173,8 +173,9 @@ interfacial fluids is the explicit representation of the molecules in an
 environment which is commensurate with the dimension of the interfacial region
 of fluids (${\simeq}$ 10 to 100 \AA{}). The interfacial regions are
 characterized by sharp changes in densities and compositions, and these have to
-be considered explicitly, hence the overall system sizes, in terms of number of
-particles, can easily reach $O$(10$^{5}$), which is considerably more
+be considered explicitly, hence the overall system sizes in terms of number of
+particles can easily reach $O$(10$^{5}$), or even $O$(10$^{6}$) in cases with
+surfactants or proteins, which is considerably more
 than what is typical in single phase studies. Notwithstanding, the increasing
 power of computers and the improvement in speed of the available MS packages
 mean that evermore, this region of matter can be studied with increased
@@ -284,7 +285,7 @@ p{\dimexpr 0.13\linewidth-2\tabcolsep}
 p{\dimexpr 0.08\linewidth-2\tabcolsep}
 p{\dimexpr 0.10\linewidth-2\tabcolsep}
 p{\dimexpr 0.14\linewidth-2\tabcolsep}}
-\centering\arraybackslash{}Software & \centering\arraybackslash{}Language & \centering\arraybackslash{}MS & \centering\arraybackslash{}${\rho}$ (z) & \centering\arraybackslash{}${\gamma}$ & \centering\arraybackslash{}${\langle}$P$_{\mathrm{ii}}{\rangle}$ & \centering\arraybackslash{}${\langle}$P$_{\mathrm{ii}}$(z)${\rangle}$ \\
+\centering\arraybackslash{}Software & \centering\arraybackslash{}Language & \centering\arraybackslash{}MS & \centering\arraybackslash{}${\rho}$ (z) & \centering\arraybackslash{}${\gamma}$ & \centering\arraybackslash{}${\langle}$P$_{kk}{\rangle}$ & \centering\arraybackslash{}${\langle}$P$_{kk}$(z)${\rangle}$ \\
 \midrule
 \href{https://www.scd.stfc.ac.uk/Pages/DL_POLY.aspx}{DL\_POLY}  & Fortran & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
 \href{http://www.gromacs.org}{GROMACS}   & C++ & MD & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{52} & \centering\arraybackslash{}\ding{56} \\
@@ -300,7 +301,7 @@ The selection of a simulation package is to some extent a personal decision,
 influenced by the general environment (\textit{i.e.}, available support ) and
 familiarity. For most simulations described here, the programs have been
 tested, validated and debugged as it is described on the corresponding websites of the softwares
-and the references therein (see however section \ref{sec:bugs}). For research
+and the references therein (see however Sec. \ref{sec:bugs}). For research
 applications it is well advisable to select a program written in a language
 which is familiar to the user, as most likely some level of modification will eventually
 be needed. In this regard, and with no prejudice, DL\_POLY is an exemplary
@@ -659,7 +660,9 @@ case of ${\gamma}$, the following expression holds \citep{rowlinson1982}
 \end{equation}
 where ${\gamma}_{0}$ and $T_{c}$ are treated as unknown constants,
 and their values are found by fitting the interfacial tension data with
-temperature.
+temperature. The exponent in Eq. \ref{eq:8} corresponds to the Ising universality
+value, which is applicable to real fluids. There is however no guarantee that it
+can be applied to any general molecular force field.
 
 \section{Initial setup of the simulation}
 \label{sec:setup}
@@ -716,15 +719,16 @@ this problem, the volume expansion or the temperature quench methods.
 
 \begin{figure}[h]
 \centering
-	\begin{subfigure}{0.11\textwidth} % width of left subfigure
+	\begin{subfigure}{0.14\textwidth} % width of left subfigure
     \includegraphics[width=\textwidth]{gfx/image16.png}
-		\caption{Initial $\qquad$ configuration} % subcaption
+		\caption{Initial configuration} % subcaption
 	\end{subfigure}
+  \hspace{5pt}
 	\begin{subfigure}{0.31\textwidth} % width of left subfigure
     \includegraphics[width=\textwidth]{gfx/image17.png}
     \caption{Volume quench}
 	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth} % width of left subfigure
+	\begin{subfigure}{0.45\textwidth} % width of left subfigure
     \includegraphics[width=\textwidth]{gfx/image18.png}
     \caption{Final configuration}
 	\end{subfigure}
@@ -754,6 +758,7 @@ the equilibrium vapor pressure is attained. This technique is particularly
 suited for the case of vapor-liquid equilibria of single site molecules
 (spheres) at low temperatures. 
 
+\vspace{15pt}
 
 \begin{mdframed}[linewidth=0pt,backgroundcolor=LiveCoMSLightBlue!8,fontcolor=LiveCoMSDarkBlue!80!black]
 \textbf{EXAMPLE 1:} \textbf{\textit{Selection of simulation box size and number of particles for a volume expansion.}}
@@ -1003,7 +1008,10 @@ a stable simulation, while smaller values provide for unphysical fluctuations.
 Unreassuringly, the value of the thermostat/barostat constant is an extensive quantity and a function of
 the particular system and the best advice is to select this value by using this
 simple test. As a guideline reference one may use values of {${\uptau}$} of 0.5 to 2 ps
-(Nos\'{e}-Hoover) for the case of the thermostat, and 0.2 to 1 ps (Nos\'{e}-Hoover) for the case of the barostat. There are no particular special
+(Nos\'{e}-Hoover) for the case of the thermostat, and 0.2 to 1 ps (Nos\'{e}-Hoover) for the case of the barostat.
+Note however that for certain combinations, such as Nos\'{e}-Hoover with Parrinello-Rahman, it may be necessary to
+have $\uptau_p > 1.5 \uptau_t$ to avoid unphysical interactions between the thermostat and barostat.
+There are no particular special
 considerations to be taken into account in terms of the thermo/barostats for
 interfacial systems, hence general suggestions applicable to bulk MS uphold. For an excellent
 discussion concerning thermostats and barostats, the reader is referred to the
@@ -1294,8 +1302,8 @@ truncation and system size effects involved in the phase equilibrium and
 interfacial properties calculations.
 
 For the case of fluids with electrostatic contributions to the energy, the
-potential energy decays proportional to $r^{2}$ (rather than
-$r^{6}$ as in the case of simple dispersion).
+potential energy decays proportional to $r^{-1}$ (rather than
+$r^{-6}$ as in the case of simple dispersion).
 In this case, the definition of "a short distance $r_{c}$ where the
 potential tails to effectively a zero value", ceases to make sense. 
 
@@ -1329,7 +1337,7 @@ While the electrostatic potentials are the
 prototypical examples of long-ranged potentials, some very soft potentials
 ( \textit{e.g.,} an 8-6 Mie ) will also exhibit relatively long attractive
 tails, for which Ewald summations can also be applied in order to avoid the use
-of calculating long range corrections \citep{kissel}.
+of calculating long range corrections \citep{fischer2015}.
 
 \subsection{Simulation length} 
 \label{sec:length}
@@ -1359,7 +1367,7 @@ define $\Delta t$ has been proposed by Kim \citep{kim2014} who proposed to use a
 0.0333 to 0.01 of the smallest vibrational period in the simulation.
 
 Considering these guidelines, as well as the existing body of literature on MD for
-interfacial properties, it is possible to state that the Verlet leapfrog algorithm is commonly used
+interfacial properties, one observes that the Verlet leapfrog algorithm is commonly used
 with a time step from 0.003 to 0.01 ps.
 As another point of reference, an order of magnitude estimate of 
 of the time step can be had from the following equation for Lennard-Jones fluids:
@@ -1394,6 +1402,11 @@ properties, such as isothermal Gibbs adsorption and surface entropy and surface
 enthalpy are illustrated. 
 
 \subsection{Calculation of interfacial density profiles and related interfacial properties}
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{gfx/image51.png}
+\caption{Partitioning of the simulation box in $n$ vertical slabs for computing the density profile, ${\rho}_{\mathrm{i}}$.}
+\label{fig:7}
+\end{figure}
 
 The density profile is calculated by dividing the simulation box
 ($L_{x}L_{y}L_{z}$) in $n$ slabs
@@ -1416,12 +1429,6 @@ whereas {${\rho}$}$_{i}^{\mathrm{C10H22}}$
 Note that we suggest to calculate the densities based on the number of sites observed
 in a given slab. In most cases of chain fluids, molecules will span several slabs,
 and this must be accounted for.
-
-\begin{figure}
-\includegraphics[width=0.5\textwidth]{gfx/image51.png}
-\caption{Partitioning of the simulation box in $n$ vertical slabs for computing the density profile, ${\rho}_{\mathrm{i}}$.}
-\label{fig:7}
-\end{figure}
 
 In order to guarantee that the simulated systems are at a true equilibrium
 state, neither transient nor steady state, it is advised to monitor the time
@@ -1496,7 +1503,7 @@ then feeds into Eq. \ref{eq:hulshof} to be employed to calculate the tension.
 
 In the IK method, the pressure tensor element, $P_{kk}$ ($z$) is given by the following expression:
 \begin{equation}
-P_{kk}\left(z\right)=k_{B}T\rho\left(z\right)+\frac{1}{A}\left\langle \sum_{{\scriptstyle i}}^{{\scriptstyle N-1}}\sum_{{\scriptstyle j>i}}^{N}\frac{1}{\left|z_{i}-z_{j}\right|}\left(f_{ij}\right)_{k}\left(r_{ij}\right)_{k}\right\rangle 
+  P_{kk}\left(z\right)=k_{B}T\rho\left(z\right)+\frac{1}{A}\left\langle \sum_{{\scriptstyle i}}^{{\scriptstyle N-1}}\sum_{{\scriptstyle j>i}}^{N}\frac{1}{\left|z_{i}-z_{j}\right|}\left(f_{ij}(z)\right)_{k}\left(r_{ij}\right)_{k}\right\rangle 
   \label{eq:10}
 \end{equation}
 In Eq. \ref{eq:10}, the subscript $kk$ represents the spatial coordinate, either
@@ -1532,7 +1539,7 @@ fluctuations in the results.  The values of
 ${\langle}P_{xx}{\rangle}$ and
 ${\langle}P_{yy}{\rangle}$ vary only along the z coordinate,
 whereas ${\langle}P_{zz}{\rangle}$ should be constant along
-$z$,  implies that the normal pressure ( that of the bulk phases) is
+$z$,  implying that the normal pressure ( that of the bulk phases) is
 $P_{N}$ = ${\langle}P_{zz}{\rangle}$ while the tangential
 components will be equal ( due to the symmetry of the problem)
 $P_{T}$ = ${\langle}P_{xx}{\rangle}$
@@ -1553,7 +1560,7 @@ $P_{T}$ = ${\langle}P_{xx}{\rangle}$
 	\begin{subfigure}{0.45\linewidth} % width of left subfigure
     \includegraphics[width=1\textwidth]{gfx/fig_15_d.jpeg}
 	\end{subfigure}
-\caption{Diagonal elements of the pressure tensor ${\langle}P_{xx}{\rangle}$, ${\langle}P_{yy}{\rangle}$, and ${\langle}P_{zz}{\rangle}$ and the resulting interfacial tension, ${\gamma}$, evaluated over the volume simulation box for the case of CO$_{2}$ (single Mie sphere, $\epsilon / k_B = 353.55 \rm{K}; \sigma = 3.741 \AA; \lambda_r = 23.0; \lambda_a = 6.66$) at 240 K.
+\caption{Diagonal elements of the pressure tensor ${\langle}P_{xx}{\rangle}$, ${\langle}P_{yy}{\rangle}$, and ${\langle}P_{zz}{\rangle}$ and the resulting interfacial tension, ${\gamma}$, evaluated over the volume simulation box for the case of CO$_{2}$ (single Mie sphere, $\epsilon / k_B = 353.55 \rm{K}; \sigma = 3.741 \AA; \lambda_r = 23.0; \lambda_a = 6.66$) at 240 K. The apparently large fluctuations are typical and showcase some of the issues with the evaluation of Eq. \ref{eq:hulshof}.
 }
 \label{fig:16}
 \end{figure}
@@ -1569,7 +1576,7 @@ ${\langle}P_{yy}{\rangle}$ as $P_{T}$
 = ${\langle}P_{zz}{\rangle}$, Eq. \ref{eq:hulshof} can be rewritten as:
 
 \begin{equation}
-\gamma=\frac{L_{z}}{2}\left[\left\langle P_{zz}\right\rangle -\frac{\left\langle P_{zz}\right\rangle +\left\langle P_{zz}\right\rangle }{2}\right]
+\gamma=\frac{L_{z}}{2}\left[\left\langle P_{zz}\right\rangle -\frac{\left\langle P_{xx}\right\rangle +\left\langle P_{yy}\right\rangle }{2}\right]
   \label{eq:11}
 \end{equation}
 
@@ -1635,7 +1642,7 @@ ${\gamma}$ and the second plateau is the cumulative value of ${\gamma}$
 (\textit{i.e.,} 2${\gamma}$ ). For the case illustrated in Fig. \ref{fig:18}, the IK
 method (Eq. \ref{eq:12}) predicts ${\gamma}$ = 11.15 mN m$^{-1}$, which is similar to
 the value obtained by Eq. \ref{eq:11}.
-The recommended practice to evaluate the magnitude of ${\gamma}$ is to use the value
+The recommended practice for evaluating the magnitude of ${\gamma}$ is to use the value
 of the first plateau rather than the second value. The second value contains
 all the accumulated error stemming from the liquid phase.
 \begin{figure}
@@ -1880,7 +1887,7 @@ actual phase boundaries, hence giving rise to the possibility of metastable
 one-phase systems when otherwise a phase split is expected. $NVT$
 simulations artificially enhance the stability of liquid phases, by
 allowing the metastable states such as drops in a cylindrical or spherical
-shape to persist \citep{lau2015}. For further details concern to metastable states,
+shape to persist \citep{lau2015}. For further details concerning these metastable configurations,
 the reader is redirected to the recent review from Malijevsky and Jackson
 \citep{malijevsky2012}.
 
@@ -2051,8 +2058,8 @@ on a per-slab basis. These results will be used to calculate other interfacial
 properties such as the relative Gibbs adsorption isotherm, surface entropy, and
 surface enthalpy change and the interfacial tension.
 
-Besides provided general recommendations for advantageous methods, this work also includes a worked-out
-example and input files required to carry out the corresponding simulations to
+Besides provided general recommendations for advantageous methods, this work also includes worked-out
+examples and input files required to carry out the corresponding simulations to
 reproduce selected results presented here.
 
 \section*{Potentially Conflicting Interests}
