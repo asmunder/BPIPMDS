@@ -1,5 +1,5 @@
-# Best Practices for Computing Interfacial Properties from Molecular Dynamics Simulations
-This Best Practices Guide is focused on techniques to use, as well as pitfalls to avoid,
+# A Guide to Computing Interfacial Properties of Fluids from Molecular Simulations
+This guide is focused on techniques to use, as well as pitfalls to avoid,
 when performing molecular simulation to obtain interfacial properties of fluid systems.
 
 ## List of Authors
