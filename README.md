@@ -18,7 +18,9 @@ This paper is being developed as a living document, open to changes from the com
 ## List of Released Versions
 <!-- update this when you decide to release a version either by preprint or when submitted to LiveCoMS-->
 - v0.9: Submitted to LiveCoMS.
+- v1.0: [Release of v1.0 published in LiveCoMS](https://github.com/asmunder/BPIPMDS/releases/tag/published-version-v1)
+
 
 ## Changelog
 <!-- Here, record summaries of important changes. A granular discussion of changes will be kept in GitHub by issue tracking.-->
-TODO
+
