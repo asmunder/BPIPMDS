@@ -2,6 +2,8 @@
 This guide is focused on techniques to use, as well as pitfalls to avoid,
 when performing molecular simulation to obtain interfacial properties of fluid systems.
 
+The `supplementary` folder contains several example cases that can be run to reproduce results from the manuscript, as described in the `BPIPMDS-supplementary.pdf` file.
+
 ## List of Authors
 
 - Erich A. Müller, Imperial College London, London SW7 2AZ, United Kingdom
