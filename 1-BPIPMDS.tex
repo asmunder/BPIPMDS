@@ -59,7 +59,7 @@
 
 \orcid{Erich A. M\"{u}ller}{0000-0002-1513-6686}
 \orcid{\AA{}smund Ervik}{0000-0003-1073-887X}
-\orcid{Andres Mej\'{i}a}{0000-0001-7238-6633}
+\orcid{Andr{\'e}s Mej\'{i}a}{0000-0001-7238-6633}
 
 \blurb{This LiveCoMS document is maintained online on GitHub at \githubrepository; to provide feedback, suggestions, or help improve it, please visit the GitHub repository and participate via the issue tracker.}
 
@@ -1184,9 +1184,9 @@ For the case of heteronuclear molecules or mixtures, the cross parameters for th
   \varepsilon_{ij} &= \left(1-k_{ij}\right)\frac{\sqrt{\sigma_{ii}^{3}\sigma_{jj}^{3}}}{\sigma_{ij}^{3}}\sqrt{\varepsilon_{ii}\,\varepsilon_{jj}}
 \end{align}
   \begin{equation}
-  \left(\lambda_{k_{ij}}-3\right) = \sqrt{\left(\lambda_{k_{ii}}-3\right)\left(\lambda_{k_{jj}}-3\right)} \\
+  \left(\lambda_{b_{ij}}-3\right) = \sqrt{\left(\lambda_{b_{ii}}-3\right)\left(\lambda_{b_{jj}}-3\right)} \\
 \end{equation}
-where $\lambda_{k_{ii}}$ = $\lambda_{r_{ii}}$ or $\lambda_{a_{ii}}$, etc., and $k_{ij}$ is a binary
+where $\lambda_{b_{ii}}$ = $\lambda_{r_{ii}}$ or $\lambda_{a_{ii}}$, etc., and $k_{ij}$ is a binary
 interaction parameter, which can be obtained from experimental data of phase
 equilibria.
 
@@ -1360,7 +1360,7 @@ unstable dynamics due to the high errors involved in the integration. Therefore,
 the selection of the appropriate $\Delta t$ for the particular system needs to be
 defined. Fincham \citep{fincham1986} proposed an empirical but useful method to define the
 optimal value of the $\Delta t$. The main idea of this method is to run a series of
-simulations from the same equilibrated state, but each one with different Dt.
+simulations from the same equilibrated state, but each one with different $\Delta t$.
 For each simulation, the potential energy is evaluated with its standard error.
 The selected $\Delta t$ is the largest one with low standard error. Another option to
 define $\Delta t$ has been proposed by Kim \citep{kim2014} who proposed to use a size of about
@@ -1888,7 +1888,7 @@ one-phase systems when otherwise a phase split is expected. $NVT$
 simulations artificially enhance the stability of liquid phases, by
 allowing the metastable states such as drops in a cylindrical or spherical
 shape to persist \citep{lau2015}. For further details concerning these metastable configurations,
-the reader is redirected to the recent review from Malijevsky and Jackson
+the reader is redirected to the recent review from Malijevsk\`{y} and Jackson
 \citep{malijevsky2012}.
 
 \begin{figure}
@@ -2072,7 +2072,7 @@ The authors declare no conflicting interests.
 A.M. acknowledges funding from Fondecyt (Chile) through Grant 1190107. E.A.M.
 acknowledges funding from the Engineering and Physical Sciences Research
 Council to the Molecular Systems Engineering group through Grant Nos.
-EP/E016340, EP/I018212 and EP/J014958 and EP/R013152.
+EP/E016340, EP/I018212, EP/J014958 and EP/R013152.
 \AA{}.E. acknowledges funding from the Research Council of Norway (RCN) 
 through the CLIMIT program (254813/E20), and through the HYVA project which 
 is part of the Strategic Institute Programme of SINTEF Energy Research funded 
@@ -2106,7 +2106,7 @@ The example codes are provided for DL\_POLY, HOOMD, and LAMMPS.
 \item Select an appropriate total number of particles, $N_{T}$ (N$_{\mathrm{T}}$ = N$^{\mathrm{L}}$ + N$^{\mathrm{V}}$ ; N$^{\mathrm{L}}{\approx}$ 2000 to 5000; N$^{\mathrm{V}}{\approx}$ 1000 to 2000). For mixtures, check to see if there are enough molecules of each type to satisfy the expected compositions in each phase. \checkref{See Example 1 and Example 2.} \\
 \item Choose a global density of the pure fluid or fluid mixture at $T_{ref}$ (\textit{i.e}., {${\rho}$} = ({${\rho}$}$^{\mathrm{L}}$ + {${\rho}$}$^{\mathrm{V}}$)/2). \checkref{See discussion around Fig. \ref{fig:23}.} \\
 \item Calculate the simulation cell parameters (V = N$_{\mathrm{T}}$/ {${\rho}$} $= L_{x}L_{y}L_{z}$; $L_{x}$ = $L_{y}$ {\textgreater} 10 ${\sigma}_{\mathrm{max}}$;  $L_{z}{\approx}$ 3 to 10 $L_{x}$). \checkref{See Example 2.} \\
-\item Choose a force field: UA or CG. \checkref{See Sec. \ref{sec:forcefields}.} \\
+\item Choose a force field: \checkref{See Sec. \ref{sec:forcefields}.} \\
 \item Select a cutoff compatible with the force field , otherwise choose $r_{c}{\geq}$ 6 ${\sigma}_{\mathrm{max}}$ . Verify that r$_{\mathrm{c}}^{\mathrm{max}}$ = $L_{x}$ /2). \checkref{See Sec. \ref{sec:cutoff}.} \\
 \item Select a thermostat (e.g. Nos\'e-Hoover or better) with an appropriate constant (${\uptau}_{\mathrm{T}}{\approx}$ 0.5 to 1 ps). \checkref{See Sec. \ref{sec:thermostat}.} If using Verlet radii, choose delr = 1.5 ${\sigma}_{\mathrm{max}}$ \\
 \item Set total Simulation Steps (SS ${\approx}$ 50000 to 100000). \\
